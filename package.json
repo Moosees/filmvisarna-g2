@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "backend": "npm run compile && node backend/server.js",
+    "compile": "cd typescript && tsc --outDir ../backend/"
   },
   "dependencies": {
     "react": "^18.3.1",
