@@ -1,6 +1,9 @@
+import './config/dotenv.js';
+
 import express from 'express';
 import db from './config/connectDB.js';
 import { RowDataPacket } from 'mysql2';
+
 const app = express();
 
 const PORT = process.env.SERVER_PORT || 3008;
