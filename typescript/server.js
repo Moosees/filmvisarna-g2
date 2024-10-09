@@ -18,6 +18,19 @@ app.get('/movies', (req, res) => {
   });
 });
 
+app.get('/movies/:id', (req, res) => {
+  const { id } = req.params;
+  db.query(`SELECT * FROM movie WHERE id = ?`, [id], (err, results) => {
+    if (err) return res.status(500).json(err);
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    res.json(results[0]);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
