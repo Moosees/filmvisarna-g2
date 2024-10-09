@@ -1,14 +1,15 @@
 import express from 'express';
 import db from './config/connectDB.js';
+import { RowDataPacket } from 'mysql2';
 const app = express();
 
 const PORT = process.env.SERVER_PORT || 3008;
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send('hello');
 });
 
-app.get('/movies', (req, res) => {
+app.get('/movies', (_req, res) => {
   db.query('SELECT * FROM movie', (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
@@ -20,15 +21,19 @@ app.get('/movies', (req, res) => {
 
 app.get('/movies/:id', (req, res) => {
   const { id } = req.params;
-  db.query(`SELECT * FROM movie WHERE id = ?`, [id], (err, results) => {
-    if (err) return res.status(500).json(err);
+  db.query<RowDataPacket[]>(
+    `SELECT * FROM movie WHERE id = ?`,
+    [id],
+    (err, results) => {
+      if (err) return res.status(500).json(err);
 
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'Movie not found' });
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'Movie not found' });
+      }
+
+      res.json(results[0]);
     }
-
-    res.json(results[0]);
-  });
+  );
 });
 
 app.listen(PORT, () => {
