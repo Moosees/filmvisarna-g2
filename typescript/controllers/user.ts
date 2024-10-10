@@ -1,25 +1,35 @@
-import db from '../config/connectDB.js';
 import express, { Request, Response } from 'express';
+import db from '../config/connectDB';
+import { ResultSetHeader } from 'mysql2/promise';
 
 const app = express();
 app.use(express.json());
 
-app.post('/user/register', async (req: Request, res: Response) => {
+interface RegisterRequestBody {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+const registerHandler: express.RequestHandler = async (
+  req: Request<{}, {}, RegisterRequestBody>,
+  res: Response
+): Promise<void> => {
   const { email, password, firstName, lastName } = req.body;
 
-  // Kontrollera om alla obligatoriska fält är ifyllda
   if (!email || !password || !firstName || !lastName) {
-    return res.status(400).json({ error: 'Alla fält måste vara ifyllda' });
+    res.status(400).json({ error: 'Alla fält måste vara ifyllda' });
+    return;
   }
 
-  // SQL-fråga för att lägga till en ny användare
   const query = `
     INSERT INTO users (email, password, firstName, lastName)
     VALUES (?, ?, ?, ?)
   `;
 
   try {
-    const [result] = await db.execute(query, [
+    const [result] = await db.execute<ResultSetHeader>(query, [
       email,
       password,
       firstName,
@@ -28,10 +38,14 @@ app.post('/user/register', async (req: Request, res: Response) => {
 
     res.status(201).json({
       message: 'Användare registrerad',
-      userId: (result as any).insertId,
+      userId: result.insertId,
     });
+    return;
   } catch (err) {
     console.error('Error executing query:', err);
     res.status(500).json({ error: 'Serverfel vid registrering' });
+    return;
   }
-});
+};
+
+app.post('/user/register', registerHandler);
