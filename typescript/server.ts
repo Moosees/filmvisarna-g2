@@ -3,6 +3,7 @@ import './config/dotenv.js';
 import express from 'express';
 import db from './config/connectDB.js';
 import { RowDataPacket } from 'mysql2';
+import router from './routes.js';
 
 const app = express();
 
@@ -38,6 +39,8 @@ app.get('/movies/:id', (req, res) => {
     }
   );
 });
+
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
