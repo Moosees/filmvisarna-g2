@@ -10,7 +10,6 @@ interface RegisterRequestBody {
 }
 
 class UserController {
-  // Registreringsmetod för användare
   public static async register(
     req: Request<{}, {}, RegisterRequestBody>,
     res: Response
@@ -28,13 +27,13 @@ class UserController {
     `;
 
     try {
-      // Tvingad typning för att hantera ResultSetHeader korrekt
+      // Använd 'unknown' för att hantera typkonverteringen säkert
       const [result] = (await db.execute(query, [
         email,
         password,
         firstName,
         lastName,
-      ])) as [ResultSetHeader, FieldPacket[]];
+      ])) as unknown as [ResultSetHeader, FieldPacket[]];
 
       res.status(201).json({
         message: 'Användare registrerad',
