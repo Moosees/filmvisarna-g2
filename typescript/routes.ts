@@ -1,5 +1,14 @@
 import express from 'express';
+import db from './config/connectDB.js';
+import { error } from 'console';
 const router = express.Router();
+
+interface Movie {
+  id: number;
+  title: string;
+  play_time: number;
+  movie_info: string;
+}
 
 // NOTE: use socket.io or server sent events for handling this
 // get what seats are free or reserved by other people
@@ -19,7 +28,22 @@ router.patch('reservation');
 router.delete('reservation');
 
 // find a movie from url
-router.get('movie/:id');
+router.get('/movie/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const query: string = 'SELECT * FROM  movie m WHERE m.id =?';
+    db.query(query, [id], (error, results) => {
+      if (error) {
+        return res.status(500).json({ msg: 'Något gick fel', error });
+      }
+
+      res.status(200).json(results);
+    });
+  } catch (error) {
+    res.status(500).json({ msg: 'något gick fel', error });
+  }
+});
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
 router.get('movie');
