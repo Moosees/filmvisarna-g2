@@ -1,4 +1,6 @@
 import express from 'express';
+import UserController from './controller/UserController';
+
 const router = express.Router();
 
 // NOTE: use socket.io or server sent events for handling this
@@ -25,7 +27,7 @@ router.get('movie/:id');
 router.get('movie');
 
 // register a member - body: {email, password, firstName, lastName}
-router.post('user/register');
+router.post('/user/register', UserController.register);
 
 // log out
 router.delete('user');
