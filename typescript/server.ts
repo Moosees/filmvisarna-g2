@@ -7,6 +7,8 @@ import router from './routes.js';
 
 const app = express();
 
+app.use(express.json());
+
 const PORT = process.env.SERVER_PORT || 3008;
 
 app.get('/', (_req, res) => {

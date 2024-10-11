@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import db from '../config/connectDB';
+import db from '../config/connectDB.js';
 import { ResultSetHeader, FieldPacket } from 'mysql2/promise';
 
 interface RegisterRequestBody {
