@@ -1,4 +1,4 @@
-import mysql, { ConnectionOptions } from 'mysql2';
+import mysql, { ConnectionOptions } from 'mysql2/promise';
 
 const options: ConnectionOptions = {
   host: process.env.DB_HOST,
@@ -8,11 +8,17 @@ const options: ConnectionOptions = {
   port: Number(process.env.DB_PORT) || 3306,
 };
 
-const db = mysql.createConnection(options);
+async function connectDB() {
+  try {
+    const db = await mysql.createConnection(options);
+    console.log(`Connected to MySQL database ${process.env.DB_NAME}!`);
+    return db;
+  } catch (err) {
+    console.error('Error connecting to the database:', err);
+    throw err; // Rethrow the error for further handling
+  }
+}
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log(`Connected to MySQL ${process.env.DB_NAME} database!`);
-});
+const db = await connectDB(); // Await the connection
 
 export default db;

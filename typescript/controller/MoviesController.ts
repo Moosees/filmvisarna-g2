@@ -1,26 +1,27 @@
 import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
-import { RowDataPacket } from 'mysql2';
+import { FieldPacket, RowDataPacket } from 'mysql2';
 
 const getSpecificMovie = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
   try {
-    const query: string = 'SELECT * FROM  movie m WHERE m.id =?';
+    const { id } = req.params;
 
-    db.execute(query, [id], (error, results: RowDataPacket[]) => {
-      if (error) {
-        return res.status(500).json({ msg: 'Något gick fel', error });
-      }
+    // Execute the SQL query
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      'SELECT * FROM movie m WHERE m.id = ?',
+      [id]
+    );
 
-      if (results.length === 0) {
-        return res.status(404).json({ msg: 'Film inte hittad' });
-      }
+    // Check if the movie was found
+    if (results.length === 0) {
+      return res.status(404).json({ msg: 'Film inte hittad' });
+    }
 
-      if (results) res.status(200).json(results);
-    });
+    // Return the found movie
+    res.status(200).json(results[0]);
   } catch (error) {
-    res.status(500).json({ msg: 'Något gick fel', error });
+    console.error('Error fetching movie:', error); // Improved logging
+    res.status(500).json({ msg: 'Något gick fel' });
   }
 };
 

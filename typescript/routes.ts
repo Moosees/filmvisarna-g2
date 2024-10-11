@@ -1,5 +1,6 @@
 import express from 'express';
 import MoviesController from './controller/MoviesController.js';
+
 const router = express.Router();
 
 // NOTE: use socket.io or server sent events for handling this
