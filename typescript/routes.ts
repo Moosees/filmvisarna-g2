@@ -27,7 +27,7 @@ router.get('movie/:id');
 router.get('movie');
 
 // register a member - body: {email, password, firstName, lastName}
-router.post('/user/register', UserController.register);
+router.post('/member/register', UserController.register);
 
 // log out
 router.delete('user');

@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import db from '../config/connectDB.js';
-import { ResultSetHeader, FieldPacket } from 'mysql2/promise';
+import { ResultSetHeader } from 'mysql2/promise';
 
 interface RegisterRequestBody {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
+  member_email: string;
+  member_password: string;
+  first_name: string;
+  last_name: string;
 }
 
 class UserController {
@@ -14,34 +14,45 @@ class UserController {
     req: Request<{}, {}, RegisterRequestBody>,
     res: Response
   ): Promise<void> {
-    const { email, password, firstName, lastName } = req.body;
+    const { member_email, member_password, first_name, last_name } = req.body;
 
-    if (!email || !password || !firstName || !lastName) {
+    if (!member_email || !member_password || !first_name || !last_name) {
       res.status(400).json({ error: 'Alla fält måste vara ifyllda' });
       return;
     }
 
     const query = `
-      INSERT INTO users (email, password, firstName, lastName)
+      INSERT INTO member (member_email, member_password, first_name, last_name)
       VALUES (?, ?, ?, ?)
     `;
 
     try {
-      // Använd 'unknown' för att hantera typkonverteringen säkert
-      const [result] = (await db.execute(query, [
-        email,
-        password,
-        firstName,
-        lastName,
-      ])) as unknown as [ResultSetHeader, FieldPacket[]];
+      // Typkonvertering med unknown först för att hantera TypeScript-varningen
+      const [result] = (await db.query(query, [
+        member_email,
+        member_password,
+        first_name,
+        last_name,
+      ])) as unknown as [ResultSetHeader, any];
 
       res.status(201).json({
         message: 'Användare registrerad',
-        userId: result.insertId,
+        memberId: result.insertId,
       });
-    } catch (err) {
-      console.error('Error executing query:', err);
-      res.status(500).json({ error: 'Serverfel vid registrering' });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        if (err.message.includes('Duplicate entry')) {
+          res
+            .status(409)
+            .json({ error: 'E-postadressen är redan registrerad' });
+        } else {
+          console.error('Error executing query:', err.message);
+          res.status(500).json({ error: 'Serverfel vid registrering' });
+        }
+      } else {
+        console.error('An unknown error occurred');
+        res.status(500).json({ error: 'Ett okänt fel inträffade' });
+      }
     }
   }
 }
