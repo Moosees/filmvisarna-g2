@@ -1,6 +1,13 @@
 // import { Request, Response } from 'express';
 import db from '../config/connectDB.js';
 
+const mockReservation = {
+  email: 'node@test.com',
+  screeningId: 5,
+  tickets: [1, 2],
+  seats: [2, 3],
+};
+
 export const createNewReservation = async () => {
   try {
     await db.beginTransaction();
