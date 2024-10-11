@@ -21,6 +21,17 @@ export const createNewReservation = async () => {
     );
     console.log(result3);
 
+    const result4 = await db.execute(
+      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, 2)}`,
+      [2, 5, 3, 5]
+    );
+    console.log(result4);
+
+    const result5 = await db.query(
+      'SELECT * FROM res_seat_screen rss WHERE rss.reservation_id = @reservationId'
+    );
+    console.log(result5);
+
     await db.rollback();
     await db.end();
 
