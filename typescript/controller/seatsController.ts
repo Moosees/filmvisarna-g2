@@ -2,27 +2,27 @@ import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 
-const getSpecificMovie = async (req: Request, res: Response) => {
+const getReservedSeats = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { screening_id } = req.params;
 
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      'SELECT * FROM movie m WHERE m.id = ?',
-      [id]
+      'SELECT * FROM vy_reserverdSeats vrs WHERE screeningId = ?',
+      [screening_id]
     );
 
-    // Check if the movie was found
+    // Check if the screening was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film inte hittad' });
+      res.status(404).json({ message: 'Visning inte hittad' });
       return;
     }
 
-    // Return the found movie
-    res.status(200).json(results[0]);
+    // Return the found screening
+    res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
   }
 };
 
-export default { getSpecificMovie };
+export default { getReservedSeats };
