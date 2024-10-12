@@ -27,13 +27,13 @@ router.get('movie/:id');
 router.get('movie');
 
 // register a member - body: {email, password, firstName, lastName}
-router.post('/member/register', UserController.register);
+router.post('/user/register', UserController.register);
 
 // log out
 router.delete('user');
 
 // log in - body: {email, password}
-router.post('/member', UserController.login);
+router.post('/user', UserController.login);
 
 // update user info - body: {email?, password?, firstName?, lastName?}
 router.patch('user');

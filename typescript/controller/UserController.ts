@@ -3,8 +3,8 @@ import db from '../config/connectDB.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 interface RegisterRequestBody {
-  member_email: string;
-  member_password: string;
+  email: string;
+  password: string;
   first_name: string;
   last_name: string;
 }
@@ -14,23 +14,22 @@ class UserController {
     req: Request<{}, {}, RegisterRequestBody>,
     res: Response
   ): Promise<void> {
-    const { member_email, member_password, first_name, last_name } = req.body;
+    const { email, password, first_name, last_name } = req.body;
 
-    if (!member_email || !member_password || !first_name || !last_name) {
+    if (!email || !password || !first_name || !last_name) {
       res.status(400).json({ error: 'Alla fält måste vara ifyllda' });
       return;
     }
 
     const query = `
-      INSERT INTO member (member_email, member_password, first_name, last_name)
+      INSERT INTO user (email, password, first_name, last_name)
       VALUES (?, ?, ?, ?)
     `;
 
     try {
-      // Typkonvertering med unknown först för att hantera TypeScript-varningen
-      const [result] = (await db.query(query, [
-        member_email,
-        member_password,
+      const [result] = (await db.execute(query, [
+        email,
+        password,
         first_name,
         last_name,
       ])) as unknown as [ResultSetHeader, any];
@@ -56,21 +55,21 @@ class UserController {
     }
   }
   public static async login(req: Request, res: Response): Promise<void> {
-    const { member_email, member_password } = req.body;
+    const { email, password } = req.body;
 
-    if (!member_email || !member_password) {
+    if (!email || !password) {
       res.status(400).json({ error: 'Både e-post och lösenord krävs' });
       return;
     }
 
     const query = `
-        SELECT * FROM member WHERE member_email = ? AND member_password = ?
+        SELECT * FROM user WHERE email = ? AND password = ?
         `;
 
     try {
-      const [rows] = (await db.query(query, [
-        member_email,
-        member_password,
+      const [rows] = (await db.execute(query, [
+        email,
+        password,
       ])) as RowDataPacket[];
 
       if (rows.length === 0) {
