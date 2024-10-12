@@ -17,6 +17,11 @@ const createNewReservation = async (
 ) => {
   const { email, screeningId, tickets, seats } = req.body;
 
+  if (!email || !screeningId || tickets?.length === 0 || seats?.length === 0) {
+    res.status(400).json({ error: 'Bokningen är inte korrekt' });
+    return;
+  }
+
   try {
     await db.beginTransaction();
     await db.execute(
