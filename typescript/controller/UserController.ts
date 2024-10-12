@@ -87,6 +87,12 @@ class UserController {
       }
     }
   }
+
+  // public static async logout(req: Request, res: Response): Promise<void> {
+  //   if (req.session) {
+  //     req.session.destroy((err) => )
+  //   }
+  // }
 }
 
 export default UserController;
