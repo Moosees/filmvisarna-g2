@@ -12,13 +12,13 @@ const getSpecificReservation = async (req: Request, res: Response) => {
       [reservationNum]
     );
 
-    // Check if the movie was found
+    // Check if the reservation was found
     if (results.length === 0) {
       res.status(404).json({ message: 'Bokning inte hittad' });
       return;
     }
 
-    // Return the found movie
+    // Return the found reservation
     res.status(200).json(results[0]);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
