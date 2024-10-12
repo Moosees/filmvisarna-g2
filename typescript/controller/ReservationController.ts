@@ -1,13 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import db from '../config/connectDB.js';
 
-// const mockReservation = {
-//   email: 'node@test.com',
-//   screeningId: 5,
-//   tickets: [1, 2],
-//   seats: [2, 3],
-// };
-
 const createNewReservation = async (
   req: Request,
   res: Response,
@@ -17,44 +10,33 @@ const createNewReservation = async (
 
   try {
     await db.beginTransaction();
-    const result1 = await db.execute(
+    await db.execute(
       'CALL create_reservation(:email, :screeningId, @reservationId);',
       { email, screeningId }
     );
-    console.log(result1);
 
-    const result2 = await db.execute(
+    await db.execute(
       `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(1, tickets.length)};`,
       tickets
     );
-    console.log(result2);
 
-    const result3 = await db.query(
-      'SELECT * FROM reservation_ticket rt WHERE rt.reservation_id = @reservationId'
-    );
-    console.log(result3);
-
-    const result4 = await db.execute(
+    await db.execute(
       `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, seats.length)}`,
       seats.reduce(
         (data: number[], seat: number) => [...data, seat, screeningId],
         []
       )
     );
-    console.log(result4);
 
-    const result5 = await db.query(
-      'SELECT * FROM res_seat_screen rss WHERE rss.reservation_id = @reservationId'
-    );
-    console.log(result5);
-
-    await db.rollback();
-    await db.end();
+    await db.commit();
 
     next();
   } catch (error) {
     console.log(error);
+    await db.rollback();
     res.status(500).json({ error });
+  } finally {
+    await db.end();
   }
 };
 
