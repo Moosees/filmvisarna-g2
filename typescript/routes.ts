@@ -1,5 +1,5 @@
 import express from 'express';
-import MoviesController from './controller/MoviesController.js';
+import moviesController from './controller/moviesController.js';
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.patch('reservation');
 router.delete('reservation');
 
 // find a movie from url
-router.get('/movie/:id', MoviesController.getSpecificMovie);
+router.get('/movie/:id', moviesController.getSpecificMovie);
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
 router.get('movie');
