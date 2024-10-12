@@ -9,17 +9,19 @@ const mockReservation = {
 };
 
 export const createNewReservation = async () => {
+  const { email, screeningId, tickets, seats } = mockReservation;
+
   try {
     await db.beginTransaction();
     const result1 = await db.execute(
       'CALL create_reservation(:email, :screeningId, @reservationId);',
-      { email: 'node@test.com', screeningId: 5 }
+      { email, screeningId }
     );
     console.log(result1);
 
     const result2 = await db.execute(
       `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(1, 2)};`,
-      [1, 2]
+      tickets
     );
     console.log(result2);
 
@@ -30,7 +32,10 @@ export const createNewReservation = async () => {
 
     const result4 = await db.execute(
       `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, 2)}`,
-      [2, 5, 3, 5]
+      seats.reduce(
+        (data: number[], seat: number) => [...data, seat, screeningId],
+        []
+      )
     );
     console.log(result4);
 
