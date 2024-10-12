@@ -1,6 +1,7 @@
 import express from 'express';
 import moviesController from './controller/MoviesController.js';
 import reservationController from './controller/reservationController.js';
+import ticketPriceController from './controller/ticketPriceController.js';
 
 const router = express.Router();
 
@@ -13,6 +14,9 @@ router.get(
   '/reservation/:reservationNum',
   reservationController.getSpecificReservation
 );
+
+// get ticket price
+router.get('/ticket', ticketPriceController.getTicketPrice);
 
 // create a reservation for a movie screening - body: {seats, email or userId}
 router.post('/reservation');
