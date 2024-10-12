@@ -20,7 +20,7 @@ export const createNewReservation = async () => {
     console.log(result1);
 
     const result2 = await db.execute(
-      `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(1, 2)};`,
+      `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(1, tickets.length)};`,
       tickets
     );
     console.log(result2);
@@ -31,7 +31,7 @@ export const createNewReservation = async () => {
     console.log(result3);
 
     const result4 = await db.execute(
-      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, 2)}`,
+      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, seats.length)}`,
       seats.reduce(
         (data: number[], seat: number) => [...data, seat, screeningId],
         []
