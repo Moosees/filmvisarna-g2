@@ -1,5 +1,6 @@
 import express from 'express';
 import MoviesController from './controller/MoviesController.js';
+import ReservationController from './controller/ReservationController.js';
 
 const router = express.Router();
 
@@ -10,8 +11,8 @@ router.get('seats/:screening_id');
 // get info for a specific reservation
 router.get('reservation/:reservationNum');
 
-// create a reservation for a movie screening - body: {seats, email or userId}
-router.post('reservation');
+// create a reservation for a movie screening
+router.post('/reservation', ReservationController.createNewReservation);
 
 // remove seats from reservation (if we send a new request to replace the old one, maybe PUT instead of PATCH)
 // body: {reservationNum, seatsToRemove}

@@ -1,15 +1,19 @@
-// import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import db from '../config/connectDB.js';
 
-const mockReservation = {
-  email: 'node@test.com',
-  screeningId: 5,
-  tickets: [1, 2],
-  seats: [2, 3],
-};
+// const mockReservation = {
+//   email: 'node@test.com',
+//   screeningId: 5,
+//   tickets: [1, 2],
+//   seats: [2, 3],
+// };
 
-export const createNewReservation = async () => {
-  const { email, screeningId, tickets, seats } = mockReservation;
+const createNewReservation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, screeningId, tickets, seats } = req.body;
 
   try {
     await db.beginTransaction();
@@ -47,10 +51,10 @@ export const createNewReservation = async () => {
     await db.rollback();
     await db.end();
 
-    // res.status(200).json();
+    next();
   } catch (error) {
     console.log(error);
-    // res.status(500).json({ error });
+    res.status(500).json({ error });
   }
 };
 
@@ -58,3 +62,5 @@ const createInsertTemplate = (cols: number, rows: number) => {
   const row = '(@reservationId, ' + new Array(cols).fill('?').join(', ') + ')';
   return new Array(rows).fill(row).join(', ');
 };
+
+export default { createNewReservation };
