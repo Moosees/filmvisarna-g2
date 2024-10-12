@@ -33,7 +33,7 @@ router.post('/member/register', UserController.register);
 router.delete('user');
 
 // log in - body: {email, password}
-router.post('user');
+router.post('/member', UserController.login);
 
 // update user info - body: {email?, password?, firstName?, lastName?}
 router.patch('user');
