@@ -1,26 +1,6 @@
-import session from 'express-session';
 import MySQLStore from 'express-mysql-session';
+import db from '../config/connectDB';
 
-interface DatabaseSettings {
-  dbHost: string;
-  dbPort: number;
-  dbUser: string;
-  dbPassword: string;
-  dbDatabase: string;
-}
-
-export default function sessionStore(
-  settings: DatabaseSettings
-): session.Store {
-  const { dbHost, dbPort, dbUser, dbPassword, dbDatabase } = settings;
-
-  const options = {
-    host: dbHost,
-    port: dbPort,
-    user: dbUser,
-    password: dbPassword,
-    database: dbDatabase,
-  };
-
-  return new MySQLStore(options);
+export default function sessionStore(session) {
+  return new MySQLStore({}, db);
 }
