@@ -14,14 +14,14 @@ const getSpecificMovie = async (req: Request, res: Response) => {
 
     // Check if the movie was found
     if (results.length === 0) {
-      return res.status(404).json({ msg: 'Film inte hittad' });
+      res.status(404).json({ msg: 'Film inte hittad' });
+      return;
     }
 
     // Return the found movie
     res.status(200).json(results[0]);
   } catch (error) {
-    console.error('Error fetching movie:', error); // Improved logging
-    res.status(500).json({ msg: 'Något gick fel' });
+    res.status(500).json({ message: 'Något gick fel', error });
   }
 };
 
