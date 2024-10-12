@@ -1,8 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import db from '../config/connectDB.js';
 
+interface CreateNewReservationRequest extends Request {
+  body: {
+    email: string;
+    screeningId: number;
+    tickets: number[];
+    seats: number[];
+  };
+}
+
 const createNewReservation = async (
-  req: Request,
+  req: CreateNewReservationRequest,
   res: Response,
   next: NextFunction
 ) => {
