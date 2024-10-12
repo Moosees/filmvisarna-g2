@@ -2,12 +2,13 @@ import express from 'express';
 import moviesController from './controller/MoviesController.js';
 import reservationController from './controller/reservationController.js';
 import ticketPriceController from './controller/ticketPriceController.js';
+import seatsController from './controller/seatsController.js';
 
 const router = express.Router();
 
 // NOTE: use socket.io or server sent events for handling this
 // get what seats are free or reserved by other people
-router.get('/seats/:screening_id');
+router.get('/seats/:screening_id', seatsController.getReservedSeats);
 
 // get info for a specific reservation
 router.get(
