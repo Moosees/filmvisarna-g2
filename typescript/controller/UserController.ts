@@ -66,14 +66,11 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const query = `
-        SELECT * FROM user WHERE email = ? AND password = ?
+        SELECT * FROM user WHERE email = ?
         `;
 
   try {
-    const [rows] = (await db.execute(query, [
-      email,
-      password,
-    ])) as RowDataPacket[];
+    const [rows] = (await db.execute(query, [email])) as RowDataPacket[];
 
     const user = rows[0];
 
