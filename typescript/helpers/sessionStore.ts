@@ -1,18 +1,17 @@
-import MySQLStore from 'express-mysql-session';
+import session from 'express-session';
+import MySQLStoreFactory from 'express-mysql-session';
 import db from '../config/connectDB';
 
-export default function sessionStore(): MySQLStore {
+const MySQLStore = MySQLStoreFactory(session);
+
+export default function sessionStore() {
   const options = {
-    createDatabaseTable: true,
-    schema: {
-      tableName: 'sessions',
-      columnNames: {
-        session_id: 'session_id',
-        expires: 'expires',
-        data: 'data',
-      },
-    },
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT) || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   };
 
-  return new MySQLStore(options, db);
+  return new (MySQLStore as typeof MySQLStore)(options, db);
 }

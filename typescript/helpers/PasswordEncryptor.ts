@@ -2,16 +2,8 @@ import bcrypt from 'bcryptjs';
 
 const bcryptRounds = 10;
 
-const encrypt = async (
-  object: { [key: string]: any },
-  fields: string[]
-): Promise<void> => {
-  for (const key of fields) {
-    if (key in object) {
-      const value = String(object[key]);
-      object[key] = await bcrypt.hash(value, bcryptRounds);
-    }
-  }
+const encrypt = async (password: string): Promise<string> => {
+  return bcrypt.hash(password, bcryptRounds);
 };
 
 const check = async (
