@@ -1,4 +1,5 @@
 import 'express-session';
+import { UserController } from '../typescript/controller/UserController';
 
 declare module 'express-session' {
   interface SessionData {
