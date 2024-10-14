@@ -47,6 +47,9 @@ router.delete('/user', usersController.logout);
 // log in - body: {email, password}
 router.post('/user', usersController.login);
 
+//retrieve booking history for a logged in user
+router.get( '/user/booking-history',isAuthenticated,  usersController.getBookingHistory);
+
 // update user info - body: {password?, firstName?, lastName?}
 router.patch('/user', usersController.updateUserDetails);
 
