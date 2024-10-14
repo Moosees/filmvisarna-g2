@@ -165,10 +165,10 @@ const updateUserDetails = async (
       : null;
 
     await db.execute(
-      `UPDATE user SET 
-        first_name = COALESCE(?, first_name), 
-        last_name = COALESCE(?, last_name), 
-        user_password = COALESCE(?, user_password) 
+      `UPDATE user SET
+        first_name = COALESCE(?, first_name),
+        last_name = COALESCE(?, last_name),
+        user_password = COALESCE(?, user_password)
         WHERE id = ?`,
       [first_name, last_name, hashedPassword, userId]
     );
@@ -182,10 +182,53 @@ const updateUserDetails = async (
   }
 };
 
+const getBookingHistory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userId = req.session.user?.id;
+
+  if (!userId) {
+    res.status(401).json({ error: 'Du är inte inloggad' });
+    return;
+  }
+
+  const query = `
+    SELECT r.reservation_num, r.screening_id, s.screening_time, m.title
+    FROM reservations AS r
+    JOIN screening AS s ON r.screening_id = s.id
+    JOIN movies AS m ON s.movie_id = m.id
+    WHERE r.user_id = ?
+    ORDER BY s.screening_time DESC;
+  `;
+
+  try {
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      query,
+      [userId]
+    );
+
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Ingen bokningshistorik hittades' });
+      return;
+    }
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Fel vid hämtning av bokningshistorik:', error);
+    res
+      .status(500)
+      .json({ error: 'Serverfel vid hämtning av bokningshistorik' });
+  }
+};
+
+
+
 export default {
   register,
   login,
   logout,
   getAllUsers,
   updateUserDetails,
+  getBookingHistory
 };
