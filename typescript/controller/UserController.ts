@@ -164,13 +164,14 @@ const updateUserDetails = async (
       ? await PasswordEncryptor.encrypt({ new_password }['new_password'])
       : null;
 
-    const query = `
-      UPDATE user 
-      SET first_name = ?, last_name = ?, user_password = COALESCE(?, user_password) 
-      WHERE id = ?
-    `;
-
-    await db.execute(query, [first_name, last_name, hashedPassword, userId]);
+    await db.execute(
+      `UPDATE user SET 
+        first_name = COALESCE(?, first_name), 
+        last_name = COALESCE(?, last_name), 
+        user_password = COALESCE(?, user_password) 
+        WHERE id = ?`,
+      [first_name, last_name, hashedPassword, userId]
+    );
 
     res.status(200).json({ message: 'Användarinformation uppdaterad' });
   } catch (error) {
