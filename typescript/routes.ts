@@ -19,8 +19,8 @@ router.get(
 // get ticket price
 router.get('/ticket', ticketsController.getTicketPrice);
 
-// create a reservation for a movie screening - body: {seats, email or userId}
-router.post('/reservation');
+// create a reservation for a movie screening
+router.post('/reservation', reservationsController.createNewReservation);
 
 // remove seats from reservation (if we send a new request to replace the old one, maybe PUT instead of PATCH)
 // body: {reservationNum, seatsToRemove}
