@@ -4,6 +4,7 @@ import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
 import reservationsController from './controller/reservationsController.js';
 import usersController from './controller/UserController.js';
+import { isAuthenticated, isAdmin } from './middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -39,15 +40,15 @@ router.get('/movie');
 // register a member - body: {email, password, firstName, lastName}
 router.post('/user/register', usersController.register);
 
-// router.get('/users', usersController.getAllUsers);
+// router.get('/users', isAuthenticated, isAdmin, usersController.getAllUsers);
 
 // log out
-router.delete('/user');
+router.delete('/user', isAuthenticated, usersController.logout);
 
 // log in - body: {email, password}
 router.post('/user', usersController.login);
 
 // update user info - body: {email?, password?, firstName?, lastName?}
-router.patch('/user');
+router.patch('/user',isAuthenticated);
 
 export default router;
