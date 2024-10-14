@@ -14,8 +14,9 @@ const db = mysql.createPool(dbOptions);
 
 // Testa anslutningen
 db.getConnection()
-  .then(() => {
+  .then((con) => {
     console.log(`Connected to MySQL ${process.env.DB_NAME} database!`);
+    db.releaseConnection(con);
   })
   .catch((err) => {
     console.error('Error connecting to the database:', err.message || err);
