@@ -39,6 +39,8 @@ router.get('/movie');
 // register a member - body: {email, password, firstName, lastName}
 router.post('/user/register', usersController.register);
 
+// router.get('/users', usersController.getAllUsers);
+
 // log out
 router.delete('/user');
 

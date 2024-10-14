@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../config/connectDB.js';
-import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { PasswordEncryptor } from '../helpers/PasswordEncryptor.js';
 
 interface RegisterRequest extends Request {
@@ -36,7 +36,7 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
       first_name,
       last_name,
       'member',
-    ])) as unknown as [ResultSetHeader, any];
+    ])) as unknown as [ResultSetHeader];
 
     res.status(201).json({
       message: 'Användare registrerad med rollen "member"',
@@ -124,8 +124,29 @@ const logout = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    // Execute the SQL query
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      'SELECT * FROM member'
+    );
+
+    // Check if the movie was found
+    if (results.length === 0) {
+      res.status(404).json({ message: 'user inte hittad' });
+      return;
+    }
+
+    // Return the found movie
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+
 export default {
   register,
   login,
   logout,
+  getAllUsers,
 };
