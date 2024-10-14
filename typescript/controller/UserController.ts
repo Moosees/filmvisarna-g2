@@ -66,8 +66,8 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const query = `
-    SELECT id, first_name, last_name, role, user_password FROM user WHERE user_email = ?
-  `;
+        SELECT * FROM user WHERE email = ? AND password = ?
+        `;
 
   try {
     const [rows] = (await db.execute(query, [user_email])) as RowDataPacket[];
