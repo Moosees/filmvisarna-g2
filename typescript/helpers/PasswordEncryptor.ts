@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 
-const bcryptRounds = 10;
+const bcryptRounds = 12;
 
 const encrypt = async (password: string): Promise<string> => {
   return bcrypt.hash(password, bcryptRounds);

@@ -3,43 +3,43 @@ import db from '../config/connectDB.js';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { PasswordEncryptor } from '../helpers/PasswordEncryptor.js';
 
-interface RegisterRequestBody {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
+interface RegisterRequest extends Request {
+  body: {
+    user_email: string;
+    user_password: string;
+    first_name: string;
+    last_name: string;
+  };
 }
 
-const register = async (
-  req: Request<{}, {}, RegisterRequestBody>,
-  res: Response
-): Promise<void> => {
-  const { email, password, first_name, last_name } = req.body;
+const register = async (req: RegisterRequest, res: Response): Promise<void> => {
+  const { user_email, user_password, first_name, last_name } = req.body;
 
-  if (!email || !password || !first_name || !last_name) {
+  if (!user_email || !user_password || !first_name || !last_name) {
     res.status(400).json({ error: 'Alla fält måste vara ifyllda' });
     return;
   }
 
   const hashedPassword = await PasswordEncryptor.encrypt(
-    { password }['password']
+    { user_password }['user_password']
   );
 
   const query = `
-      INSERT INTO user (email, password, first_name, last_name)
-      VALUES (?, ?, ?, ?)
-    `;
+    INSERT INTO user (user_email, user_password, first_name, last_name, role)
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
   try {
     const [result] = (await db.execute(query, [
-      email,
+      user_email,
       hashedPassword,
       first_name,
       last_name,
+      'member',
     ])) as unknown as [ResultSetHeader, any];
 
     res.status(201).json({
-      message: 'Användare registrerad',
+      message: 'Användare registrerad med rollen "member"',
       memberId: result.insertId,
     });
   } catch (err: unknown) {
@@ -58,22 +58,19 @@ const register = async (
 };
 
 const login = async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
+  const { user_email, user_password } = req.body;
 
-  if (!email || !password) {
+  if (!user_email || !user_password) {
     res.status(400).json({ error: 'Både e-post och lösenord krävs' });
     return;
   }
 
   const query = `
-        SELECT * FROM user WHERE email = ? AND password = ?
-        `;
+    SELECT id, first_name, last_name, role, user_password FROM user WHERE user_email = ?
+  `;
 
   try {
-    const [rows] = (await db.execute(query, [
-      email,
-      password,
-    ])) as RowDataPacket[];
+    const [rows] = (await db.execute(query, [user_email])) as RowDataPacket[];
 
     const user = rows[0];
 
@@ -83,8 +80,8 @@ const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const passwordMatch = await PasswordEncryptor.check(
-      password,
-      user.password
+      user_password,
+      user.user_password
     );
     if (!passwordMatch) {
       res.status(401).json({ error: 'Ogiltiga inloggningsuppgifter' });
@@ -93,9 +90,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
 
     req.session.user = {
       id: user.id,
-      email: user.email,
+      email: user_email,
       first_name: user.first_name,
       last_name: user.last_name,
+      role: user.role,
     };
 
     res
