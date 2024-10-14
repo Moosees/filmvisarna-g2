@@ -35,6 +35,8 @@ router.delete('/reservation');
 router.get('/movie/:id', moviesController.getSpecificMovie);
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
+// this is an example explaining how the filter works:
+//http://localhost:3002/movie?age=15&date=2024-11-04
 router.get('/movie', filterController.filerMovies);
 
 // register a member - body: {email, password, firstName, lastName}

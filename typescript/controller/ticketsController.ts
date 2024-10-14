@@ -9,13 +9,13 @@ const getAllTickets = async (req: Request, res: Response) => {
       'SELECT * ticket t '
     );
 
-    // Check if the ticket price was found
+    // Check if the ticket was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Priser inte hittade' });
+      res.status(404).json({ message: 'Tickets inte hittade' });
       return;
     }
 
-    // Return the found ticket prices
+    // Return the found ticket
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });

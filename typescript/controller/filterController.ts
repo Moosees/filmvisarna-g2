@@ -10,7 +10,9 @@ const filerMovies = async (req: Request, res: Response) => {
     };
 
     if (!age && !date) {
-      res.status(400).json({ message: 'Age parameter is required' });
+      res
+        .status(400)
+        .json({ message: 'Parameter för ålder eller datum krävs' });
       return;
     }
 
@@ -26,7 +28,9 @@ const filerMovies = async (req: Request, res: Response) => {
     }
 
     if (date) {
-      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') = ?`;
+      // query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') = ?`;
+      query += ` AND DATE_FORMAT(CONVERT_TZ(s.start_time, '+00:00', 'Europe/Stockholm'), '%Y-%m-%d') = ?`;
+
       params.push(date);
     }
 
