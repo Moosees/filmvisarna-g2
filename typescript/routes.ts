@@ -19,7 +19,7 @@ router.get(
 );
 
 // get ticket price
-router.get('/ticket', ticketsController.getTicketPrice);
+router.get('/ticket', ticketsController.getAllTickets);
 
 // create a reservation for a movie screening
 router.post('/reservation', reservationsController.createNewReservation);

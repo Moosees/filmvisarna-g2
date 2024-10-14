@@ -2,11 +2,11 @@ import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 
-const getTicketPrice = async (req: Request, res: Response) => {
+const getAllTickets = async (req: Request, res: Response) => {
   try {
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      'SELECT ticket_name, price FROM ticket t '
+      'SELECT * ticket t '
     );
 
     // Check if the ticket price was found
@@ -22,4 +22,4 @@ const getTicketPrice = async (req: Request, res: Response) => {
   }
 };
 
-export default { getTicketPrice };
+export default { getAllTickets };

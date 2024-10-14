@@ -15,8 +15,8 @@ const filerMovies = async (req: Request, res: Response) => {
     }
 
     let query = `SELECT * FROM screening s
-       INNER JOIN movie m ON s.movie_id = m.id
-       WHERE 1=1`;
+      INNER JOIN movie m ON s.movie_id = m.id
+      WHERE 1=1`;
 
     const params: (string | number)[] = [];
 
