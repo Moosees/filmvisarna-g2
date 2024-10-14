@@ -147,9 +147,44 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+const updateUserDetails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userId = req.session.user?.id;
+  const { first_name, last_name, new_password } = req.body;
+
+  if (!userId) {
+    res.status(401).json({ error: 'Du är inte inloggad' });
+    return;
+  }
+
+  try {
+    const hashedPassword = new_password
+      ? await PasswordEncryptor.encrypt({ new_password }['new_password'])
+      : null;
+
+    const query = `
+      UPDATE user 
+      SET first_name = ?, last_name = ?, user_password = COALESCE(?, user_password) 
+      WHERE id = ?
+    `;
+
+    await db.execute(query, [first_name, last_name, hashedPassword, userId]);
+
+    res.status(200).json({ message: 'Användarinformation uppdaterad' });
+  } catch (error) {
+    console.error('Fel vid uppdatering av användarinformation:', error);
+    res
+      .status(500)
+      .json({ error: 'Serverfel vid uppdatering av användarinformation' });
+  }
+};
+
 export default {
   register,
   login,
   logout,
   getAllUsers,
+  updateUserDetails,
 };

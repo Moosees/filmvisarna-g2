@@ -47,7 +47,7 @@ router.delete('/user', usersController.logout);
 // log in - body: {email, password}
 router.post('/user', usersController.login);
 
-// update user info - body: {email?, password?, firstName?, lastName?}
-router.patch('/user');
+// update user info - body: {password?, firstName?, lastName?}
+router.patch('/user', usersController.updateUserDetails);
 
 export default router;
