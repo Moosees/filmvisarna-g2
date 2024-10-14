@@ -3,6 +3,7 @@ import moviesController from './controller/MoviesController.js';
 import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
 import reservationsController from './controller/reservationsController.js';
+import usersController from './controller/UserController.js';
 
 const router = express.Router();
 
@@ -36,13 +37,13 @@ router.get('/movie/:id', moviesController.getSpecificMovie);
 router.get('/movie');
 
 // register a member - body: {email, password, firstName, lastName}
-router.post('/user/register');
+router.post('/user/register', usersController.register);
 
 // log out
 router.delete('/user');
 
 // log in - body: {email, password}
-router.post('/user');
+router.post('/user', usersController.login);
 
 // update user info - body: {email?, password?, firstName?, lastName?}
 router.patch('/user');
