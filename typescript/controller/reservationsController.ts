@@ -23,19 +23,21 @@ const createNewReservation = async (
     return;
   }
 
+  let con;
   try {
-    await db.beginTransaction();
-    await db.execute(
+    con = await db.getConnection();
+    await con.beginTransaction();
+    await con.execute(
       'CALL create_reservation(:email, :screeningId, @reservationId);',
       { email, screeningId }
     );
 
-    await db.execute(
+    await con.execute(
       `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(1, tickets.length)};`,
       tickets
     );
 
-    await db.execute(
+    await con.execute(
       `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, seats.length)}`,
       seats.reduce(
         (data: number[], seat: number) => [...data, seat, screeningId],
@@ -43,15 +45,15 @@ const createNewReservation = async (
       )
     );
 
-    await db.commit();
+    await con.commit();
 
     next();
   } catch (error) {
     console.log(error);
-    await db.rollback();
+    await con?.rollback();
     res.status(500).json({ error });
   } finally {
-    await db.end();
+    con?.release();
   }
 };
 
