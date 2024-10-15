@@ -75,7 +75,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     const user = rows[0];
 
     if (!user) {
-      res.status(401).json({ error: 'Ogiltiga inloggningsuppgifter' });
+      res.status(401).json({ error: 'Användaren hittades inte' });
       return;
     }
 
@@ -84,7 +84,9 @@ const login = async (req: Request, res: Response): Promise<void> => {
       user.user_password
     );
     if (!passwordMatch) {
-      res.status(401).json({ error: 'Ogiltiga inloggningsuppgifter' });
+      res
+        .status(401)
+        .json({ error: 'Något gick fel med e-post eller lösenord' });
       return;
     }
 

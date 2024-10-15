@@ -8,6 +8,7 @@ export const dbOptions: PoolOptions = {
   port: Number(process.env.DB_PORT) || 3306,
   namedPlaceholders: true,
   charset: 'utf8mb4',
+  dateStrings: true,
 };
 
 const db = mysql.createPool(dbOptions);
