@@ -125,10 +125,14 @@ const cancelReservation = async (
       'delete from reservation r where r.reservation_num = :reservationNum;',
       { reservationNum }
     );
+
+    await con.commit();
+    // Ev. byta till 204 istället
+    res.status(200).json({ message: 'Avbokning lyckad' });
   } catch (error) {
+    await con?.rollback();
     res.status(500).json({ message: 'Något gick fel', error });
   } finally {
-    await con?.rollback();
     con?.release();
   }
 };
