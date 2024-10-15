@@ -129,6 +129,27 @@ const updateSpecificMovie = async (
   }
 };
 
+const deleteMovie = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  try {
+    // Execute the SQL query
+    const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      'DELETE FROM movie WHERE id = ?',
+      [id]
+    );
+
+    // Check if any rows were affected
+    if (results.affectedRows === 0) {
+      res.status(404).json({ message: 'Film inte hittad' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Filmen har tagits bort framgångsrikt' }); // Confirmation message
+  } catch (error) {
+    res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+
 const filerMovies = async (req: Request, res: Response) => {
   try {
     const { age, date, title } = req.query as {
@@ -188,6 +209,7 @@ export default {
   filerMovies,
   getAllMovies,
   updateSpecificMovie,
+  deleteMovie,
 };
 
 // const addMovie = async (req: Request, res: Response): Promise<void> => {
@@ -204,27 +226,6 @@ export default {
 //           return;
 //         }
 //         res.status(201).json({ id: results.insertId });
-//       }
-//     );
-//   } catch (error) {
-//     res.status(500).json({ message: 'Internal Server Error', error });
-//   }
-// };
-
-// const deleteMovie = async (req: Request, res: Response): Promise<void> => {
-//   const { id } = req.params;
-//   try {
-//     db.query<OkPacket>(
-//       'DELETE FROM movie WHERE id = ?',
-//       [id],
-//       (err: Error | null): void => {
-//         if (err) {
-//           res
-//             .status(500)
-//             .json({ message: 'Database Query Error', error: err.message });
-//           return;
-//         }
-//         res.sendStatus(204);
 //       }
 //     );
 //   } catch (error) {
