@@ -47,11 +47,11 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
       if (err.message.includes('Duplicate entry')) {
         res.status(409).json({ error: 'E-postadressen är redan registrerad' });
       } else {
-        console.error('Error executing query:', err.message);
+        console.error('Fel vid registrering:', err.message);
         res.status(500).json({ error: 'Serverfel vid registrering' });
       }
     } else {
-      console.error('An unknown error occurred');
+      console.error('Ett okänt fel inträffade vid registrering');
       res.status(500).json({ error: 'Ett okänt fel inträffade' });
     }
   }
@@ -101,10 +101,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
       .json({ message: 'Inloggning lyckades', user: req.session.user });
   } catch (err: unknown) {
     if (err instanceof Error) {
-      console.error('Error executing query:', err.message);
+      console.error('Fel vid inloggning:', err.message);
       res.status(500).json({ error: 'Serverfel vid inloggning' });
     } else {
-      console.error('An unknown error occurred');
+      console.error('Ett okänt fel inträffade vid inloggning');
       res.status(500).json({ error: 'Ett okänt fel inträffade' });
     }
   }
