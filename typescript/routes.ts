@@ -4,7 +4,7 @@ import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
 import reservationsController from './controller/reservationsController.js';
 import usersController from './controller/UserController.js';
-import filterController from './controller/filterController.js';
+// import filterController from './controller/filterController.js';
 
 const router = express.Router();
 
@@ -35,7 +35,7 @@ router.delete('/reservation');
 router.get('/movie/:id', moviesController.getSpecificMovie);
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
-router.get('/filter/movie', filterController.filerMovies);
+router.get('/movie', moviesController.filerMovies);
 
 // register a member - body: {email, password, firstName, lastName}
 router.post('/user/register', usersController.register);
