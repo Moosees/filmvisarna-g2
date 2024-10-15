@@ -9,7 +9,7 @@ const router = express.Router();
 
 // NOTE: use socket.io or server sent events for handling this
 // get what seats are reserved by other people
-router.get('/seats/:screening_id', seatsController.getReservedSeats);
+router.get('/reservedSeats/:screening_id', seatsController.getReservedSeats);
 // get what seats are free or reserved by other people
 router.get('/seats/:screening_id', seatsController.getOreservedSeats);
 
