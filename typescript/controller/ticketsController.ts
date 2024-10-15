@@ -6,7 +6,7 @@ const getAllTickets = async (req: Request, res: Response) => {
   try {
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      'SELECT * ticket t '
+      'SELECT * FROM ticket t '
     );
 
     // Check if the ticket was found
