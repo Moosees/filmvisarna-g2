@@ -121,6 +121,10 @@ const cancelReservation = async (
       INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
       WHERE r.reservation_num = :reservationNum;`;
     await con.execute(query, { reservationNum });
+    await con.execute(
+      'delete from reservation r where r.reservation_num = :reservationNum;',
+      { reservationNum }
+    );
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
   } finally {
