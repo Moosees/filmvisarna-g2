@@ -39,19 +39,19 @@ const filerMovies = async (req: Request, res: Response) => {
       return;
     }
 
-    let query = SELECT * FROM screening s
+    let query = `SELECT * FROM screening s
       INNER JOIN movie m ON s.movie_id = m.id
-      WHERE 1=1;
+      WHERE 1=1`;
 
     const params: (string | number)[] = [];
 
     if (age) {
-      query +=  AND m.age = ?;
+      query += ` AND m.age = ?`;
       params.push(age);
     }
 
     if (date) {
-      query +=  AND DATE_FORMAT(s.start_time, '%Y-%m-%d') = ?;
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d')= ?`;
       params.push(date);
     }
 
