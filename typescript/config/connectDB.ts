@@ -7,6 +7,7 @@ const db = mysql.createPool({
   database: process.env.DB_NAME,
   port: Number(process.env.DB_PORT) || 3306,
   namedPlaceholders: true,
+  dateStrings: true,
 });
 
 // Testa anslutningen
