@@ -33,12 +33,18 @@ const createNewReservation = async (
     );
 
     await con.execute(
-      `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(1, tickets.length)};`,
+      `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(
+        1,
+        tickets.length
+      )};`,
       tickets
     );
 
     await con.execute(
-      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(2, seats.length)}`,
+      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(
+        2,
+        seats.length
+      )}`,
       seats.reduce(
         (data: number[], seat: number) => [...data, seat, screeningId],
         []
@@ -85,4 +91,31 @@ const getSpecificReservation = async (req: Request, res: Response) => {
   }
 };
 
-export default { createNewReservation, getSpecificReservation };
+interface CancelReservationRequest extends Request {
+  body: {
+    email: string;
+    bookingNumber: string;
+  };
+}
+
+const cancelReservation = async (
+  req: CancelReservationRequest,
+  res: Response
+) => {
+  const { email, bookingNumber } = req.body;
+  if (!email || !bookingNumber) {
+    res.status(400).json({ error: 'Hittar ej email eller bokningsnummer' });
+    return;
+  }
+  try {
+    // hej
+  } catch (error) {
+    res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+
+export default {
+  createNewReservation,
+  getSpecificReservation,
+  cancelReservation,
+};
