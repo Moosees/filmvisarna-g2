@@ -7,6 +7,7 @@ import usersController from './controller/usersController.js';
 
 const router = express.Router();
 
+router.put('/movie/:id', moviesController.updateMovie);
 router.post('/movie', moviesController.addMovie);
 router.delete('/movie/:id', moviesController.deleteMovie);
 
