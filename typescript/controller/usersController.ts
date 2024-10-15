@@ -169,7 +169,7 @@ const updateUserDetails = async (
         last_name = COALESCE(?, last_name),
         user_password = COALESCE(?, user_password)
         WHERE id = ?`,
-      [first_name, last_name, hashedPassword, userId]
+      [first_name || null, last_name || null, hashedPassword || null, userId]
     );
 
     res.status(200).json({ message: 'Användarinformation uppdaterad' });
