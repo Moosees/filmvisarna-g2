@@ -47,7 +47,10 @@ const getSpecificMovie = async (req: Request, res: Response) => {
   }
 };
 
-const updateSpecificMovie = async (req: Request, res: Response) => {
+const updateSpecificMovie = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
     const { title, play_time, movie_info } = req.body;
@@ -56,19 +59,38 @@ const updateSpecificMovie = async (req: Request, res: Response) => {
     const fieldsToUpdate: string[] = [];
     const valuesToUpdate: string[] = [];
 
+    // Check and add title if provided
     if (title) {
       fieldsToUpdate.push('title = ?');
       valuesToUpdate.push(title);
     }
 
+    // Check and add play_time if provided
     if (play_time) {
       fieldsToUpdate.push('play_time = ?');
       valuesToUpdate.push(play_time);
     }
 
+    // If movie_info needs to be updated, merge with the existing movie_info
     if (movie_info) {
+      // Fetch the current movie_info
+      const [currentMovie]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+        'SELECT movie_info FROM movie WHERE id = ?',
+        [id]
+      );
+
+      // If the movie is not found
+      if (currentMovie.length === 0) {
+        res.status(404).json({ message: 'Movie not found' });
+        return;
+      }
+
+      // Merge existing movie_info with new data
+      const existingMovieInfo = JSON.parse(currentMovie[0].movie_info || '{}');
+      const updatedMovieInfo = { ...existingMovieInfo, ...movie_info };
+
       fieldsToUpdate.push('movie_info = ?');
-      valuesToUpdate.push(JSON.stringify(movie_info));
+      valuesToUpdate.push(JSON.stringify(updatedMovieInfo));
     }
 
     // If no fields are provided for update
