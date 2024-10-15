@@ -24,6 +24,40 @@ const getAllMovies = async (req: Request, res: Response) => {
   }
 };
 
+const addMovie = async (req: Request, res: Response): Promise<void> => {
+  const { title, play_time, movie_info } = req.body;
+
+  // Validate input fields
+  if (!title || !play_time || !movie_info) {
+    res.status(400).json({ message: 'Alla fält är obligatoriska.' }); // Error message if any field is empty
+    return;
+  }
+
+  if (typeof play_time !== 'number' || play_time <= 0) {
+    res.status(400).json({ message: 'Speltiden måste vara ett positivt tal' }); // Ensure play_time is a positive number
+    return;
+  }
+
+  try {
+    // Execute the SQL query to insert the new movie
+    const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
+      'INSERT INTO movie (title, play_time, movie_info) VALUES (?, ?, ?)',
+      [title, play_time, JSON.stringify(movie_info)] // Convert movie_info to JSON string
+    );
+
+    // Send a success response with details of the newly added movie
+    res.status(201).json({
+      id: results.insertId, // The ID of the newly inserted movie
+      title,
+      play_time,
+      movie_info,
+    });
+  } catch (error) {
+    console.error('Error occurred while adding movie:', error); // Log the error for debugging
+    res.status(500).json({ message: 'Något gick fel', error }); // Internal server error message
+  }
+};
+
 const getSpecificMovie = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -210,25 +244,5 @@ export default {
   getAllMovies,
   updateSpecificMovie,
   deleteMovie,
+  addMovie,
 };
-
-// const addMovie = async (req: Request, res: Response): Promise<void> => {
-//   const { title, play_time, movie_info } = req.body;
-//   try {
-//     db.query<OkPacket>(
-//       'INSERT INTO movie (title, play_time, movie_info) VALUES (?, ?, ?)',
-//       [title, play_time, JSON.stringify(movie_info)],
-//       (err: Error | null, results: OkPacket): void => {
-//         if (err) {
-//           res
-//             .status(500)
-//             .json({ message: 'Database Query Error', error: err.message });
-//           return;
-//         }
-//         res.status(201).json({ id: results.insertId });
-//       }
-//     );
-//   } catch (error) {
-//     res.status(500).json({ message: 'Internal Server Error', error });
-//   }
-// };
