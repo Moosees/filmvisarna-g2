@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import db from '../config/connectDB.js';
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { PasswordEncryptor } from '../helpers/PasswordEncryptor.js';
+import db from '../config/connectDB.js';
+import { PasswordEncryptor } from '../helpers/passwordEncrypter.js';
 
 interface RegisterRequest extends Request {
   body: {
@@ -47,11 +47,11 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
       if (err.message.includes('Duplicate entry')) {
         res.status(409).json({ error: 'E-postadressen är redan registrerad' });
       } else {
-        console.error('Fel vid registrering:', err.message);
+        console.error('Error executing query:', err.message);
         res.status(500).json({ error: 'Serverfel vid registrering' });
       }
     } else {
-      console.error('Ett okänt fel inträffade vid registrering');
+      console.error('An unknown error occurred');
       res.status(500).json({ error: 'Ett okänt fel inträffade' });
     }
   }
@@ -66,14 +66,11 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const query = `
-        SELECT * FROM user WHERE user_email = ?
+        SELECT * FROM user WHERE email = ? AND password = ?
         `;
 
   try {
-    const [rows] = (await db.execute(query, [user_email])) as [
-      RowDataPacket[],
-      FieldPacket[]
-    ];
+    const [rows] = (await db.execute(query, [user_email])) as RowDataPacket[];
 
     const user = rows[0];
 
@@ -104,10 +101,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
       .json({ message: 'Inloggning lyckades', user: req.session.user });
   } catch (err: unknown) {
     if (err instanceof Error) {
-      console.error('Fel vid inloggning:', err.message);
+      console.error('Error executing query:', err.message);
       res.status(500).json({ error: 'Serverfel vid inloggning' });
     } else {
-      console.error('tt okänt fel inträffade vid inloggning');
+      console.error('An unknown error occurred');
       res.status(500).json({ error: 'Ett okänt fel inträffade' });
     }
   }
@@ -131,7 +128,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   try {
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      'SELECT * FROM user'
+      'SELECT * FROM member'
     );
 
     // Check if the movie was found
@@ -222,13 +219,11 @@ const getBookingHistory = async (
   }
 };
 
-
-
 export default {
   register,
   login,
   logout,
   getAllUsers,
   updateUserDetails,
-  getBookingHistory
+  getBookingHistory,
 };

@@ -1,9 +1,9 @@
 import express from 'express';
-import moviesController from './controller/MoviesController.js';
+import moviesController from './controller/moviesController.js';
+import reservationsController from './controller/reservationsController.js';
 import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
-import reservationsController from './controller/reservationsController.js';
-import usersController from './controller/UserController.js';
+import usersController from './controller/usersController.js';
 
 const router = express.Router();
 
@@ -48,7 +48,7 @@ router.delete('/user', usersController.logout);
 router.post('/user', usersController.login);
 
 //retrieve booking history for a logged in user
-router.get( '/user/booking-history',isAuthenticated,  usersController.getBookingHistory);
+router.get('/user/booking-history', usersController.getBookingHistory);
 
 // update user info - body: {password?, firstName?, lastName?}
 router.patch('/user', usersController.updateUserDetails);
