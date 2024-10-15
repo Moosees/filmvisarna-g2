@@ -27,8 +27,8 @@ router.post('/reservation', reservationsController.createNewReservation);
 // body: {reservationNum, seatsToRemove}
 router.patch('/reservation');
 
-// cancel a reservation - body: {reservationNum}
-router.delete('/reservation');
+// cancel a reservation
+router.delete('/reservation', reservationsController.cancelReservation);
 
 // find a movie from url
 router.get('/movie/:id', moviesController.getSpecificMovie);
