@@ -107,16 +107,25 @@ const cancelReservation = async (
     res.status(400).json({ error: 'Hittar ej email eller bokningsnummer' });
     return;
   }
+
+  let con;
+
   try {
+    con = await db.getConnection();
+    await con.beginTransaction();
+
     const query = `
       DELETE rss, rt
       FROM reservation r
       INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
       INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
       WHERE r.reservation_num = :reservationNum;`;
-    await db.execute(query, { reservationNum });
+    await con.execute(query, { reservationNum });
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
+  } finally {
+    await con?.rollback();
+    con?.release();
   }
 };
 
