@@ -7,8 +7,8 @@ import usersController from './controller/usersController.js';
 
 const router = express.Router();
 
-router.get('/movie', moviesController.getAllMovies);
-router.patch('/movie/:id', moviesController.updateSpecificMovie);
+router.post('/movie', moviesController.addMovie);
+router.delete('/movie/:id', moviesController.deleteMovie);
 
 // NOTE: use socket.io or server sent events for handling this
 // get what seats are reserved by other people

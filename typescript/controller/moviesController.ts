@@ -2,13 +2,6 @@ import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
 
-// interface Movie {
-//   id: number;
-//   title: string;
-//   play_time: number;
-//   movie_info: string;
-// }
-
 const getAllMovies = async (req: Request, res: Response) => {
   const query = `SELECT * FROM movie`;
   try {
@@ -25,36 +18,37 @@ const getAllMovies = async (req: Request, res: Response) => {
 };
 
 const addMovie = async (req: Request, res: Response): Promise<void> => {
-  const { title, play_time, movie_info } = req.body;
+  const { title, play_time, url_param, age, movie_info } = req.body; // Add age here
 
   // Validate input fields
-  if (!title || !play_time || !movie_info) {
-    res.status(400).json({ message: 'Alla fält är obligatoriska.' }); // Error message if any field is empty
+  if (!title || !play_time || !url_param || !age || !movie_info) {
+    res.status(400).json({ message: 'Alla fält är obligatoriska' });
     return;
   }
 
   if (typeof play_time !== 'number' || play_time <= 0) {
-    res.status(400).json({ message: 'Speltiden måste vara ett positivt tal' }); // Ensure play_time is a positive number
+    res.status(400).json({ message: 'Speltiden måste vara ett positivt tal' });
     return;
   }
 
   try {
     // Execute the SQL query to insert the new movie
     const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      'INSERT INTO movie (title, play_time, movie_info) VALUES (?, ?, ?)',
-      [title, play_time, JSON.stringify(movie_info)] // Convert movie_info to JSON string
+      'INSERT INTO movie (title, play_time, url_param, age, movie_info) VALUES (?, ?, ?, ?, ?)',
+      [title, play_time, url_param, age, JSON.stringify(movie_info)] // Include age here
     );
 
     // Send a success response with details of the newly added movie
     res.status(201).json({
-      id: results.insertId, // The ID of the newly inserted movie
+      id: results.insertId,
       title,
       play_time,
+      url_param,
+      age, // Include age in the response
       movie_info,
     });
   } catch (error) {
-    console.error('Error occurred while adding movie:', error); // Log the error for debugging
-    res.status(500).json({ message: 'Något gick fel', error }); // Internal server error message
+    res.status(500).json({ message: 'Något gick fel', error });
   }
 };
 
