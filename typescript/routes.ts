@@ -1,10 +1,9 @@
 import express from 'express';
-import moviesController from './controller/MoviesController.js';
+import moviesController from './controller/moviesController.js';
+import reservationsController from './controller/reservationsController.js';
 import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
-import reservationsController from './controller/reservationsController.js';
-import usersController from './controller/UserController.js';
-// import filterController from './controller/filterController.js';
+import usersController from './controller/usersController.js';
 
 const router = express.Router();
 
@@ -19,7 +18,7 @@ router.get(
 );
 
 // get ticket price
-router.get('/ticket', ticketsController.getTicketPrice);
+router.get('/ticket', ticketsController.getAllTickets);
 
 // create a reservation for a movie screening
 router.post('/reservation', reservationsController.createNewReservation);
@@ -35,6 +34,8 @@ router.delete('/reservation');
 router.get('/movie/:id', moviesController.getSpecificMovie);
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
+// this is an example explaining how the filter works:
+//http://localhost:3002/movie?age=15&date=2024-11-04
 router.get('/movie', moviesController.filerMovies);
 
 // register a member - body: {email, password, firstName, lastName}
