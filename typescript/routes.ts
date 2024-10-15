@@ -7,6 +7,9 @@ import usersController from './controller/usersController.js';
 
 const router = express.Router();
 
+router.get('/movie', moviesController.getAllMovies);
+router.put('/movie/:id', moviesController.getAllMovies);
+
 // NOTE: use socket.io or server sent events for handling this
 // get what seats are reserved by other people
 router.get('/reservedSeats/:screening_id', seatsController.getReservedSeats);
