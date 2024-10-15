@@ -56,7 +56,7 @@ const filerMovies = async (req: Request, res: Response) => {
       params.push(date);
     }
     if (title) {
-      query += ` AND m.title = ?`;
+      query += ` AND m.url_param = ?`;
       params.push(title);
     }
 
