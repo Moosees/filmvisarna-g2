@@ -119,8 +119,9 @@ const cancelReservation = async (
       FROM reservation r
       INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
       INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
-      WHERE r.reservation_num = :reservationNum;`;
-    await con.execute(query, { reservationNum });
+      INNER JOIN user u ON u.id = r.user_id
+      WHERE r.reservation_num = :reservationNum AND u.user_email = :email;`;
+    await con.execute(query, { reservationNum, email });
     await con.execute(
       'delete from reservation r where r.reservation_num = :reservationNum;',
       { reservationNum }
