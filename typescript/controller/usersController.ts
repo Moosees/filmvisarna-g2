@@ -66,7 +66,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const query = `
-        SELECT * FROM user WHERE email = ? AND password = ?
+        SELECT * FROM user WHERE user_email = ?
         `;
 
   try {
