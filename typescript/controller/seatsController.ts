@@ -25,4 +25,27 @@ const getReservedSeats = async (req: Request, res: Response) => {
   }
 };
 
-export default { getReservedSeats };
+const getOreservedSeats = async (req: Request, res: Response) => {
+  try {
+    const { screening_id } = req.params;
+
+    // Execute the SQL query
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      'SELECT * FROM vy_oReserveradePlatser vorp WHERE screeningId =?',
+      [screening_id]
+    );
+
+    // Check if the screening was found
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Visning inte hittad' });
+      return;
+    }
+
+    // Return the found screening
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+
+export default { getReservedSeats, getOreservedSeats };
