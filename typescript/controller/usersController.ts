@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import db from '../config/connectDB.js';
-import { PasswordEncryptor } from '../helpers/PasswordEncryptor.js';
+import { PasswordEncryptor } from '../helpers/passwordEncrypter.js';
 
 interface RegisterRequest extends Request {
   body: {
