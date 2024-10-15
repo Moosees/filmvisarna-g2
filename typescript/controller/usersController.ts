@@ -47,11 +47,11 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
       if (err.message.includes('Duplicate entry')) {
         res.status(409).json({ error: 'E-postadressen är redan registrerad' });
       } else {
-        console.error('Error executing query:', err.message);
+        console.error('Fel vid registrering:', err.message);
         res.status(500).json({ error: 'Serverfel vid registrering' });
       }
     } else {
-      console.error('An unknown error occurred');
+      console.error('Ett okänt fel inträffade vid registrering');
       res.status(500).json({ error: 'Ett okänt fel inträffade' });
     }
   }
@@ -66,7 +66,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const query = `
-        SELECT * FROM user WHERE email = ? AND password = ?
+        SELECT * FROM user WHERE user_email = ?
         `;
 
   try {
@@ -101,10 +101,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
       .json({ message: 'Inloggning lyckades', user: req.session.user });
   } catch (err: unknown) {
     if (err instanceof Error) {
-      console.error('Error executing query:', err.message);
+      console.error('Fel vid inloggning:', err.message);
       res.status(500).json({ error: 'Serverfel vid inloggning' });
     } else {
-      console.error('An unknown error occurred');
+      console.error('Ett okänt fel inträffade vid inloggning');
       res.status(500).json({ error: 'Ett okänt fel inträffade' });
     }
   }
@@ -131,16 +131,86 @@ const getAllUsers = async (req: Request, res: Response) => {
       'SELECT * FROM member'
     );
 
-    // Check if the movie was found
+    // Check if the user was found
     if (results.length === 0) {
       res.status(404).json({ message: 'user inte hittad' });
       return;
     }
 
-    // Return the found movie
+    // Return the found users
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+
+const updateUserDetails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userId = req.session.user?.id;
+  const { first_name, last_name, new_password } = req.body;
+
+  if (!userId) {
+    res.status(401).json({ error: 'Du är inte inloggad' });
+    return;
+  }
+
+  try {
+    const hashedPassword = new_password
+      ? await PasswordEncryptor.encrypt({ new_password }['new_password'])
+      : null;
+
+    await db.execute(
+      `UPDATE user SET
+        first_name = COALESCE(?, first_name),
+        last_name = COALESCE(?, last_name),
+        user_password = COALESCE(?, user_password)
+        WHERE id = ?`,
+      [first_name, last_name, hashedPassword, userId]
+    );
+
+    res.status(200).json({ message: 'Användarinformation uppdaterad' });
+  } catch (error) {
+    console.error('Fel vid uppdatering av användarinformation:', error);
+    res
+      .status(500)
+      .json({ error: 'Serverfel vid uppdatering av användarinformation' });
+  }
+};
+
+const getBookingHistory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userId = req.session.user?.id;
+
+  if (!userId) {
+    res.status(401).json({ error: 'Du är inte inloggad' });
+    return;
+  }
+
+  const query = `
+    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') >= CURRENT_DATE
+  `;
+
+  try {
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      query,
+      [userId]
+    );
+
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Ingen bokningshistorik hittades' });
+      return;
+    }
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Fel vid hämtning av bokningshistorik:', error);
+    res
+      .status(500)
+      .json({ error: 'Serverfel vid hämtning av bokningshistorik' });
   }
 };
 
@@ -149,4 +219,6 @@ export default {
   login,
   logout,
   getAllUsers,
+  updateUserDetails,
+  getBookingHistory,
 };

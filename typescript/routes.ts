@@ -42,12 +42,15 @@ router.post('/user/register', usersController.register);
 // router.get('/users', usersController.getAllUsers);
 
 // log out
-router.delete('/user');
+router.delete('/user', usersController.logout);
 
 // log in - body: {email, password}
 router.post('/user', usersController.login);
 
-// update user info - body: {email?, password?, firstName?, lastName?}
-router.patch('/user');
+//retrieve booking history for a logged in user
+router.get('/user/booking-history', usersController.getBookingHistory);
+
+// update user info - body: {password?, firstName?, lastName?}
+router.patch('/user', usersController.updateUserDetails);
 
 export default router;
