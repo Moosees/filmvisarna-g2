@@ -66,7 +66,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const query = `
-        SELECT * FROM user WHERE email = ? AND password = ?
+        SELECT * FROM user WHERE user_email = ?
         `;
 
   try {
@@ -131,13 +131,13 @@ const getAllUsers = async (req: Request, res: Response) => {
       'SELECT * FROM member'
     );
 
-    // Check if the movie was found
+    // Check if the user was found
     if (results.length === 0) {
       res.status(404).json({ message: 'user inte hittad' });
       return;
     }
 
-    // Return the found movie
+    // Return the found users
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
@@ -191,12 +191,7 @@ const getBookingHistory = async (
   }
 
   const query = `
-    SELECT r.reservation_num, r.screening_id, s.screening_time, m.title
-    FROM reservations AS r
-    JOIN screening AS s ON r.screening_id = s.id
-    JOIN movies AS m ON s.movie_id = m.id
-    WHERE r.user_id = ?
-    ORDER BY s.screening_time DESC;
+    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') >= CURRENT_DATE
   `;
 
   try {
