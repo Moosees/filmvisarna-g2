@@ -27,12 +27,13 @@ const getSpecificMovie = async (req: Request, res: Response) => {
 
 const filerMovies = async (req: Request, res: Response) => {
   try {
-    const { age, date } = req.query as {
+    const { age, date, title } = req.query as {
       age?: number;
       date?: string;
+      title?: string;
     };
 
-    if (!age && !date) {
+    if (!age && !date && !title) {
       res
         .status(400)
         .json({ message: 'Parameter för ålder eller datum krävs' });
@@ -53,6 +54,10 @@ const filerMovies = async (req: Request, res: Response) => {
     if (date) {
       query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d')= ?`;
       params.push(date);
+    }
+    if (title) {
+      query += ` AND m.title = ?`;
+      params.push(title);
     }
 
     //Execute the SQL query
