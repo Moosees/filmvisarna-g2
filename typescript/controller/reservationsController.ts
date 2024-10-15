@@ -94,7 +94,7 @@ const getSpecificReservation = async (req: Request, res: Response) => {
 interface CancelReservationRequest extends Request {
   body: {
     email: string;
-    bookingNumber: string;
+    reservationNum: string;
   };
 }
 
@@ -102,13 +102,19 @@ const cancelReservation = async (
   req: CancelReservationRequest,
   res: Response
 ) => {
-  const { email, bookingNumber } = req.body;
-  if (!email || !bookingNumber) {
+  const { email, reservationNum } = req.body;
+  if (!email || !reservationNum) {
     res.status(400).json({ error: 'Hittar ej email eller bokningsnummer' });
     return;
   }
   try {
-    // hej
+    const query = `
+      DELETE rss, rt
+      FROM reservation r
+      INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
+      INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
+      WHERE r.reservation_num = :reservationNum;`;
+    await db.execute(query, { reservationNum });
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
   }
