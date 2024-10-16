@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
+import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
 
 interface CreateNewReservationRequest extends Request {
@@ -16,6 +17,63 @@ interface ReservationData extends RowDataPacket {
   reservationNum: string;
 }
 
+// Helpers
+const createInsertTemplate = (cols: number, rows: number) => {
+  const row = '(' + new Array(cols).fill('?').join(', ') + ')';
+  return new Array(rows).fill(row).join(', ');
+};
+
+const insertTicketsAndSeatsIntoReservation = async (
+  con: PoolConnection,
+  reservationId: number,
+  screeningId: number,
+  tickets: number[],
+  seats: number[]
+) => {
+  await con.execute(
+    `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(
+      2,
+      tickets.length
+    )};`,
+    tickets.reduce(
+      (data: number[], ticket: number) => [...data, reservationId, ticket],
+      []
+    )
+  );
+
+  await con.execute(
+    `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(
+      3,
+      seats.length
+    )}`,
+    seats.reduce(
+      (data: number[], seat: number) => [
+        ...data,
+        reservationId,
+        seat,
+        screeningId,
+      ],
+      []
+    )
+  );
+};
+
+const deleteSeatsAndTicketsFromReservation = async (
+  con: PoolConnection,
+  reservationNum: string,
+  email: string
+) => {
+  const query = `
+      DELETE rss, rt
+      FROM reservation r
+      INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
+      INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
+      INNER JOIN user u ON u.id = r.user_id
+      WHERE r.reservation_num = :reservationNum AND u.user_email = :email;`;
+  await con.execute(query, { reservationNum, email });
+};
+
+// Route Controllers
 const createNewReservation = async (
   req: CreateNewReservationRequest,
   res: Response
@@ -38,31 +96,12 @@ const createNewReservation = async (
     );
     const { reservationId, reservationNum } = result[0][0];
 
-    await con.execute(
-      `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(
-        2,
-        tickets.length
-      )};`,
-      tickets.reduce(
-        (data: number[], ticket: number) => [...data, reservationId, ticket],
-        []
-      )
-    );
-
-    await con.execute(
-      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(
-        3,
-        seats.length
-      )}`,
-      seats.reduce(
-        (data: number[], seat: number) => [
-          ...data,
-          reservationId,
-          seat,
-          screeningId,
-        ],
-        []
-      )
+    await insertTicketsAndSeatsIntoReservation(
+      con,
+      reservationId,
+      screeningId,
+      tickets,
+      seats
     );
 
     await con.commit();
@@ -75,11 +114,6 @@ const createNewReservation = async (
   } finally {
     con?.release();
   }
-};
-
-const createInsertTemplate = (cols: number, rows: number) => {
-  const row = '(' + new Array(cols).fill('?').join(', ') + ')';
-  return new Array(rows).fill(row).join(', ');
 };
 
 const getSpecificReservation = async (req: Request, res: Response) => {
@@ -128,14 +162,8 @@ const cancelReservation = async (
     con = await db.getConnection();
     await con.beginTransaction();
 
-    const query = `
-      DELETE rss, rt
-      FROM reservation r
-      INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
-      INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
-      INNER JOIN user u ON u.id = r.user_id
-      WHERE r.reservation_num = :reservationNum AND u.user_email = :email;`;
-    await con.execute(query, { reservationNum, email });
+    deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
+
     await con.execute(
       'delete from reservation r where r.reservation_num = :reservationNum;',
       { reservationNum }
