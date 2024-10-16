@@ -268,7 +268,7 @@ const getMemberInfo = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const query = `SELECT id, user_email, first_name, last_name FROM user WHERE id = ?`;
+  const query = `SELECT user_email, first_name, last_name FROM user WHERE id = ?`;
 
   try {
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
