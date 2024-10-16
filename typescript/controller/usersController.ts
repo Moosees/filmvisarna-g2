@@ -193,7 +193,7 @@ const getBookingHistory = async (
   }
 
   const query = `
-    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') >= CURRENT_DATE
+    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') <= CURRENT_DATE
   `;
 
   try {
@@ -216,6 +216,44 @@ const getBookingHistory = async (
   }
 };
 
+const getCurrentBookings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userId = req.session.user?.id;
+
+  if (!userId) {
+    res.status(401).json({ message: 'Du är inte inloggad' });
+    return;
+  }
+
+  const query = `
+    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') >= CURRENT_DATE
+  `;
+
+  try {
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      query,
+      [userId]
+    );
+
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Ingen bokning hittades' });
+      return;
+    }
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Fel vid hämtning av bokningar:', error);
+    res
+      .status(500)
+      .json({ message: 'Serverfel vid hämtning av bokningar', error });
+  }
+};
+
+
+
+
 export default {
   register,
   login,
@@ -223,4 +261,5 @@ export default {
   getAllUsers,
   updateUserDetails,
   getBookingHistory,
+  getCurrentBookings
 };
