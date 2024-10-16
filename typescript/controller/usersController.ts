@@ -288,6 +288,48 @@ const getMemberInfo = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getProfilePage = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.session.user?.id;
+
+
+  if (!userId) {
+    res.status(401).json({ message: 'Du är inte inloggad' });
+    return;
+  }
+
+  try {
+    const memberQuery = `SELECT id, user_email, first_name, last_name FROM user WHERE id = ?`;
+    const [memberResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(memberQuery, [userId]);
+    if (memberResults.length === 0) {
+      res.status(404).json({ message: 'Ingen medlem hittades' });
+      return;
+    }
+    const currentBookingsQuery = `
+      SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') >= CURRENT_DATE
+    `;
+    const [currentBookingsResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(currentBookingsQuery, [userId]);
+
+    // Retrieve booking history
+    const bookingHistoryQuery = `
+      SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') <= CURRENT_DATE
+    `;
+    const [bookingHistoryResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(bookingHistoryQuery, [userId]);
+
+    // Combine all results into one response object
+    res.status(200).json({
+      memberInfo: memberResults[0],
+      currentBookings: currentBookingsResults,
+      bookingHistory: bookingHistoryResults,
+    });
+  } catch (error) {
+    console.error('Fel vid hämtning av profilinformation:', error);
+    res.status(500).json({ message: 'Serverfel vid hämtning av profilinformation' });
+  }
+};
+
+
+
+
 export default {
   register,
   login,
@@ -296,5 +338,6 @@ export default {
   updateUserDetails,
   getBookingHistory,
   getCurrentBookings,
-  getMemberInfo
+  getMemberInfo,
+  getProfilePage
 };
