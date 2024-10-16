@@ -68,7 +68,7 @@ const filerMovies = async (req: Request, res: Response) => {
 
     //Check if the movie was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film inte hittad' });
+      res.status(404).json({ message: 'Filmen hittades inte' });
       return;
     }
 

@@ -80,7 +80,7 @@ const getSpecificReservation = async (req: Request, res: Response) => {
 
     // Check if the reservation was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Bokning inte hittad' });
+      res.status(404).json({ message: 'Bokningen hittades inte' });
       return;
     }
 
