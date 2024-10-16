@@ -16,7 +16,7 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
   const { user_email, user_password, first_name, last_name } = req.body;
 
   if (!user_email || !user_password || !first_name || !last_name) {
-    res.status(400).json({ error: 'Alla fält måste vara ifyllda' });
+    res.status(400).json({ message: 'Alla fält måste vara ifyllda' });
     return;
   }
 
@@ -42,17 +42,17 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
       message: 'Användare registrerad med rollen "member"',
       memberId: result.insertId,
     });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      if (err.message.includes('Duplicate entry')) {
-        res.status(409).json({ error: 'E-postadressen är redan registrerad' });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      if (error.message.includes('Duplicate entry')) {
+        res.status(409).json({ message: 'E-postadressen är redan registrerad' });
       } else {
-        console.error('Fel vid registrering:', err.message);
-        res.status(500).json({ error: 'Serverfel vid registrering' });
+        console.error('Fel vid registrering:', error.message);
+        res.status(500).json({ message: 'Serverfel vid registrering', error:error.message });
       }
     } else {
       console.error('Ett okänt fel inträffade vid registrering');
-      res.status(500).json({ error: 'Ett okänt fel inträffade' });
+      res.status(500).json({ message: 'Ett okänt fel inträffade' });
     }
   }
 };
@@ -61,7 +61,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
   const { user_email, user_password } = req.body;
 
   if (!user_email || !user_password) {
-    res.status(400).json({ error: 'Både e-post och lösenord krävs' });
+    res.status(400).json({ message: 'Både e-post och lösenord krävs' });
     return;
   }
 
@@ -75,7 +75,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     const user = rows[0];
 
     if (!user) {
-      res.status(401).json({ error: 'Användaren hittades inte' });
+      res.status(401).json({ message: 'Användaren hittades inte' });
       return;
     }
 
@@ -86,7 +86,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     if (!passwordMatch) {
       res
         .status(401)
-        .json({ error: 'Något gick fel med e-post eller lösenord' });
+        .json({ message: 'Något gick fel med e-post eller lösenord' });
       return;
     }
 
@@ -101,13 +101,13 @@ const login = async (req: Request, res: Response): Promise<void> => {
     res
       .status(200)
       .json({ message: 'Inloggning lyckades', user: req.session.user });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error('Fel vid inloggning:', err.message);
-      res.status(500).json({ error: 'Serverfel vid inloggning' });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Fel vid inloggning:', error.message);
+      res.status(500).json({ message: 'Serverfel vid inloggning',error:error.message });
     } else {
       console.error('Ett okänt fel inträffade vid inloggning');
-      res.status(500).json({ error: 'Ett okänt fel inträffade' });
+      res.status(500).json({ message: 'Ett okänt fel inträffade'});
     }
   }
 };
@@ -116,13 +116,13 @@ const logout = async (req: Request, res: Response): Promise<void> => {
   if (req.session.user) {
     req.session.destroy((err) => {
       if (err) {
-        res.status(500).json({ error: 'Utloggning misslyckades' });
+        res.status(500).json({ message: 'Utloggning misslyckades' });
       } else {
         res.status(200).json({ message: 'Utloggning lyckades' });
       }
     });
   } else {
-    res.status(400).json({ error: 'Ingen användare är inloggad' });
+    res.status(400).json({ message: 'Ingen användare är inloggad' });
   }
 };
 
@@ -154,7 +154,7 @@ const updateUserDetails = async (
   const { first_name, last_name, new_password } = req.body;
 
   if (!userId) {
-    res.status(401).json({ error: 'Du är inte inloggad' });
+    res.status(401).json({ message: 'Du är inte inloggad' });
     return;
   }
 
@@ -188,7 +188,7 @@ const getBookingHistory = async (
   const userId = req.session.user?.id;
 
   if (!userId) {
-    res.status(401).json({ error: 'Du är inte inloggad' });
+    res.status(401).json({ message: 'Du är inte inloggad' });
     return;
   }
 
@@ -212,7 +212,7 @@ const getBookingHistory = async (
     console.error('Fel vid hämtning av bokningshistorik:', error);
     res
       .status(500)
-      .json({ error: 'Serverfel vid hämtning av bokningshistorik' });
+      .json({ message: 'Serverfel vid hämtning av bokningshistorik',error });
   }
 };
 
