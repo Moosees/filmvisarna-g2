@@ -27,9 +27,8 @@ router.get('/ticket', ticketsController.getAllTickets);
 // create a reservation for a movie screening
 router.post('/reservation', reservationsController.createNewReservation);
 
-// remove seats from reservation (if we send a new request to replace the old one, maybe PUT instead of PATCH)
-// body: {reservationNum, seatsToRemove}
-router.patch('/reservation');
+// remove seats from reservation
+router.put('/reservation', reservationsController.changeReservation);
 
 // cancel a reservation
 router.delete('/reservation', reservationsController.cancelReservation);
