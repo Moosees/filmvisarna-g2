@@ -75,6 +75,28 @@ const getMovie = async (req: Request, res: Response) => {
   }
 };
 
+const getTodaysMovie = async (req: Request, res: Response) => {
+  try {
+    // Execute the SQL query
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      `SELECT *FROM screening s
+      INNER JOIN movie m ON s.movie_id = m.id
+      WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()`
+    );
+
+    // Check if the movie was found
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Film inte hittad' });
+      return;
+    }
+
+    // Return the found movie
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+
 const updateMovie = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -295,6 +317,7 @@ const filerMovies = async (req: Request, res: Response) => {
 export default {
   getAllMovies,
   getMovie,
+  getTodaysMovie,
   filerMovies,
   updateMovie,
   deleteMovie,
