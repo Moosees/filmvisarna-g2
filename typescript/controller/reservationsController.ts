@@ -183,6 +183,7 @@ const cancelReservation = async (
 interface ChangeReservationRequest extends Request {
   body: {
     reservationNum: string;
+    email: string;
     tickets: number[];
     seats: number[];
   };
@@ -196,9 +197,14 @@ const changeReservation = async (
   req: ChangeReservationRequest,
   res: Response
 ) => {
-  const { reservationNum, tickets, seats } = req.body;
+  const { reservationNum, email, tickets, seats } = req.body;
 
-  if (!reservationNum || tickets?.length === 0 || seats?.length === 0) {
+  if (
+    !reservationNum ||
+    !email ||
+    tickets?.length === 0 ||
+    seats?.length === 0
+  ) {
     res.status(400).json({ message: 'Ombokningen är inte korrekt' });
   }
 
@@ -208,22 +214,38 @@ const changeReservation = async (
     await con.beginTransaction();
 
     const [result] = await con.execute<ReservationIdPacket[]>(
-      'SELECT id AS reservationId FROM reservation WHERE reservation_num = :reservationNum',
-      { reservationNum }
+      `
+        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r 
+        INNER JOIN user u ON u.id = r.user_id 
+        WHERE r.reservation_num = :reservationNum AND u.user_email = :email
+      `,
+      { reservationNum, email }
     );
-    console.log(result[0].reservationId);
 
     if (result?.length === 0) {
       res.status(400).json('Kunde inte hitta bokningen');
       return;
     }
 
-    res.status(200).json({ message: 'Ombokningen lyckades' });
+    const { reservationId, screeningId } = result[0];
+
+    await deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
+    await insertTicketsAndSeatsIntoReservation(
+      con,
+      reservationId,
+      screeningId,
+      tickets,
+      seats
+    );
+
+    await con.commit();
+
+    res.status(200).json({ message: 'Ombokningen lyckades', reservationNum });
   } catch (error) {
+    await con?.rollback();
     console.log(error);
     res.send(500).json({ message: 'Kunde inte slutföra ombokningen' });
   } finally {
-    con?.rollback();
     con?.release();
   }
 };
