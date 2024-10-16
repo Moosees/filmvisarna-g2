@@ -57,10 +57,7 @@ router.post('/user', usersController.login);
 router.get('/user/booking-history', usersController.getBookingHistory);
 
 //retrieve profile page, with member info and current bookings and booking history
-router.get('/user/profile-page',isAuthenticated,usersController.getCurrentBookings, usersController.getBookingHistory)
-
-
-
+router.get('/user/profile-page',isAuthenticated,usersController.getMemberInfo,usersController.getCurrentBookings, usersController.getBookingHistory)
 
 
 // update user info - body: {password?, firstName?, lastName?}

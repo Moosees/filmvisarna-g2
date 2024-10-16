@@ -45,10 +45,17 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
   } catch (error: unknown) {
     if (error instanceof Error) {
       if (error.message.includes('Duplicate entry')) {
-        res.status(409).json({ message: 'E-postadressen är redan registrerad' });
+        res
+          .status(409)
+          .json({ message: 'E-postadressen är redan registrerad' });
       } else {
         console.error('Fel vid registrering:', error.message);
-        res.status(500).json({ message: 'Serverfel vid registrering', error:error.message });
+        res
+          .status(500)
+          .json({
+            message: 'Serverfel vid registrering',
+            error: error.message,
+          });
       }
     } else {
       console.error('Ett okänt fel inträffade vid registrering');
@@ -104,10 +111,12 @@ const login = async (req: Request, res: Response): Promise<void> => {
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Fel vid inloggning:', error.message);
-      res.status(500).json({ message: 'Serverfel vid inloggning',error:error.message });
+      res
+        .status(500)
+        .json({ message: 'Serverfel vid inloggning', error: error.message });
     } else {
       console.error('Ett okänt fel inträffade vid inloggning');
-      res.status(500).json({ message: 'Ett okänt fel inträffade'});
+      res.status(500).json({ message: 'Ett okänt fel inträffade' });
     }
   }
 };
@@ -212,7 +221,7 @@ const getBookingHistory = async (
     console.error('Fel vid hämtning av bokningshistorik:', error);
     res
       .status(500)
-      .json({ message: 'Serverfel vid hämtning av bokningshistorik',error });
+      .json({ message: 'Serverfel vid hämtning av bokningshistorik', error });
   }
 };
 
@@ -251,8 +260,33 @@ const getCurrentBookings = async (
   }
 };
 
+const getMemberInfo = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.session.user?.id;
 
+  if (!userId) {
+    res.status(401).json({ message: 'Du är inte inloggad' });
+    return;
+  }
 
+  const query = `SELECT id, user_email, first_name, last_name FROM user WHERE id = ?`;
+
+  try {
+    const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      query,
+      [userId]
+    );
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Ingen medlem hittades' });
+      return;
+    }
+    res.status(200).json(results[0]);
+  } catch (error) {
+    console.error('Fel vid hämtning av medlemsinformation:', error);
+    res
+      .status(500)
+      .json({ message: 'Serverfel vid hämtning av medlemsinformation' });
+  }
+};
 
 export default {
   register,
@@ -261,5 +295,6 @@ export default {
   getAllUsers,
   updateUserDetails,
   getBookingHistory,
-  getCurrentBookings
+  getCurrentBookings,
+  getMemberInfo
 };
