@@ -180,8 +180,28 @@ const cancelReservation = async (
   }
 };
 
+interface ChangeReservationRequest extends Request {
+  body: {
+    reservationNum: string;
+    tickets: number[];
+    seats: number[];
+  };
+}
+
+const changeReservation = async (
+  req: ChangeReservationRequest,
+  res: Response
+) => {
+  const { reservationNum, tickets, seats } = req.body;
+
+  if (!reservationNum || tickets?.length === 0 || seats?.length === 0) {
+    res.status(400).json({ message: 'Ombokningen är inte korrekt' });
+  }
+};
+
 export default {
   createNewReservation,
   getSpecificReservation,
   cancelReservation,
+  changeReservation,
 };
