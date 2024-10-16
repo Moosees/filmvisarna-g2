@@ -42,13 +42,13 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
       message: 'Användare registrerad med rollen "member"',
       memberId: result.insertId,
     });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      if (err.message.includes('Duplicate entry')) {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      if (error.message.includes('Duplicate entry')) {
         res.status(409).json({ message: 'E-postadressen är redan registrerad' });
       } else {
-        console.error('Fel vid registrering:', err.message);
-        res.status(500).json({ message: 'Serverfel vid registrering', error:err.message });
+        console.error('Fel vid registrering:', error.message);
+        res.status(500).json({ message: 'Serverfel vid registrering', error:error.message });
       }
     } else {
       console.error('Ett okänt fel inträffade vid registrering');
@@ -101,10 +101,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
     res
       .status(200)
       .json({ message: 'Inloggning lyckades', user: req.session.user });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error('Fel vid inloggning:', err.message);
-      res.status(500).json({ message: 'Serverfel vid inloggning',error:err.message });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Fel vid inloggning:', error.message);
+      res.status(500).json({ message: 'Serverfel vid inloggning',error:error.message });
     } else {
       console.error('Ett okänt fel inträffade vid inloggning');
       res.status(500).json({ message: 'Ett okänt fel inträffade'});
