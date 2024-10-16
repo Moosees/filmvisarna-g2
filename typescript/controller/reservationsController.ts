@@ -81,7 +81,7 @@ const createNewReservation = async (
   const { email, screeningId, tickets, seats } = req.body;
 
   if (!email || !screeningId || tickets?.length === 0 || seats?.length === 0) {
-    res.status(400).json({ error: 'Bokningen är inte korrekt' });
+    res.status(400).json({ error: 'Bokningen är inte korrekt ifylld' });
     return;
   }
 
@@ -106,11 +106,11 @@ const createNewReservation = async (
 
     await con.commit();
 
-    res.status(200).json({ message: 'Biljetter bokadde', reservationNum });
+    res.status(200).json({ message: 'Bokningen lyckades', reservationNum });
   } catch (error) {
     console.log(error);
     await con?.rollback();
-    res.status(500).json({ error });
+    res.status(500).json({ message: 'Någonting gick fel', error });
   } finally {
     con?.release();
   }
@@ -128,7 +128,7 @@ const getSpecificReservation = async (req: Request, res: Response) => {
 
     // Check if the reservation was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Bokning inte hittad' });
+      res.status(404).json({ message: 'Bokning kunde inte hittas' });
       return;
     }
 
@@ -152,7 +152,9 @@ const cancelReservation = async (
 ) => {
   const { email, reservationNum } = req.body;
   if (!email || !reservationNum) {
-    res.status(400).json({ error: 'Hittar ej email eller bokningsnummer' });
+    res
+      .status(400)
+      .json({ error: 'Bokningen saknar e-post eller bokningsnummer' });
     return;
   }
 
@@ -171,10 +173,10 @@ const cancelReservation = async (
 
     await con.commit();
     // Ev. byta till 204 istället
-    res.status(200).json({ message: 'Avbokning lyckad' });
+    res.status(200).json({ message: 'Avbokning lyckades' });
   } catch (error) {
     await con?.rollback();
-    res.status(500).json({ message: 'Något gick fel', error });
+    res.status(500).json({ message: 'Någonting gick fel', error });
   } finally {
     con?.release();
   }
@@ -205,7 +207,7 @@ const changeReservation = async (
     tickets?.length === 0 ||
     seats?.length === 0
   ) {
-    res.status(400).json({ message: 'Ombokningen är inte korrekt' });
+    res.status(400).json({ message: 'Ombokningen är inte korrekt ifylld' });
   }
 
   let con;
