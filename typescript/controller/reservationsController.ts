@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 import db from '../config/connectDB.js';
 
@@ -11,10 +11,14 @@ interface CreateNewReservationRequest extends Request {
   };
 }
 
+interface ReservationData extends RowDataPacket {
+  reservationId: number;
+  reservationNum: string;
+}
+
 const createNewReservation = async (
   req: CreateNewReservationRequest,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { email, screeningId, tickets, seats } = req.body;
 
@@ -27,33 +31,43 @@ const createNewReservation = async (
   try {
     con = await db.getConnection();
     await con.beginTransaction();
-    await con.execute(
-      'CALL create_reservation(:email, :screeningId, @reservationId);',
+
+    const [result] = await con.execute<ReservationData[]>(
+      'CALL create_reservation(:email, :screeningId);',
       { email, screeningId }
     );
+    const { reservationId, reservationNum } = result[0][0];
 
     await con.execute(
       `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(
-        1,
+        2,
         tickets.length
       )};`,
-      tickets
+      tickets.reduce(
+        (data: number[], ticket: number) => [...data, reservationId, ticket],
+        []
+      )
     );
 
     await con.execute(
       `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(
-        2,
+        3,
         seats.length
       )}`,
       seats.reduce(
-        (data: number[], seat: number) => [...data, seat, screeningId],
+        (data: number[], seat: number) => [
+          ...data,
+          reservationId,
+          seat,
+          screeningId,
+        ],
         []
       )
     );
 
     await con.commit();
 
-    next();
+    res.status(200).json({ message: 'Biljetter bokadde', reservationNum });
   } catch (error) {
     console.log(error);
     await con?.rollback();
@@ -64,7 +78,7 @@ const createNewReservation = async (
 };
 
 const createInsertTemplate = (cols: number, rows: number) => {
-  const row = '(@reservationId, ' + new Array(cols).fill('?').join(', ') + ')';
+  const row = '(' + new Array(cols).fill('?').join(', ') + ')';
   return new Array(rows).fill(row).join(', ');
 };
 
