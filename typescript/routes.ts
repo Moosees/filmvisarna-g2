@@ -3,6 +3,8 @@ import moviesController from './controller/moviesController.js';
 import reservationsController from './controller/reservationsController.js';
 import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
+import { isAuthenticated } from './middleware/authMiddleware.js';
+// import { isAdmin } from './middleware/authMiddleware.js';
 import usersController from './controller/usersController.js';
 
 const router = express.Router();
@@ -33,8 +35,8 @@ router.post('/reservation', reservationsController.createNewReservation);
 // body: {reservationNum, seatsToRemove}
 router.patch('/reservation');
 
-// cancel a reservation - body: {reservationNum}
-router.delete('/reservation');
+// cancel a reservation
+router.delete('/reservation', reservationsController.cancelReservation);
 
 // find a movie from url
 router.get('/movie/:id', moviesController.getMovie);
@@ -47,10 +49,10 @@ router.get('/movie', moviesController.filerMovies);
 // register a member - body: {email, password, firstName, lastName}
 router.post('/user/register', usersController.register);
 
-// router.get('/users', usersController.getAllUsers);
+// router.get('/users', isAuthenticated, isAdmin, usersController.getAllUsers);
 
 // log out
-router.delete('/user', usersController.logout);
+router.delete('/user', isAuthenticated, usersController.logout);
 
 // log in - body: {email, password}
 router.post('/user', usersController.login);
