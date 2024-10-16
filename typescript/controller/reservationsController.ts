@@ -188,6 +188,10 @@ interface ChangeReservationRequest extends Request {
   };
 }
 
+interface ReservationIdPacket extends RowDataPacket {
+  reservationId: number;
+}
+
 const changeReservation = async (
   req: ChangeReservationRequest,
   res: Response
@@ -196,6 +200,31 @@ const changeReservation = async (
 
   if (!reservationNum || tickets?.length === 0 || seats?.length === 0) {
     res.status(400).json({ message: 'Ombokningen är inte korrekt' });
+  }
+
+  let con;
+  try {
+    con = await db.getConnection();
+    await con.beginTransaction();
+
+    const [result] = await con.execute<ReservationIdPacket[]>(
+      'SELECT id AS reservationId FROM reservation WHERE reservation_num = :reservationNum',
+      { reservationNum }
+    );
+    console.log(result[0].reservationId);
+
+    if (result?.length === 0) {
+      res.status(400).json('Kunde inte hitta bokningen');
+      return;
+    }
+
+    res.status(200).json({ message: 'Ombokningen lyckades' });
+  } catch (error) {
+    console.log(error);
+    res.send(500).json({ message: 'Kunde inte slutföra ombokningen' });
+  } finally {
+    con?.rollback();
+    con?.release();
   }
 };
 
