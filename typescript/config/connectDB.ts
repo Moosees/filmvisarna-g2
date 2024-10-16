@@ -19,8 +19,8 @@ db.getConnection()
     console.log(`Connected to MySQL ${process.env.DB_NAME} database!`);
     db.releaseConnection(con);
   })
-  .catch((err) => {
-    console.error('Error connecting to the database:', err.message || err);
+  .catch((error) => {
+    console.error('Error connecting to the database:', error.message || error);
   });
 
 export default db;
