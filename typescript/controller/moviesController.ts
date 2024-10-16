@@ -52,7 +52,7 @@ const getAllMovies = async (req: Request, res: Response) => {
   }
 };
 
-const getSpecificMovie = async (req: Request, res: Response) => {
+const getMovie = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -135,7 +135,7 @@ const updateMovie = async (req: Request, res: Response) => {
   }
 };
 
-const deleteMovie = async (req: Request, res: Response): Promise<void> => {
+const deleteMovie = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     // Execute the SQL query
@@ -294,7 +294,7 @@ const filerMovies = async (req: Request, res: Response) => {
 
 export default {
   getAllMovies,
-  getSpecificMovie,
+  getMovie,
   filerMovies,
   updateMovie,
   deleteMovie,

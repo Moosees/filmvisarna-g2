@@ -37,7 +37,7 @@ router.patch('/reservation');
 router.delete('/reservation');
 
 // find a movie from url
-router.get('/movie/:id', moviesController.getSpecificMovie);
+router.get('/movie/:id', moviesController.getMovie);
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
 // this is an example explaining how the filter works:
