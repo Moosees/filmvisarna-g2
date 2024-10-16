@@ -11,7 +11,7 @@ const getAllTickets = async (req: Request, res: Response) => {
 
     // Check if the ticket was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Tickets inte hittade' });
+      res.status(404).json({ message: 'Biljetter hittades inte' });
       return;
     }
 

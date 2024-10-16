@@ -1,5 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
+import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
 
 interface CreateNewReservationRequest extends Request {
@@ -11,15 +12,76 @@ interface CreateNewReservationRequest extends Request {
   };
 }
 
+interface ReservationData extends RowDataPacket {
+  reservationId: number;
+  reservationNum: string;
+}
+
+// Helpers
+const createInsertTemplate = (cols: number, rows: number) => {
+  const row = '(' + new Array(cols).fill('?').join(', ') + ')';
+  return new Array(rows).fill(row).join(', ');
+};
+
+const insertTicketsAndSeatsIntoReservation = async (
+  con: PoolConnection,
+  reservationId: number,
+  screeningId: number,
+  tickets: number[],
+  seats: number[]
+) => {
+  await con.execute(
+    `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(
+      2,
+      tickets.length
+    )};`,
+    tickets.reduce(
+      (data: number[], ticket: number) => [...data, reservationId, ticket],
+      []
+    )
+  );
+
+  await con.execute(
+    `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(
+      3,
+      seats.length
+    )}`,
+    seats.reduce(
+      (data: number[], seat: number) => [
+        ...data,
+        reservationId,
+        seat,
+        screeningId,
+      ],
+      []
+    )
+  );
+};
+
+const deleteSeatsAndTicketsFromReservation = async (
+  con: PoolConnection,
+  reservationNum: string,
+  email: string
+) => {
+  const query = `
+      DELETE rss, rt
+      FROM reservation r
+      INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
+      INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
+      INNER JOIN user u ON u.id = r.user_id
+      WHERE r.reservation_num = :reservationNum AND u.user_email = :email;`;
+  await con.execute(query, { reservationNum, email });
+};
+
+// Route Controllers
 const createNewReservation = async (
   req: CreateNewReservationRequest,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { email, screeningId, tickets, seats } = req.body;
 
   if (!email || !screeningId || tickets?.length === 0 || seats?.length === 0) {
-    res.status(400).json({ error: 'Bokningen är inte korrekt' });
+    res.status(400).json({ error: 'Bokningen är inte korrekt ifylld' });
     return;
   }
 
@@ -27,45 +89,31 @@ const createNewReservation = async (
   try {
     con = await db.getConnection();
     await con.beginTransaction();
-    await con.execute(
-      'CALL create_reservation(:email, :screeningId, @reservationId);',
+
+    const [result] = await con.execute<ReservationData[]>(
+      'CALL create_reservation(:email, :screeningId);',
       { email, screeningId }
     );
+    const { reservationId, reservationNum } = result[0][0];
 
-    await con.execute(
-      `INSERT INTO reservation_ticket (reservation_id, ticket_id) VALUES ${createInsertTemplate(
-        1,
-        tickets.length
-      )};`,
-      tickets
-    );
-
-    await con.execute(
-      `INSERT INTO res_seat_screen (reservation_id, seat_id, screening_id) VALUES ${createInsertTemplate(
-        2,
-        seats.length
-      )}`,
-      seats.reduce(
-        (data: number[], seat: number) => [...data, seat, screeningId],
-        []
-      )
+    await insertTicketsAndSeatsIntoReservation(
+      con,
+      reservationId,
+      screeningId,
+      tickets,
+      seats
     );
 
     await con.commit();
 
-    next();
+    res.status(200).json({ message: 'Bokningen lyckades', reservationNum });
   } catch (error) {
     console.log(error);
     await con?.rollback();
-    res.status(500).json({ error });
+    res.status(500).json({ message: 'Någonting gick fel', error });
   } finally {
     con?.release();
   }
-};
-
-const createInsertTemplate = (cols: number, rows: number) => {
-  const row = '(@reservationId, ' + new Array(cols).fill('?').join(', ') + ')';
-  return new Array(rows).fill(row).join(', ');
 };
 
 const getSpecificReservation = async (req: Request, res: Response) => {
@@ -80,7 +128,7 @@ const getSpecificReservation = async (req: Request, res: Response) => {
 
     // Check if the reservation was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Bokning inte hittad' });
+      res.status(404).json({ message: 'Bokning kunde inte hittas' });
       return;
     }
 
@@ -104,7 +152,9 @@ const cancelReservation = async (
 ) => {
   const { email, reservationNum } = req.body;
   if (!email || !reservationNum) {
-    res.status(400).json({ error: 'Hittar ej email eller bokningsnummer' });
+    res
+      .status(400)
+      .json({ error: 'Bokningen saknar e-post eller bokningsnummer' });
     return;
   }
 
@@ -114,14 +164,8 @@ const cancelReservation = async (
     con = await db.getConnection();
     await con.beginTransaction();
 
-    const query = `
-      DELETE rss, rt
-      FROM reservation r
-      INNER JOIN res_seat_screen rss ON rss.reservation_id = r.id
-      INNER JOIN reservation_ticket rt ON rt.reservation_id = r.id
-      INNER JOIN user u ON u.id = r.user_id
-      WHERE r.reservation_num = :reservationNum AND u.user_email = :email;`;
-    await con.execute(query, { reservationNum, email });
+    deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
+
     await con.execute(
       'delete from reservation r where r.reservation_num = :reservationNum;',
       { reservationNum }
@@ -129,10 +173,80 @@ const cancelReservation = async (
 
     await con.commit();
     // Ev. byta till 204 istället
-    res.status(200).json({ message: 'Avbokning lyckad' });
+    res.status(200).json({ message: 'Avbokning lyckades' });
   } catch (error) {
     await con?.rollback();
-    res.status(500).json({ message: 'Något gick fel', error });
+    res.status(500).json({ message: 'Någonting gick fel', error });
+  } finally {
+    con?.release();
+  }
+};
+
+interface ChangeReservationRequest extends Request {
+  body: {
+    reservationNum: string;
+    email: string;
+    tickets: number[];
+    seats: number[];
+  };
+}
+
+interface ReservationIdPacket extends RowDataPacket {
+  reservationId: number;
+}
+
+const changeReservation = async (
+  req: ChangeReservationRequest,
+  res: Response
+) => {
+  const { reservationNum, email, tickets, seats } = req.body;
+
+  if (
+    !reservationNum ||
+    !email ||
+    tickets?.length === 0 ||
+    seats?.length === 0
+  ) {
+    res.status(400).json({ message: 'Ombokningen är inte korrekt ifylld' });
+  }
+
+  let con;
+  try {
+    con = await db.getConnection();
+    await con.beginTransaction();
+
+    const [result] = await con.execute<ReservationIdPacket[]>(
+      `
+        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r 
+        INNER JOIN user u ON u.id = r.user_id 
+        WHERE r.reservation_num = :reservationNum AND u.user_email = :email
+      `,
+      { reservationNum, email }
+    );
+
+    if (result?.length === 0) {
+      res.status(400).json('Kunde inte hitta bokningen');
+      return;
+    }
+
+    const { reservationId, screeningId } = result[0];
+
+    await deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
+    await insertTicketsAndSeatsIntoReservation(
+      con,
+      reservationId,
+      screeningId,
+      tickets,
+      seats
+    );
+
+    await con.commit();
+
+    res.status(200).json({ message: 'Ombokningen lyckades', reservationNum });
+  } catch (error) {
+    await con?.rollback();
+    console.log(error);
+    res.send(500).json({ message: 'Kunde inte slutföra ombokningen' });
   } finally {
     con?.release();
   }
@@ -142,4 +256,5 @@ export default {
   createNewReservation,
   getSpecificReservation,
   cancelReservation,
+  changeReservation,
 };
