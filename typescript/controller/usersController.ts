@@ -298,7 +298,7 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const memberQuery = `SELECT id, user_email, first_name, last_name FROM user WHERE id = ?`;
+    const memberQuery = `SELECT user_email, first_name, last_name FROM user WHERE id = ?`;
     const [memberResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(memberQuery, [userId]);
     if (memberResults.length === 0) {
       res.status(404).json({ message: 'Ingen medlem hittades' });
