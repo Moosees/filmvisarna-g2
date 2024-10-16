@@ -200,7 +200,7 @@ const filerMovies = async (req: Request, res: Response) => {
     const params: (string | number)[] = [];
 
     if (age) {
-      query += ` AND m.age = ?`;
+      query += ` AND m.age <= ?`;
       params.push(age);
     }
 

@@ -9,6 +9,7 @@ import usersController from './controller/usersController.js';
 
 const router = express.Router();
 
+router.get('/todaysMovies', moviesController.getTodaysMovie);
 router.get('/movies', moviesController.getAllMovies);
 router.put('/movie/:id', moviesController.updateMovie);
 router.post('/movie', moviesController.addMovie);
