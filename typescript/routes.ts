@@ -3,17 +3,11 @@ import moviesController from './controller/moviesController.js';
 import reservationsController from './controller/reservationsController.js';
 import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
-import { isAuthenticated } from './middleware/authMiddleware.js';
+import { isAdmin, isAuthenticated } from './middleware/authMiddleware.js';
 // import { isAdmin } from './middleware/authMiddleware.js';
 import usersController from './controller/usersController.js';
 
 const router = express.Router();
-
-router.get('/todaysMovies', moviesController.getTodaysMovie);
-router.get('/movies', moviesController.getAllMovies);
-router.put('/movie/:id', moviesController.updateMovie);
-router.post('/movie', moviesController.addMovie);
-router.delete('/movie/:id', moviesController.deleteMovie);
 
 // NOTE: use socket.io or server sent events for handling this
 // get what seats are reserved by other people
@@ -39,13 +33,27 @@ router.put('/reservation', reservationsController.changeReservation);
 // cancel a reservation
 router.delete('/reservation', reservationsController.cancelReservation);
 
-// find a movie from url
-router.get('/movie/:id', moviesController.getMovie);
+/**-----------------------------------------------
+ * @desc    movies routes
+ ------------------------------------------------*/
+//--------------- Start movies routes ----------------------
 
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
 // this is an example explaining how the filter works:
 //http://localhost:3002/movie?age=15&date=2024-11-04
 router.get('/movie', moviesController.filerMovies);
+// Get movies to be shown today
+router.get('/todaysMovies', moviesController.getTodaysMovie);
+// Show movie details and screening times
+router.get('/movie/:id', moviesController.getMovie);
+
+//---------------- Admin routes
+router.post('/movie', isAdmin, moviesController.addMovie);
+router.get('/movies', isAdmin, moviesController.getAllMovies);
+router.put('/movie/:id', isAdmin, moviesController.updateMovie);
+router.delete('/movie/:id', isAdmin, moviesController.deleteMovie);
+
+//--------------- end movies routes ----------------------
 
 // register a member - body: {email, password, firstName, lastName}
 router.post('/user/register', usersController.register);
@@ -62,8 +70,11 @@ router.post('/user', usersController.login);
 router.get('/user/booking-history', usersController.getBookingHistory);
 
 //retrieve profile page, with member info and current bookings and booking history
-router.get('/user/profile-page',isAuthenticated,usersController.getProfilePage)
-
+router.get(
+  '/user/profile-page',
+  isAuthenticated,
+  usersController.getProfilePage
+);
 
 // update user info - body: {password?, firstName?, lastName?}
 router.patch('/user', usersController.updateUserDetails);
