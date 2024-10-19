@@ -88,7 +88,13 @@ const getTodaysMovie = async (req: Request, res: Response) => {
   try {
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      `SELECT *FROM screening s
+      `SELECT
+      m.id as movieId,
+      m.title,
+      m.poster_url as posterUrl,
+      m.age,
+      DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
+      concat(date_format(s.start_time, '%H:%i'), ' - ', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS timeRange FROM screening s
       INNER JOIN movie m ON s.movie_id = m.id
       WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()`
     );
@@ -204,7 +210,7 @@ const filterMovies = async (req: Request, res: Response) => {
 
     let query = `
   SELECT
-    m.id,
+    m.id as movieId,
     m.title,
     m.poster_url as posterUrl,
     m.age,
