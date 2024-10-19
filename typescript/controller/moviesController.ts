@@ -3,10 +3,17 @@ import { Request, Response } from 'express';
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
 
 const addMovie = async (req: Request, res: Response): Promise<void> => {
-  const { title, play_time, url_param, age, movie_info } = req.body; // Add age here
+  const { title, play_time, url_param, age, movie_info, poster_url } = req.body;
 
   // Validate input fields
-  if (!title || !play_time || !url_param || !age || !movie_info) {
+  if (
+    !title ||
+    !play_time ||
+    !url_param ||
+    !age ||
+    !movie_info ||
+    !poster_url
+  ) {
     res.status(400).json({ message: 'Alla fält är obligatoriska' });
     return;
   }
@@ -17,10 +24,9 @@ const addMovie = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    // Execute the SQL query to insert the new movie
     const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      'INSERT INTO movie (title, play_time, url_param, age, movie_info) VALUES (?, ?, ?, ?, ?)',
-      [title, play_time, url_param, age, JSON.stringify(movie_info)] // Include age here
+      'INSERT INTO movie (title, play_time, url_param, age, movie_info,poster_url) VALUES (?, ?, ?, ?, ?,?)',
+      [title, play_time, url_param, age, JSON.stringify(movie_info), poster_url]
     );
 
     // Send a success response with details of the newly added movie
@@ -29,8 +35,9 @@ const addMovie = async (req: Request, res: Response): Promise<void> => {
       title,
       play_time,
       url_param,
-      age, // Include age in the response
+      age,
       movie_info,
+      poster_url,
     });
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
@@ -42,7 +49,7 @@ const getAllMovies = async (req: Request, res: Response) => {
   try {
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(query);
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film inte hittad' });
+      res.status(404).json({ message: 'Film hittades inte' });
       return;
     }
     res.status(200).json(results);
@@ -56,15 +63,17 @@ const getMovie = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
+    await db.execute('SET lc_time_names = "sv_SE"');
+
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      'SELECT * FROM movie m WHERE m.id = ?',
+      ` SELECT * FROM vy_filmdetaljer vf WHERE vf.id = ?`,
       [id]
     );
 
     // Check if the movie was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film inte hittad' });
+      res.status(404).json({ message: 'Film hittades inte' });
       return;
     }
 
@@ -86,7 +95,7 @@ const getTodaysMovie = async (req: Request, res: Response) => {
 
     // Check if the movie was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film inte hittad' });
+      res.status(404).json({ message: 'Film hittades inte' });
       return;
     }
 
@@ -123,7 +132,7 @@ const updateMovie = async (req: Request, res: Response) => {
 
     // If no fields are provided for update
     if (fieldsToUpdate.length === 0) {
-      res.status(400).json({ message: 'No fields to update' });
+      res.status(400).json({ message: 'Inga fält att uppdatera' });
       return;
     }
 
@@ -141,7 +150,7 @@ const updateMovie = async (req: Request, res: Response) => {
 
     // Check if any rows were affected (i.e., if the movie with the given ID was found)
     if (result.affectedRows === 0) {
-      res.status(404).json({ message: 'Movie not found' });
+      res.status(404).json({ message: 'Film hittades inte' });
       return;
     }
 
@@ -153,7 +162,7 @@ const updateMovie = async (req: Request, res: Response) => {
 
     res.status(200).json(updatedMovie[0]);
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong', error });
+    res.status(500).json({ message: 'Något gick fel', error });
   }
 };
 
@@ -168,7 +177,7 @@ const deleteMovie = async (req: Request, res: Response) => {
 
     // Check if any rows were affected
     if (results.affectedRows === 0) {
-      res.status(404).json({ message: 'Film inte hittad' });
+      res.status(404).json({ message: 'Film hittades inte' });
       return;
     }
 
@@ -221,7 +230,7 @@ const filerMovies = async (req: Request, res: Response) => {
 
     //Check if the movie was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Filmen hittades inte' });
+      res.status(404).json({ message: 'Film hittades inte' });
       return;
     }
 
@@ -231,88 +240,6 @@ const filerMovies = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Något gick fel', error });
   }
 };
-
-// const updateSpecificMovie = async (
-//   req: Request,
-//   res: Response
-// )=> {
-//   try {
-//     const { id } = req.params;
-//     const { title, play_time, movie_info } = req.body;
-
-//     // Collect the fields that need to be updated
-//     const fieldsToUpdate: string[] = [];
-//     const valuesToUpdate: string[] = [];
-
-//     // Check and add title if provided
-//     if (title) {
-//       fieldsToUpdate.push('title = ?');
-//       valuesToUpdate.push(title);
-//     }
-
-//     // Check and add play_time if provided
-//     if (play_time) {
-//       fieldsToUpdate.push('play_time = ?');
-//       valuesToUpdate.push(play_time);
-//     }
-
-//     // If movie_info needs to be updated, merge with the existing movie_info
-//     if (movie_info) {
-//       // Fetch the current movie_info
-//       const [currentMovie]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-//         'SELECT movie_info FROM movie WHERE id = ?',
-//         [id]
-//       );
-
-//       // If the movie is not found
-//       if (currentMovie.length === 0) {
-//         res.status(404).json({ message: 'Movie not found' });
-//         return;
-//       }
-
-//       // Merge existing movie_info with new data
-//       const existingMovieInfo = JSON.parse(currentMovie[0].movie_info || '{}');
-//       const updatedMovieInfo = { ...existingMovieInfo, ...movie_info };
-
-//       fieldsToUpdate.push('movie_info = ?');
-//       valuesToUpdate.push(JSON.stringify(updatedMovieInfo));
-//     }
-
-// //     // If no fields are provided for update
-// //     if (fieldsToUpdate.length === 0) {
-// //       res.status(400).json({ message: 'No fields to update' });
-// //       return;
-// //     }
-
-// //     // Build dynamic SQL query
-// //     const sqlQuery = `UPDATE movie SET ${fieldsToUpdate.join(
-// //       ', '
-// //     )} WHERE id = ?`;
-// //     valuesToUpdate.push(id); // Add the id at the end of the query values
-
-// //     // Execute the query
-// //     const [result]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-// //       sqlQuery,
-// //       valuesToUpdate
-// //     );
-
-// //     // Check if any rows were affected (i.e., if the movie with the given ID was found)
-// //     if (result.affectedRows === 0) {
-// //       res.status(404).json({ message: 'Movie not found' });
-// //       return;
-// //     }
-
-// //     // Fetch the updated movie and return it
-// //     const [updatedMovie]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-// //       'SELECT * FROM movie WHERE id = ?',
-// //       [id]
-// //     );
-
-// //     res.status(200).json(updatedMovie[0]);
-// //   } catch (error) {
-// //     res.status(500).json({ message: 'Something went wrong', error });
-// //   }
-// // };
 
 export default {
   getAllMovies,
