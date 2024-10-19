@@ -41,7 +41,7 @@ router.delete('/reservation', reservationsController.cancelReservation);
 // find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
 // this is an example explaining how the filter works:
 //http://localhost:3002/movie?age=15&date=2024-11-04
-router.get('/movie', moviesController.filerMovies);
+router.get('/movie', moviesController.filterMovies);
 // Get movies to be shown today
 router.get('/todaysMovies', moviesController.getTodaysMovie);
 // Show movie details and screening times

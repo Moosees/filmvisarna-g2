@@ -187,7 +187,7 @@ const deleteMovie = async (req: Request, res: Response) => {
   }
 };
 
-const filerMovies = async (req: Request, res: Response) => {
+const filterMovies = async (req: Request, res: Response) => {
   try {
     const { age, date, title } = req.query as {
       age?: number;
@@ -202,9 +202,21 @@ const filerMovies = async (req: Request, res: Response) => {
       return;
     }
 
-    let query = `SELECT * FROM screening s
-      INNER JOIN movie m ON s.movie_id = m.id
-      WHERE 1=1`;
+    let query = `
+  SELECT
+    m.id,
+    m.title,
+    m.poster_url as posterUrl,
+    m.age,
+    DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
+    concat(date_format(s.start_time, '%H:%i'), ' - ', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS timeRange
+    FROM
+    screening s
+    INNER JOIN
+    movie m ON s.movie_id = m.id
+    WHERE 1=1
+ 
+`;
 
     const params: (string | number)[] = [];
 
@@ -221,6 +233,8 @@ const filerMovies = async (req: Request, res: Response) => {
       query += ` AND m.url_param = ?`;
       params.push(title);
     }
+
+    query += ` GROUP BY m.id`;
 
     //Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
@@ -245,7 +259,7 @@ export default {
   getAllMovies,
   getMovie,
   getTodaysMovie,
-  filerMovies,
+  filterMovies,
   updateMovie,
   deleteMovie,
   addMovie,
