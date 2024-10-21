@@ -1,11 +1,11 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { Children } from 'react';
 
-interface MoviesCardsLayoutProps {
+interface CardsWrapperProps {
   children: React.ReactNode;
 }
 
-function MoviesCardsLayout({ children }: MoviesCardsLayoutProps) {
+function CardsWrapper({ children }: CardsWrapperProps) {
   return (
     <Container className="p-2">
       <Row className="g-2">
@@ -19,4 +19,4 @@ function MoviesCardsLayout({ children }: MoviesCardsLayoutProps) {
   );
 }
 
-export default MoviesCardsLayout;
+export default CardsWrapper;

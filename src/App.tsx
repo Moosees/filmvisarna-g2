@@ -1,6 +1,7 @@
 // import { Button } from 'react-bootstrap';
+import CardsWrapper from './components/MovieCards/CardsWrapper';
 import MovieCard from './components/MovieCards/MovieCard';
-import MoviesCardsLayout from './components/MovieCards/MovieCardsLyout';
+
 const movies = [
   {
     src: 'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
@@ -30,7 +31,7 @@ const movies = [
 
 function App() {
   return (
-    <MoviesCardsLayout>
+    <CardsWrapper>
       {movies.map((movie, i) => (
         <MovieCard
           age={movie.age}
@@ -40,7 +41,7 @@ function App() {
           key={i}
         />
       ))}
-    </MoviesCardsLayout>
+    </CardsWrapper>
   );
 }
 
