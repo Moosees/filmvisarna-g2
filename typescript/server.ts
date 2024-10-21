@@ -12,7 +12,7 @@ const PORT = process.env.SERVER_PORT || 3008;
 
 app.use(sessionStore);
 
-app.use(router);
+app.use('/api', router);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
