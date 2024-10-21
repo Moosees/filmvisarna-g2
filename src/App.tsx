@@ -1,7 +1,7 @@
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 function App() {
-  return <Button>Hello Bootstrap</Button>;
+  return <Button variant="primary">Hello Bootstrap</Button>;
 }
 
 export default App;
