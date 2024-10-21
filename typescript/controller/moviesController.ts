@@ -208,20 +208,38 @@ const filterMovies = async (req: Request, res: Response) => {
       return;
     }
 
+    await db.execute('SET lc_time_names = "sv_SE"');
+
+    //     let query = `
+    //   SELECT
+    //     m.id as movieId,
+    //     m.title,
+    //     m.poster_url as posterUrl,
+    //     m.age,
+    //     DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
+    //     concat(date_format(s.start_time, '%H:%i'), ' - ', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS timeRange
+    //     FROM
+    //     screening s
+    //     INNER JOIN
+    //     movie m ON s.movie_id = m.id
+    //     WHERE 1=1
+    // `;
     let query = `
-  SELECT
-    m.id as movieId,
-    m.title,
-    m.poster_url as posterUrl,
-    m.age,
-    DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
-    concat(date_format(s.start_time, '%H:%i'), ' - ', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS timeRange
-    FROM
+    select
+    m.id AS movieid,
+    m.title AS title,
+    m.url_param AS paramUrl,
+    m.age AS age,
+    m.poster_url AS posterUrl,
+    json_arrayagg(json_object('screeningId', s.id,'startDate',DATE_FORMAT(s.start_time, '%Y-%m-%d'),'timeRange',concat(
+        date_format(s.start_time, '%H:%i'),
+        ' - ',
+        date_format((s.start_time + interval m.play_time minute), '%H:%i')
+    ), 'dayName',(case when (cast(s.start_time as date) = curdate()) then 'idag' else dayname(s.start_time) end), 'screeningDate', date_format(s.start_time, '%d %b'))) AS screeningDetails
+  from
     screening s
-    INNER JOIN
-    movie m ON s.movie_id = m.id
-    WHERE 1=1
- 
+    join bondkatt.movie m on
+    s.movie_id =m.id
 `;
 
     const params: (string | number)[] = [];
@@ -241,6 +259,7 @@ const filterMovies = async (req: Request, res: Response) => {
     }
 
     query += ` GROUP BY m.id`;
+    // query += ` GROUP BY m.id, m.title, m.poster_url, m.age, s.start_time, timeRange`;
 
     //Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
