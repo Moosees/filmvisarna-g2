@@ -2,7 +2,12 @@
 
 // NOTE: Custom global stuff:
 $body-bg: #0f0;
-$body-bg-dark: #f00;
+$body-bg-dark: #3e1e3d;
+$bg-card: #55003d;
+
+.bg-card {
+  background-color: $bg-card !important;
+}
 
 // NOTE: Stuff from docs:
 
