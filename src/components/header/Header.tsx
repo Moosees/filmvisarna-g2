@@ -1,3 +1,4 @@
+import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import LogoText from '../../assets/images/logoText.svg';
 import User from '../../assets/images/user.svg';
@@ -8,30 +9,21 @@ function Header() {
     <header className="navbar">
       <nav className="px-0 container-fluid container-md">
         <Link to="/">
-          <img
-            src={LogoText}
-            alt="Filmvisarna logo"
-            className="img-fluid"
-            style={{
-              minHeight: 'max(6vw, 35px)',
-              filter: 'drop-shadow(var(--bs-box-shadow))',
-            }}
-          />
+          <img src={LogoText} alt="Filmvisarna logo" className="img-fluid" />
         </Link>
         <NavButton to="/filmer" label="Kalender" />
         <NavButton to="/filmer" label="Upptäck" />
         <NavButton to="/evenemang" label="Evenameng" />
-        <Link to="/">
-          <img
-            src={User}
-            alt=""
-            className="img-fluid"
-            style={{
-              minHeight: 'max(6vw, 35px)',
-              filter: 'drop-shadow(var(--bs-box-shadow))',
-            }}
-          />
-        </Link>
+        <Dropdown>
+          <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
+            <img src={User} alt="Medlem meny" className="img-fluid" />
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="dropdown-menu">
+            <Dropdown.Item>Logga in</Dropdown.Item>
+            <Dropdown.Item>Logga ut</Dropdown.Item>
+            <Dropdown.Item>Medlemssida</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </nav>
     </header>
   );
