@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: '/booking-confirmation',
+    path: '/booking-confirmation/:reservationNum',
     element: <BookingConfirmation />,
   },
 ]);

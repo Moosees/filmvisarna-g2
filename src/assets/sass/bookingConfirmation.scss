@@ -1,0 +1,28 @@
+$backgroundColor: #ff3cc7;
+$primaryTextColor: black;
+
+.booking-confirmation {
+  background-color: $backgroundColor;
+  padding: 3rem 2rem 3rem;
+  border-radius: 0.4rem;
+}
+
+.booking-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  color: $primaryTextColor;
+  background-color: $backgroundColor;
+}
+
+.booking-row {
+  display: flex;
+  justify-content: center;
+}
