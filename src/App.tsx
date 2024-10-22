@@ -1,7 +1,15 @@
-import Button from 'react-bootstrap/Button';
+import { Outlet } from 'react-router-dom';
+import Header from './components/Header';
 
 function App() {
-  return <Button variant="primary">Hello Bootstrap</Button>;
+  return (
+    <div className="min-vh-100 d-flex flex-column align-items-center">
+      <Header />
+      <main className="flex-grow-1">Main</main>
+      <Outlet />
+      <div>Footer</div>
+    </div>
+  );
 }
 
 export default App;
