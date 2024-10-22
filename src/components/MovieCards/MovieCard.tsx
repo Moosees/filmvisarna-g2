@@ -16,7 +16,7 @@ function MovieCard({ src, age, title, startTime }: MovieCardProps) {
           variant="top"
           src={src}
           className="img-fluid p-2 "
-          style={{ width: '100%', height: '280px', objectFit: 'fill' }}
+          style={{ width: '100%', height: '28vh', objectFit: 'fill' }}
         />
         <div className="position-absolute bottom-0 end-0 bg-danger text-white p-2 rounded-circle m-3 border border-warning">
           {age}
