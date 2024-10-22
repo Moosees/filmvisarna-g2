@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
 import '../../main.scss';
-import YellowBtn from '../buttons/yellowBtn';
+import YellowBtn from '../buttons/YellowBtn';
 
 interface MovieCardProps {
   movieId: number;
@@ -29,7 +29,7 @@ function MovieCard({
 
   return (
     <Card
-      className="text-center text-white border border-warning shadow movie-card"
+      className="text-center text-white border border-warning shadow movie-card py-2"
       onClick={handleCardClick}
     >
       <div className="position-relative">
