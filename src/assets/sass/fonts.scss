@@ -1,11 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Wallpoet&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Keania+One&display=swap');
 
-.digital-700 {
-  font-family: Orbitron;
-  font-weight: 700;
+// _fonts.scss
+
+@font-face {
+  font-family: 'Digital7';
+  src: url('../fonts/digital-7.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
-.digi-400 {
-  font-family: 'Wallpoet', sans-serif;
+
+body {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.digital {
+  font-family: 'Digital7', sans-serif;
+  font-size: 1.5rem;
+}
+.digital-Orbitron {
+  font-family: 'Orbitron', sans-serif;
 }
