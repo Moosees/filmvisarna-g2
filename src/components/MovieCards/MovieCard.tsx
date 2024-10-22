@@ -44,7 +44,7 @@ function MovieCard({
       </div>
       <Card.Body>
         <Card.Text className="text-capitalize">{title}</Card.Text>
-        <Card.Text>{startTime}</Card.Text>
+        <Card.Text className="digi-400">{startTime}</Card.Text>
         <Button
           href="#"
           className="btn btn-danger text-dark border border-warning"
