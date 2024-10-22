@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header';
+import Header from './components/header/Header';
 
 function App() {
   return (
-    <div className="min-vh-100 d-flex flex-column align-items-center">
+    <div className="min-vh-100 d-flex flex-column">
       <Header />
       <main className="flex-grow-1">Main</main>
       <Outlet />
