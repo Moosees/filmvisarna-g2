@@ -7,3 +7,7 @@
 .movie-card:hover {
   scale: 1;
 }
+.card-img {
+  object-fit: fill;
+  aspect-ratio: 4/4;
+}

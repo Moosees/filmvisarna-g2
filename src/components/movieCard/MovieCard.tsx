@@ -1,5 +1,6 @@
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import '../../main.scss';
+import YellowBtn from '../buttons/yellowBtn';
 
 interface MovieCardProps {
   movieId: number;
@@ -21,8 +22,8 @@ function MovieCard({
   const handleCardClick = () => {
     console.log('movieId', movieId);
   };
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleButtonClick = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     console.log('screeningId ', screeningId);
   };
 
@@ -32,26 +33,17 @@ function MovieCard({
       onClick={handleCardClick}
     >
       <div className="position-relative">
-        <Card.Img
-          variant="top"
-          src={src}
-          className="img-fluid p-2 "
-          style={{ width: '100%', height: '28vh', objectFit: 'fill' }}
-        />
+        <Card.Img variant="top" src={src} className="img-fluid p-2 card-img" />
         <div className="position-absolute bottom-0 end-0 bg-danger text-white p-2 rounded-circle m-3 border border-warning">
           {age}
         </div>
       </div>
       <Card.Body className="p-1">
-        <Card.Text className="text-capitalize">{title}</Card.Text>
-        <Card.Text className="digital m-0">{startTime}</Card.Text>
-        <Button
-          href="#"
-          className="btn btn-danger text-dark border border-warning"
-          onClick={handleButtonClick}
-        >
-          Boka
-        </Button>
+        <Card.Text className=" text-capitalize m-0 text-decoration-underline">
+          {title}
+        </Card.Text>
+        <Card.Text className="digital m-0 ">{startTime}</Card.Text>
+        <YellowBtn title="Boka" onClick={handleButtonClick} />
       </Card.Body>
     </Card>
   );
