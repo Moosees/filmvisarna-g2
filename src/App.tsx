@@ -6,8 +6,10 @@ function App() {
   return (
     <div className="min-vh-100 d-flex flex-column">
       <Header />
-      <main className="flex-grow-1">Main</main>
-      <RegisterPage />
+      <main className="flex-grow-1">
+        <RegisterPage />
+      </main>
+
       <Outlet />
       <div>Footer</div>
     </div>
