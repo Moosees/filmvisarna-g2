@@ -2,7 +2,27 @@
 
 // NOTE: Custom global stuff:
 $body-bg: #0f0;
-$body-bg-dark: #f00;
+$body-bg-dark: #4c1a57;
+
+// Booking-confirmation
+.booking-confirmation {
+  padding: 1rem;
+  .booking-row {
+    padding: 3rem 1rem 3rem;
+    background-color: #ff3cc7;
+    border-radius: 0.4rem;
+    .list-group {
+      .list-group-item {
+        border: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: rgb(0, 0, 0);
+        padding: 10px;
+      }
+    }
+  }
+}
 
 // NOTE: Stuff from docs:
 
