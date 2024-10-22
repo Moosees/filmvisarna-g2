@@ -21,6 +21,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~bs': path.resolve(__dirname, 'node_modules/bootstrap/scss'),
+      '~src': path.resolve(__dirname, 'src'),
     },
   },
 });
