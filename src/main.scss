@@ -1,8 +1,11 @@
-@import '../node_modules/bootstrap/scss/bootstrap';
+@import '~bs/bootstrap';
 
 // NOTE: Custom global stuff:
 $body-bg: #0f0;
-$body-bg-dark: #f00;
+$body-bg-dark: #4c1a57;
+.card {
+  background-color: #ff94e0;
+}
 
 // NOTE: Stuff from docs:
 

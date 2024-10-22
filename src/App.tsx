@@ -1,7 +1,14 @@
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+
+import RegisterPage from './pages/registerpage/RegisterPage';
 
 function App() {
-  return <Button variant="primary">Hello Bootstrap</Button>;
+  return (
+    <>
+      <RegisterPage />
+      {/* <Button variant="primary">Hello Bootstrap</Button> */}
+    </>
+  );
 }
 
 export default App;
