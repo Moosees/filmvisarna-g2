@@ -3,7 +3,6 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
 import TestCard from './components/movieCard/TestCard';
-import RegisterPage from './pages/registerpage/RegisterPage';
 
 function App() {
   return (
@@ -11,7 +10,6 @@ function App() {
       <Header />
       <main className="flex-grow-1">
         <TestCard />
-        <RegisterPage />
       </main>
       <Outlet />
       <div>Footer</div>

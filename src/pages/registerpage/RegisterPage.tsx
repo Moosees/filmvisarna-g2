@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 // import axios from 'axios';
 
 const RegisterPage: React.FC = () => {
@@ -122,9 +124,9 @@ const RegisterPage: React.FC = () => {
                 </div>
 
                 <div className="button-group">
-                  <button type="submit" className="btn btn-custom btn-lg">
+                  <Link to="/" className="btn btn-custom btn-lg">
                     Avbryt
-                  </button>
+                  </Link>
                   <button
                     type="submit"
                     className="btn btn-custom-secondary btn-lg"
