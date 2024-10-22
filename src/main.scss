@@ -5,8 +5,15 @@ $body-bg: #0f0;
 $body-bg-dark: #3e1e3d;
 $bg-card: #55003d;
 
-.bg-card {
+.movie-card {
   background-color: $bg-card !important;
+  opacity: 0.9;
+  cursor: pointer;
+}
+.movie-card:hover {
+  opacity: 1;
+  scale: 0.98;
+  transition: scale 0.3s ease;
 }
 
 // NOTE: Stuff from docs:

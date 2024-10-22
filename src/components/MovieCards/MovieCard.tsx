@@ -2,15 +2,35 @@ import { Card, Button } from 'react-bootstrap';
 import '../../main.scss';
 
 interface MovieCardProps {
+  movieId: number;
+  screeningId: number;
   src: string;
   age: number;
   title: string;
   startTime: string;
 }
 
-function MovieCard({ src, age, title, startTime }: MovieCardProps) {
+function MovieCard({
+  src,
+  age,
+  title,
+  startTime,
+  movieId,
+  screeningId,
+}: MovieCardProps) {
+  const handleCardClick = () => {
+    console.log('movieId', movieId);
+  };
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('screeningId ', screeningId);
+  };
+
   return (
-    <Card className="text-center bg-card text-white border border-warning shadow">
+    <Card
+      className="text-center text-white border border-warning shadow movie-card"
+      onClick={handleCardClick}
+    >
       <div className="position-relative">
         <Card.Img
           variant="top"
@@ -28,6 +48,7 @@ function MovieCard({ src, age, title, startTime }: MovieCardProps) {
         <Button
           href="#"
           className="btn btn-danger text-dark border border-warning"
+          onClick={handleButtonClick}
         >
           Boka
         </Button>
