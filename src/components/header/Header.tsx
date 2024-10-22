@@ -6,13 +6,16 @@ import NavButton from './NavButton';
 function Header() {
   return (
     <header className="navbar">
-      <nav className="container-fluid container-md">
+      <nav className="px-0 container-fluid container-md">
         <Link to="/">
           <img
             src={LogoText}
             alt="Filmvisarna logo"
             className="img-fluid"
-            style={{ minHeight: 'max(6vw, 35px)' }}
+            style={{
+              minHeight: 'max(6vw, 35px)',
+              filter: 'drop-shadow(var(--bs-box-shadow))',
+            }}
           />
         </Link>
         <NavButton to="/filmer" label="Kalender" />
@@ -23,7 +26,10 @@ function Header() {
             src={User}
             alt=""
             className="img-fluid"
-            style={{ minHeight: 'max(6vw, 35px)' }}
+            style={{
+              minHeight: 'max(6vw, 35px)',
+              filter: 'drop-shadow(var(--bs-box-shadow))',
+            }}
           />
         </Link>
       </nav>
