@@ -4,7 +4,7 @@ function NavButton(props: { label: string } & NavLinkProps) {
   const { label, ...otherProps } = props;
 
   return (
-    <NavLink {...otherProps} className="navbar-text">
+    <NavLink {...otherProps} className="nav-button shadow">
       {label}
     </NavLink>
   );
