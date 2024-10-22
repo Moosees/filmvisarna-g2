@@ -9,7 +9,7 @@ export default function YellowBtn({ title, onClick }: YellowBtnProps) {
     <div>
       <Button
         href="#"
-        className="btn bg-btn text-dark border-btn m-1 px-5"
+        className="btn bg-btn text-dark border-btn m-1 px-5 py-1 fw-bold"
         onClick={onClick}
       >
         {title}
