@@ -18,10 +18,19 @@ function Header() {
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
             <img src={User} alt="Medlem meny" className="img-fluid" />
           </Dropdown.Toggle>
-          <Dropdown.Menu className="dropdown-menu">
-            <Dropdown.Item>Logga in</Dropdown.Item>
-            <Dropdown.Item>Logga ut</Dropdown.Item>
-            <Dropdown.Item>Medlemssida</Dropdown.Item>
+          <Dropdown.Menu className="dropdown-menu shadow">
+            <Dropdown.Item>
+              <Link to="/medlem">Logga in</Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Link to="/medlem">Bli medlem</Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Link to="/medlem">Logga ut</Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Link to="/medlem">Medlemssida</Link>
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </nav>
