@@ -41,7 +41,7 @@ const RegisterPage: React.FC = () => {
         <h2 className="register-title">Bli medlem</h2>
       </div>
       <div className="col-md-6 col-lg-5">
-        <div className="card shadow-sm">
+        <div className="card bg-rosa shadow-sm rounded">
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="field-container">
