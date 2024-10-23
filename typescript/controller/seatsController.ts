@@ -48,4 +48,19 @@ const getOreservedSeats = async (req: Request, res: Response) => {
   }
 };
 
+interface AllSeats extends RowDataPacket {
+  title: string;
+  start_time: string;
+  screeningId: number;
+  auditorium: string;
+  seats: [
+    {
+      row: number;
+      number: number;
+      seatId: number;
+      free: 1 | 0;
+    },
+  ];
+}
+
 export default { getReservedSeats, getOreservedSeats };
