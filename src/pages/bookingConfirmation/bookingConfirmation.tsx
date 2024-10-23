@@ -4,7 +4,6 @@ import axios from 'axios';
 import '../../assets/sass/bookingConfirmation.scss';
 import { useParams, useNavigate } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
-import MainHeading from '../../components/mainHeading/MainHeading';
 
 interface Seat {
   row: number;
@@ -53,7 +52,6 @@ function BookingConfirmation() {
 
   return (
     <>
-      <MainHeading title={'Bekräftelse'} />
       <Container className="booking-confirmation">
         <Row className="booking-row">
           <Col>
