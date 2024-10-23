@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { reserveLoader } from './api/reserve';
 import App from './App';
 import HomePage from './pages/homepage/HomePage';
 import RegisterPage from './pages/registerpage/RegisterPage';
@@ -24,11 +25,12 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: '/visning',
+        path: '/visning/:screeningId',
         element: <ReservePage />,
         handle: {
           title: 'Boka platser',
         },
+        loader: reserveLoader,
       },
     ],
   },
