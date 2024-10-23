@@ -50,7 +50,7 @@ const getOreservedSeats = async (req: Request, res: Response) => {
 
 interface AllSeats extends RowDataPacket {
   title: string;
-  start_time: string;
+  startTime: string;
   screeningId: number;
   auditorium: string;
   seats: [
