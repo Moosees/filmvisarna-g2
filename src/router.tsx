@@ -7,6 +7,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
   },
+
   {
     path: '/boknings-bekräftelse/:reservationNum',
     element: <BookingConfirmation />,
