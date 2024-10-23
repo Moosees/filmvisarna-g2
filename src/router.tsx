@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { getQueryClient } from './api/clients';
 import { reserveLoader } from './api/reserve';
 import App from './App';
 import HomePage from './pages/homepage/HomePage';
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
         handle: {
           title: 'Boka platser',
         },
-        loader: reserveLoader,
+        loader: reserveLoader(getQueryClient()),
       },
     ],
   },

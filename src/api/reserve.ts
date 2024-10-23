@@ -1,3 +1,4 @@
+import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { LoaderFunctionArgs } from 'react-router-dom';
 import { getAxios } from './clients';
 
@@ -12,15 +13,25 @@ interface ScreeningData {
   };
 }
 
-async function getScreeningDataQuery(screeningId: number) {
+async function getScreeningData(screeningId: number) {
   const response = await getAxios().get<ScreeningData>(`seats/${screeningId}`);
   console.log(response.data.message);
 
   return response.data.results;
 }
 
-export async function reserveLoader({ params }: LoaderFunctionArgs) {
-  if (!params.screeningId) throw new Error('Visnings-id saknas');
+export const getScreeningDataQuery = (screeningId: number) =>
+  queryOptions({
+    queryKey: ['screening', screeningId],
+    queryFn: async () => await getScreeningData(screeningId),
+  });
 
-  return await getScreeningDataQuery(+params.screeningId);
-}
+export const reserveLoader =
+  (client: QueryClient) =>
+  async ({ params }: LoaderFunctionArgs) => {
+    if (!params.screeningId) throw new Error('Visnings-id saknas');
+
+    await client.ensureQueryData(getScreeningDataQuery(+params.screeningId));
+
+    return { screeningId: +params.screeningId };
+  };
