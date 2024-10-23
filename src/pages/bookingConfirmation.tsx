@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import '../assets/sass/bookingConfirmation.scss';
 import { useParams } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 interface Seat {
   row: number;
@@ -95,9 +96,13 @@ function BookingConfirmation() {
                 <span>{reservationData.totalPrice}</span>
               </li>
               <Row className="booking-row mt-4">
-                <Col className="col-auto">
-                  <button className="btn btn-primary mx-2">Stäng</button>
-                  <button className="btn btn-primary mx-2">Avboka</button>
+                <Col className="booking-buttons col-auto">
+                  <Button variant="primary" size="lg">
+                    Stäng
+                  </Button>{' '}
+                  <Button variant="primary" size="lg">
+                    Avboka
+                  </Button>
                 </Col>
               </Row>
             </ul>
