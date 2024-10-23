@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
-import '../assets/sass/bookingConfirmation.scss';
+import '../../assets/sass/bookingConfirmation.scss';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 

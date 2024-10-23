@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import BookingConfirmation from './pages/bookingConfirmation';
+import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 
 const router = createBrowserRouter([
   {
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: '/booking-confirmation/:reservationNum',
+    path: '/boknings-bekräftelse/:reservationNum',
     element: <BookingConfirmation />,
   },
 ]);
