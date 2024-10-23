@@ -1,5 +1,6 @@
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import Rubrik from '../../components/rubrik/Rubrik';
+import { useForm } from '@tanstack/react-form';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
@@ -8,14 +9,27 @@ interface FormData {
 }
 
 const LoginPage: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormData>();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  // Define the form using @tanstack/react-form
+  const form = useForm<FormData>({
+    onSubmit: async (data) => {
+      // Handle form submission as a separate function
+      // await handleLogin(data);
+    },
+    defaultValues: {
+      user_email: '',
+      user_password: '',
+    },
+  });
+
+  // Separate function to handle async login logic
+  const handleLogin = async (data: FormData) => {
     try {
-      // Simulate login request
+      // Simulate login request; replace this with actual API call in the future
       console.log('Login successful:', data);
-      // Redirect after successful login
+      // Redirect after successful login (for example, to the home page)
+      navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -27,10 +41,12 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <>
-
+    <>¨
+      <Rubrik title = "logga in" />
       <section className="card">
-        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+        <form
+          // onSubmit={form.handleSubmit()}
+          className="login-form">
           <div className="mb-3">
             <label htmlFor="email" className="email">
               E-post
@@ -39,7 +55,8 @@ const LoginPage: React.FC = () => {
               type="email"
               className="form-control"
               id="email"
-              {...register('user_email', { required: true })}
+              // {...form.getInputProps('user_email')}
+              required
             />
           </div>
           <div className="mb-3">
@@ -50,7 +67,8 @@ const LoginPage: React.FC = () => {
               type="password"
               className="form-control"
               id="password"
-              {...register('user_password', { required: true })}
+              // {...form.getInputProps('user_password')}
+              required
             />
           </div>
           <div className="button-group">

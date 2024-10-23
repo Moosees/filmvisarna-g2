@@ -20,7 +20,7 @@ function Header() {
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu shadow">
             <Dropdown.Item as="button">
-              <Link to="/medlem">Logga in</Link>
+              <Link to="/medlem/logga-in">Logga in</Link>
             </Dropdown.Item>
             <Dropdown.Item as="button">
               <Link to="/registrera">Bli medlem</Link>
