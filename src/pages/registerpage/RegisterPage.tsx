@@ -1,54 +1,40 @@
-import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import YellowBtn from '../../components/buttons/PrimaryBtn';
-import Rubrik from '../../components/rubrik/Rubrik';
+import axios from 'axios';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
+import Rubrik from '../../components/rubrik/Rubrik';
 
-// import axios from 'axios';
+interface RegisterFormValues {
+  user_email: string;
+  user_password: string;
+  confirm_password: string;
+  first_name: string;
+  last_name: string;
+}
 
 const RegisterPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    user_email: '',
-    user_password: '',
-    first_name: '',
-    last_name: '',
-  });
-
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormValues>();
   const navigate = useNavigate();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
-
+  const onSubmit = async (data: RegisterFormValues) => {
     try {
-      // const response = await axios.post('/user/register', formData);
-      setSuccess('Användare registrerad.');
-    } catch (err) {
-      setSuccess('Något gick fel, försök igen!');
-    }
-  };
-
-  const handleMemberButtonClick = () => {
-    if (formRef.current) {
-      formRef.current.submit();
+      const response = await axios.post('/api/register', data);
+      navigate('/');
+    } catch (err: any) {
+      console.error('Något gick fel', err);
     }
   };
 
   const handleGoBack = () => {
     navigate('/');
   };
+
+  const password = watch('user_password');
 
   return (
     <div className="container mt-5">
@@ -59,98 +45,95 @@ const RegisterPage: React.FC = () => {
         <div className="col-md-6 col-lg-5">
           <div className="card shadow-sm">
             <div className="card-body">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="field-container">
-                  <label htmlFor="email" className="form-label">
+                  <label htmlFor="user_email" className="form-label">
                     E-post
                   </label>
                   <input
                     type="email"
+                    id="user_email"
                     className="form-control"
-                    id="email"
-                    name="user_email"
-                    value={formData.user_email}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="email"
+                    {...register('user_email', { required: 'E-post krävs' })}
+                    placeholder="Ange din e-post"
                   />
+                  {errors.user_email && (
+                    <span>{errors.user_email.message}</span>
+                  )}
                 </div>
 
                 <div className="field-container">
-                  <label htmlFor="password" className="form-label">
+                  <label htmlFor="user_password" className="form-label">
                     Lösenord
                   </label>
                   <input
                     type="password"
+                    id="user_password"
                     className="form-control"
-                    id="password"
-                    name="user_password"
-                    value={formData.user_password}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="new-password"
+                    {...register('user_password', {
+                      required: 'Lösenord krävs',
+                    })}
+                    placeholder="Ange ditt lösenord"
                   />
+                  {errors.user_password && (
+                    <span>{errors.user_password.message}</span>
+                  )}
                 </div>
 
                 <div className="field-container">
-                  <label htmlFor="password-repet" className="form-label">
+                  <label htmlFor="confirm_password" className="form-label">
                     Repetera lösenord
                   </label>
                   <input
                     type="password"
+                    id="confirm_password"
                     className="form-control"
-                    id="password-repet"
-                    name="user_password"
-                    value={formData.user_password}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="new-password"
+                    {...register('confirm_password', {
+                      validate: (value) =>
+                        value === password || 'Lösenorden matchar inte',
+                    })}
+                    placeholder="Upprepa ditt lösenord"
                   />
+                  {errors.confirm_password && (
+                    <span>{errors.confirm_password.message}</span>
+                  )}
                 </div>
 
                 <div className="field-container">
-                  <label htmlFor="firstName" className="form-label">
+                  <label htmlFor="first_name" className="form-label">
                     Förnamn
                   </label>
                   <input
                     type="text"
+                    id="first_name"
                     className="form-control"
-                    id="firstName"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleInputChange}
-                    required
+                    {...register('first_name', { required: 'Förnamn krävs' })}
+                    placeholder="Ange ditt förnamn"
                   />
+                  {errors.first_name && (
+                    <span>{errors.first_name.message}</span>
+                  )}
                 </div>
 
                 <div className="field-container">
-                  <label htmlFor="lastName" className="form-label">
+                  <label htmlFor="last_name" className="form-label">
                     Efternamn
                   </label>
                   <input
                     type="text"
+                    id="last_name"
                     className="form-control"
-                    id="lastName"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleInputChange}
-                    required
+                    {...register('last_name', { required: 'Efternamn krävs' })}
+                    placeholder="Ange ditt efternamn"
                   />
+                  {errors.last_name && <span>{errors.last_name.message}</span>}
                 </div>
 
                 <div className="button-group">
                   <PrimaryBtn title="Avbryt" onClick={handleGoBack} />
-                  <PrimaryBtn
-                    title="Bli medlem"
-                    onClick={handleMemberButtonClick}
-                  />
+                  <PrimaryBtn title="Bli medlem" type="submit" />
                 </div>
               </form>
-
-              {error && <div className="alert alert-danger mt-3">{error}</div>}
-              {success && (
-                <div className="alert alert-success mt-3">{success}</div>
-              )}
             </div>
           </div>
         </div>
