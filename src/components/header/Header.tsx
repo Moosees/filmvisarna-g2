@@ -15,7 +15,7 @@ function Header() {
         <NavButton to="/filmer" label="Upptäck" />
         <NavButton to="/evenemang" label="Evenameng" />
         <Dropdown>
-          <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
+          <Dropdown.Toggle bsPrefix="custom-toggle" role="button" id="medlem">
             <img src={User} alt="Medlem meny" className="img-fluid" />
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu shadow">
