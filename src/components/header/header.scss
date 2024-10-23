@@ -1,0 +1,22 @@
+.custom-toggle {
+  background-color: transparent !important;
+}
+
+.navbar {
+  padding-bottom: max(3rem, 7.5vh);
+  background-image: linear-gradient(
+    179deg,
+    #3e1e3d 27.58%,
+    #100634 57.89%,
+    #54037e 66.13%,
+    #7b0093 66.98%,
+    #a734c7 67.95%,
+    #8a1f7d 68%,
+    #3e1e3d 88.37%
+  );
+}
+
+.navbar img {
+  min-height: max(6vw, 35px);
+  filter: drop-shadow(var(--bs-box-shadow));
+}
