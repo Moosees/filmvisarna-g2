@@ -5,6 +5,7 @@
 
 .form-control {
   background-color: white;
+  color: black;
 
   &:focus {
     background-color: white;
@@ -12,6 +13,11 @@
     outline: 0;
     box-shadow: none;
     color: black;
+  }
+
+  &::placeholder {
+    color: #666666;
+    opacity: 1;
   }
 }
 
