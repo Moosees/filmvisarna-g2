@@ -8,7 +8,15 @@ function App() {
       <main className="flex-grow-1 container">
         <Outlet />
       </main>
-      <div>Footer</div>
+      <div
+        style={{
+          height: '15vh',
+          backgroundColor: 'rgb(0 0 0 / 0.2)',
+          marginTop: '2rem',
+        }}
+      >
+        Footer
+      </div>
     </div>
   );
 }
