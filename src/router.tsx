@@ -17,6 +17,10 @@ const router = createBrowserRouter([
         path: '/registrera',
         element: <RegisterPage />,
       },
+      {
+        path: '/bekräftelse/',
+        element: <BookingConfirmation />,
+      },
     ],
   },
 ]);
