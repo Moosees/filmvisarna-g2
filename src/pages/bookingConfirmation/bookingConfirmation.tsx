@@ -3,8 +3,8 @@ import { Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import '../../assets/sass/bookingConfirmation.scss';
 import { useParams, useNavigate } from 'react-router-dom';
-import Rubrik from '../../components/rubrik/Rubrik';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
+import MainHeading from '../../components/mainHeading/MainHeading';
 
 interface Seat {
   row: number;
@@ -53,7 +53,7 @@ function BookingConfirmation() {
 
   return (
     <>
-      <Rubrik title={'Bekräftelse'} />
+      <MainHeading title={'Bekräftelse'} />
       <Container className="booking-confirmation">
         <Row className="booking-row">
           <Col>
