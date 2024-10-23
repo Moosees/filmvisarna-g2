@@ -1,5 +1,5 @@
-import CardsWrapper from './CardsWrapper';
-import MovieCard from './MovieCard';
+import CardsWrapper from '../../components/movieCard/CardsWrapper';
+import MovieCard from '../../components/movieCard/MovieCard';
 
 const movies = [
   {
@@ -36,7 +36,7 @@ const movies = [
   },
 ];
 
-export default function TestCard() {
+export default function HomePage() {
   return (
     <CardsWrapper>
       {movies.map((movie) => (

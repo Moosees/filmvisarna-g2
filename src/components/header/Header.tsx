@@ -23,7 +23,7 @@ function Header() {
               <Link to="/medlem">Logga in</Link>
             </Dropdown.Item>
             <Dropdown.Item>
-              <Link to="/medlem">Bli medlem</Link>
+              <Link to="/registrera">Bli medlem</Link>
             </Dropdown.Item>
             <Dropdown.Item>
               <Link to="/medlem">Logga ut</Link>
