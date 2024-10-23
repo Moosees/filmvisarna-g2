@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           marginTop: '2rem',
         }}
       >
-        Footer
+        <Footer />
       </div>
     </div>
   );
