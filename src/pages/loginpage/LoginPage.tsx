@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      // Simulate login request, you would replace this with your actual login logic
+      // Simulate login request
       console.log('Login successful:', data);
       // Redirect after successful login
     } catch (error) {
@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <h2>Logga In kära medlem</h2>
+
       <section className="card">
         <form onSubmit={handleSubmit(onSubmit)} className="login-form">
           <div className="mb-3">
