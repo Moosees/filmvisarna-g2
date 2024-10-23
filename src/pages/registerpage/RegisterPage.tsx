@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import YellowBtn from '../../components/buttons/YellowBtn';
+import YellowBtn from '../../components/buttons/PrimaryBtn';
 import Rubrik from '../../components/rubrik/Rubrik';
+import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 // import axios from 'axios';
 
@@ -138,8 +139,8 @@ const RegisterPage: React.FC = () => {
                 </div>
 
                 <div className="button-group">
-                  <YellowBtn title="Avbryt" onClick={handleGoBack} />
-                  <YellowBtn
+                  <PrimaryBtn title="Avbryt" onClick={handleGoBack} />
+                  <PrimaryBtn
                     title="Bli medlem"
                     onClick={handleMemberButtonClick}
                   />

@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
 import '../../main.scss';
-import YellowBtn from '../buttons/YellowBtn';
+import PrimaryBtn from '../buttons/PrimaryBtn';
 
 interface MovieCardProps {
   movieId: number;
@@ -43,7 +43,7 @@ function MovieCard({
           {title}
         </Card.Text>
         <Card.Text className="digital m-0 ">{startTime}</Card.Text>
-        <YellowBtn title="Boka" onClick={handleButtonClick} />
+        <PrimaryBtn title="Boka" onClick={handleButtonClick} />
       </Card.Body>
     </Card>
   );
