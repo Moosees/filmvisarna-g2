@@ -10,12 +10,18 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <HomePage />,
+        handle: {
+          title: 'Dagens filmer',
+        },
       },
       {
         path: '/registrera',
         element: <RegisterPage />,
+        handle: {
+          title: 'Bli medlem',
+        },
       },
       {
         path: '/bekräftelse/:reservationNum',
