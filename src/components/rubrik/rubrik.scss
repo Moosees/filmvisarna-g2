@@ -1,0 +1,10 @@
+.bg-rosa {
+  background-color: $bg-rosa !important;
+  transition: all 0.3s ease;
+}
+.custom-rounded {
+  border-top-left-radius: 50px !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 50px !important;
+  border-bottom-left-radius: 0 !important;
+}

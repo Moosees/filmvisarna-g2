@@ -52,5 +52,8 @@
 // 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import '~bs/utilities/api';
 
-// 8 Import components in components.scss
+// 8 Add typography in fonts.scss
+@import './assets/sass/fonts';
+
+// 9 Import components in components.scss
 @import './assets/sass/components';

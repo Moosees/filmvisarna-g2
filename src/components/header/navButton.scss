@@ -2,12 +2,12 @@
   background: #1dc9cb;
   border-radius: 20px 20px 40px 40px;
   text-align: center;
-  text-decoration: underline;
+  text-decoration: none;
   color: #000000;
-  padding: 0.5em 1em;
-  font-size: 1rem;
+  padding: 0.2em 0.5em;
 
   @include media-breakpoint-up(md) {
-    font-size: 7.6rem;
+    padding: 1em 2em;
+    text-decoration: underline;
   }
 }

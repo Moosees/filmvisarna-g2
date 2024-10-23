@@ -1,0 +1,13 @@
+.movie-card {
+  background-color: $bg-card !important;
+  cursor: pointer;
+  scale: 0.98;
+  transition: all 0.3s ease;
+}
+.movie-card:hover {
+  scale: 1;
+}
+.card-img {
+  object-fit: fill;
+  aspect-ratio: 4/4;
+}

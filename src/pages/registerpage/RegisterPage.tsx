@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 // import axios from 'axios';
 
 const RegisterPage: React.FC = () => {
@@ -34,96 +36,113 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <>
-      <h2>Bli medlem</h2>
-      <section className="card">
-        <div className="register-form">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                E-post
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                name="user_email"
-                value={formData.user_email}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+    <div className="row justify-content-center">
+      <div className="col-12 text-center mb-4">
+        <h2 className="register-title">Bli medlem</h2>
+      </div>
+      <div className="col-md-6 col-lg-5">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <form onSubmit={handleSubmit}>
+              <div className="field-container">
+                <label htmlFor="email" className="form-label">
+                  E-post
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="user_email"
+                  value={formData.user_email}
+                  onChange={handleInputChange}
+                  required
+                  autoComplete="email"
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Lösenord
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="user_password"
-                value={formData.user_password}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+              <div className="field-container">
+                <label htmlFor="password" className="form-label">
+                  Lösenord
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="user_password"
+                  value={formData.user_password}
+                  onChange={handleInputChange}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="repet-password" className="form-label">
-                Repitera lösenord
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="repet-password"
-                name="user_password"
-                value={formData.user_password}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+              <div className="field-container">
+                <label htmlFor="password-repet" className="form-label">
+                  Repetera lösenord
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password-repet"
+                  name="user_password"
+                  value={formData.user_password}
+                  onChange={handleInputChange}
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="firstName" className="form-label">
-                Förnamn
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+              <div className="field-container">
+                <label htmlFor="firstName" className="form-label">
+                  Förnamn
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="firstName"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="lastName" className="form-label">
-                Efternamn
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+              <div className="field-container">
+                <label htmlFor="lastName" className="form-label">
+                  Efternamn
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastName"
+                  name="last_name"
+                  value={formData.last_name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-            <button type="submit" className="btn btn-primary">
-              Registrera
-            </button>
-          </form>
+              <div className="button-group">
+                <Link to="/" className="btn btn-custom btn-lg">
+                  Avbryt
+                </Link>
+                <button
+                  type="submit"
+                  className="btn btn-custom-secondary btn-lg"
+                >
+                  Bli medlem
+                </button>
+              </div>
+            </form>
 
-          {error && <div className="alert alert-danger mt-3">{error}</div>}
-          {success && <div className="alert alert-success mt-3">{success}</div>}
+            {error && <div className="alert alert-danger mt-3">{error}</div>}
+            {success && (
+              <div className="alert alert-success mt-3">{success}</div>
+            )}
+          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 };
 
