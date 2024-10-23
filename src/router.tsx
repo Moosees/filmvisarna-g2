@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import RegisterPage from './pages/registerpage/RegisterPage';
 import HomePage from './pages/homepage/HomePage';
+import RegisterPage from './pages/registerpage/RegisterPage';
+import ReservePage from './pages/reservepage/ReservePage';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,13 @@ const router = createBrowserRouter([
         element: <RegisterPage />,
         handle: {
           title: 'Bli medlem',
+        },
+      },
+      {
+        path: '/visning',
+        element: <ReservePage />,
+        handle: {
+          title: 'Boka platser',
         },
       },
     ],
