@@ -1,8 +1,5 @@
-// import { Button } from 'react-bootstrap';
-
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
-import TestCard from './components/movieCard/TestCard';
 import Rubrik from './components/rubrik/Rubrik';
 import Hall from './components/hall/Hall';
 
@@ -12,11 +9,18 @@ function App() {
       <Header />
       <main className="flex-grow-1">
         <Rubrik title="Dagens Filmer" />
-        <TestCard />
         <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} />
+        <Outlet />
       </main>
-      <Outlet />
-      <div>Footer</div>
+      <div
+        style={{
+          height: '15vh',
+          backgroundColor: 'rgb(0 0 0 / 0.2)',
+          marginTop: '2rem',
+        }}
+      >
+        Footer
+      </div>
     </div>
   );
 }
