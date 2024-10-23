@@ -1,6 +1,5 @@
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
-import Rubrik from '../../components/rubrik/Rubrik';
 
 const movies = [
   {
@@ -40,7 +39,6 @@ const movies = [
 export default function HomePage() {
   return (
     <>
-      <Rubrik title="Dagens Filmer" />
       <CardsWrapper>
         {movies.map((movie) => (
           <MovieCard
