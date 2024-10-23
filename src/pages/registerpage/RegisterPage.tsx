@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Rubrik from '../../components/rubrik/Rubrik';
@@ -19,13 +20,22 @@ const RegisterPage: React.FC = () => {
     watch,
     formState: { errors },
   } = useForm<RegisterFormValues>();
+
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-      const response = await axios.post('/api/register', data);
+      const response = await axios.post('/api/user/register', data);
+      setSuccess(
+        `Användare registrerad med rollen "member", ID: ${response.data.id}`
+      );
+      setError(null);
       navigate('/');
     } catch (err: any) {
+      setError('Något gick fel, försök igen!');
+      setSuccess(null);
       console.error('Något gick fel', err);
     }
   };
@@ -134,6 +144,12 @@ const RegisterPage: React.FC = () => {
                   <PrimaryBtn title="Bli medlem" type="submit" />
                 </div>
               </form>
+
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
+
+              {success && (
+                <div className="alert alert-success mt-3">{success}</div>
+              )}
             </div>
           </div>
         </div>
