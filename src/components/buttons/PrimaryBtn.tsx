@@ -4,7 +4,7 @@ interface YellowBtnProps {
   onClick: (e?: React.MouseEvent) => void;
 }
 
-export default function YellowBtn({ title, onClick }: YellowBtnProps) {
+export default function PrimaryBtn({ title, onClick }: YellowBtnProps) {
   return (
     <div>
       <Button

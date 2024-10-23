@@ -1,15 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
-import Rubrik from './components/rubrik/Rubrik';
-import Hall from './components/hall/Hall';
 
 function App() {
   return (
-    <div className="min-vh-100 d-flex flex-column">
+    <div className="min-vh-100 d-flex flex-column gap-5">
       <Header />
-      <main className="flex-grow-1">
-        <Rubrik title="Dagens Filmer" />
-        <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} />
+      <main className="flex-grow-1 container">
         <Outlet />
       </main>
       <div
