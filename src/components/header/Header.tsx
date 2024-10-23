@@ -15,20 +15,20 @@ function Header() {
         <NavButton to="/filmer" label="Upptäck" />
         <NavButton to="/evenemang" label="Evenameng" />
         <Dropdown>
-          <Dropdown.Toggle bsPrefix="custom-toggle" role="button" id="medlem">
+          <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
             <img src={User} alt="Medlem meny" className="img-fluid" />
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu shadow">
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem">Logga in</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/registrera">Bli medlem</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem">Logga ut</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem">Medlemssida</Link>
             </Dropdown.Item>
           </Dropdown.Menu>
