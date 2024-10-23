@@ -1,7 +1,10 @@
 import { Container, Row, Col } from 'react-bootstrap';
+interface HallProps {
+  seatRows: number[];
+}
 
-function StoraSalong() {
-  const seatRows: number[] = [8, 9, 10, 10, 10, 10, 12, 12];
+function Hall({ seatRows }: HallProps) {
+  // const seatRows: number[] = [8, 9, 10, 10, 10, 10, 12, 12];
 
   return (
     <Container className="d-flex flex-column bg-rosa py-4 align-items-center rounded col-sm-12 col-lg-5 col-xl-4">
@@ -21,4 +24,4 @@ function StoraSalong() {
   );
 }
 
-export default StoraSalong;
+export default Hall;

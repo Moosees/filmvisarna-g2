@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
 import TestCard from './components/movieCard/TestCard';
 import Rubrik from './components/rubrik/Rubrik';
-import StoraSalong from './components/hall/StoraSalong';
+import Hall from './components/hall/Hall';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <main className="flex-grow-1">
         <Rubrik title="Dagens Filmer" />
         <TestCard />
-        <StoraSalong />
+        <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} />
       </main>
       <Outlet />
       <div>Footer</div>
