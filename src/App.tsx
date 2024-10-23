@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
 import Rubrik from './components/rubrik/Rubrik';
-import Hall from './components/hall/Hall';
+// import Hall from './components/hall/Hall';
 
 function App() {
   return (
@@ -9,8 +9,8 @@ function App() {
       <Header />
       <main className="flex-grow-1">
         <Rubrik title="Dagens Filmer" />
-        <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} />
         <Outlet />
+        {/* <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} /> */}
       </main>
       <div
         style={{
