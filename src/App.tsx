@@ -9,8 +9,8 @@ function App() {
       <Header />
       <main className="flex-grow-1">
         <Rubrik title="Dagens Filmer" />
-        {/* <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} /> */}
         <Outlet />
+        {/* <Hall seatRows={[8, 9, 10, 10, 10, 10, 12, 12]} /> */}
       </main>
       <div
         style={{

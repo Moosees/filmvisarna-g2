@@ -19,16 +19,16 @@ function Header() {
             <img src={User} alt="Medlem meny" className="img-fluid" />
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu shadow">
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem">Logga in</Link>
             </Dropdown.Item>
             <Dropdown.Item>
               <Link to="/medlem/bli-medlem">Bli medlem</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem">Logga ut</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem">Medlemssida</Link>
             </Dropdown.Item>
           </Dropdown.Menu>
