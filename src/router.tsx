@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/registrera',
+        path: '/medlem/bli-medlem',
         element: <RegisterPage />,
       },
     ],

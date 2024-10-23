@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import YellowBtn from '../../components/buttons/YellowBtn';
 
 // import axios from 'axios';
 
@@ -13,6 +14,8 @@ const RegisterPage: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,6 +36,16 @@ const RegisterPage: React.FC = () => {
     } catch (err) {
       setSuccess('Något gick fel, försök igen!');
     }
+  };
+
+  const handleMemberButtonClick = () => {
+    if (formRef.current) {
+      formRef.current.submit();
+    }
+  };
+
+  const handleGoBack = () => {
+    navigate('/');
   };
 
   return (
@@ -124,15 +137,11 @@ const RegisterPage: React.FC = () => {
                 </div>
 
                 <div className="button-group">
-                  <Link to="/" className="btn btn-custom btn-lg">
-                    Avbryt
-                  </Link>
-                  <button
-                    type="submit"
-                    className="btn btn-custom-secondary btn-lg"
-                  >
-                    Bli medlem
-                  </button>
+                  <YellowBtn title="Avbryt" onClick={handleGoBack} />
+                  <YellowBtn
+                    title="Bli medlem"
+                    onClick={handleMemberButtonClick}
+                  />
                 </div>
               </form>
 
