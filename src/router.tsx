@@ -16,7 +16,7 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: '/registrera',
+        path: '/medlem/bli-medlem',
         element: <RegisterPage />,
         handle: {
           title: 'Bli medlem',
