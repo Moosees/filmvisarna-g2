@@ -2,6 +2,7 @@ import React from 'react';
 import Rubrik from '../../components/rubrik/Rubrik';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import './LoginPage.scss';
 
 interface FormData {
@@ -38,7 +39,6 @@ const LoginPage: React.FC = () => {
       <Rubrik title="Logga In" />
       <section className="login-page-container">
         {' '}
-        
         <div className="card">
           <form onSubmit={handleSubmit(handleLogin)} className="login-form">
             <div className="field-container">
@@ -80,16 +80,12 @@ const LoginPage: React.FC = () => {
             </div>
 
             <div className="button-group">
-              <button
-                type="button"
-                className="btn btn-custom-secondary"
-                onClick={handleRegisterRedirect}
-              >
-                Bli Medlem
-              </button>
-              <button type="submit" className="btn btn-custom">
-                Logga In
-              </button>
+              <PrimaryBtn title="Bli Medlem" onClick={handleRegisterRedirect} />
+              
+              <PrimaryBtn
+                title="Logga In"
+                onClick={() => handleSubmit(handleLogin)()}
+              />
             </div>
           </form>
         </div>
