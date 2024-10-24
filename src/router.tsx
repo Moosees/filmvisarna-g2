@@ -3,6 +3,7 @@ import App from './App';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import HomePage from './pages/homepage/HomePage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
+import LoginPage from './pages/loginpage/LoginPage';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,13 @@ const router = createBrowserRouter([
       {
         path: '/medlem/bli-medlem',
         element: <RegisterPage />,
+        handle: {
+          title: 'Bli medlem',
+        },
+      },
+      {
+        path: '/medlem/logga-in',
+        element: <LoginPage />,
         handle: {
           title: 'Bli medlem',
         },
