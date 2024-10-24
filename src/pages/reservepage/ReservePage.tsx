@@ -10,7 +10,7 @@ function ReservePage() {
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
   console.log({ data });
 
-  return <Hall seats={data.seats} />;
+  return <Hall seats={data.seats} numPersons={3} />;
 }
 
 export default ReservePage;
