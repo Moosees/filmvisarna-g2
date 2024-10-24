@@ -2,7 +2,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import '../../assets/sass/bookingConfirmation.scss';
 import { Link, useLoaderData } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
-import { getBookingDataQuery } from '../../api/reserve';
+import { getBookingDataQuery } from '../../api/booking';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 // TODO change the hardcoded img

@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { getQueryClient } from './api/clients';
-import { bookingLoader, reserveLoader } from './api/reserve';
+import { reserveLoader } from './api/reserve';
+import { bookingLoader } from './api/booking';
 import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import HomePage from './pages/homepage/HomePage';
