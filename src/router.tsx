@@ -2,7 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import { getQueryClient } from './api/clients';
 import { reserveLoader } from './api/reserve';
 import App from './App';
+import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import HomePage from './pages/homepage/HomePage';
+import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: '/registrera',
+        path: '/medlem/bli-medlem',
         element: <RegisterPage />,
         handle: {
           title: 'Bli medlem',
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
         },
         loader: reserveLoader(getQueryClient()),
       },
+      {
+        path: '/bekräftelse/:reservationNum',
+        element: <BookingConfirmation />,
+        handle: {
+          title: 'Bekräftelse',
+        },
+      },
+      { path: '/film/:id', element: <MovieDetailsPage /> },
     ],
   },
 ]);
