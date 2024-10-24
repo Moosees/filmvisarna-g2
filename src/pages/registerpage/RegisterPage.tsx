@@ -47,7 +47,7 @@ const RegisterPage: React.FC = () => {
 
   return (
     <section className="row justify-content-center">
-      <article className="col-md-6 col-lg-5 card shadow-sm">
+      <article className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm">
         <section className="card-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             <fieldset className="field-container">

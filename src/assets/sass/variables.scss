@@ -6,6 +6,13 @@ $bg-rosa: #ff94e0;
 $bg-btn: #dde052;
 $btn-rosa: #f245c0;
 
+.bg-rosa {
+  background-color: $bg-rosa !important;
+}
+.body-bg-dark {
+  background-color: $body-bg-dark !important;
+}
+
 // NOTE: Stuff from docs
 
 // $theme-colors: (
