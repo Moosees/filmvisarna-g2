@@ -66,8 +66,8 @@ const ProfilePage: React.FC = () => {
               <h6 className="profile-text-bg p-1 rounded">
                 E-post: {memberInfo?.user_email}
               </h6>
-              <PrimaryBtn title="Ändra" />
             </div>
+            <PrimaryBtn title="Ändra" />
           </Col>
 
           <Col md={6}>
