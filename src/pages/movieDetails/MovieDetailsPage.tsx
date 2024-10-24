@@ -72,6 +72,7 @@ function MovieBooking() {
   };
   return (
     <Container className="p-0">
+      {/* Row for Poster and Video */}
       <Row className="mb-4 d-flex align-items-center justify-content-between g-3">
         {/* Poster Section */}
         <Col md={4} className="d-none d-md-flex">
@@ -130,7 +131,7 @@ function MovieBooking() {
         </Col>
       </Row>
 
-      {/* Movie Details */}
+      {/* Movie Details and  Movie Description  */}
       <Row className="my-4 d-flex align-items-center justify-content-between g-3 ">
         <Col md={6} xl={4}>
           <Card className="text-dark bg-rosa ">
