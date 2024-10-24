@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { getQueryClient } from './api/clients';
 import { reserveLoader } from './api/reserve';
+import { bookingLoader } from './api/booking';
 import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import HomePage from './pages/homepage/HomePage';
@@ -52,8 +53,12 @@ const router = createBrowserRouter([
         handle: {
           title: 'Bekräftelse',
         },
+        loader: bookingLoader(getQueryClient()),
       },
-      { path: '/film/:id', element: <MovieDetailsPage /> },
+      {
+        path: '/film/:id',
+        element: <MovieDetailsPage />,
+      },
     ],
   },
 ]);
