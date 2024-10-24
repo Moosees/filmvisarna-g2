@@ -37,9 +37,6 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className="row justify-content-center">
-      <div className="col-12 text-center mb-4">
-        <h2 className="register-title">Bli medlem</h2>
-      </div>
       <div className="col-md-6 col-lg-5">
         <div className="card shadow-sm">
           <div className="card-body">

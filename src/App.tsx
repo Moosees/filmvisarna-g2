@@ -1,13 +1,22 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, UIMatch, useMatches } from 'react-router-dom';
 import Header from './components/header/Header';
+import MainHeading from './components/mainHeading/MainHeading';
 
+interface AppMatch extends UIMatch {
+  handle: {
+    title?: string;
+  };
+}
 
 function App() {
+  const matches = useMatches() as unknown[] as AppMatch[];
+  const titles = matches.filter(({ handle }) => handle?.title);
+
   return (
-    <div className="min-vh-100 d-flex flex-column gap-5">
+    <div className="min-vh-100 d-flex flex-column gap-3">
       <Header />
-      <main className="flex-grow-1">
-        <Outlet/>
+      <main className="flex-grow-1 container">
+        <Outlet />
       </main>
       <div
         style={{
