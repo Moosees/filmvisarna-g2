@@ -1,150 +1,145 @@
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
-// import axios from 'axios';
+interface RegisterFormValues {
+  user_email: string;
+  user_password: string;
+  confirm_password: string;
+  first_name: string;
+  last_name: string;
+}
 
 const RegisterPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    user_email: '',
-    user_password: '',
-    first_name: '',
-    last_name: '',
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormValues>();
 
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
-
+  const onSubmit = async (data: RegisterFormValues) => {
     try {
-      // const response = await axios.post('/user/register', formData);
-      setSuccess('Användare registrerad.');
-    } catch (err) {
-      setSuccess('Något gick fel, försök igen!');
+      const response = await axios.post('/api/user/register', data);
+      setSuccess(
+        `Användare registrerad med rollen "member", ID: ${response.data.id}`
+      );
+      setError(null);
+      navigate('/');
+    } catch (err: any) {
+      setError('Något gick fel, försök igen!');
+      setSuccess(null);
+      console.error('Något gick fel', err);
     }
   };
 
+  const handleGoBack = () => {
+    navigate('/');
+  };
+
+  const password = watch('user_password');
+
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-12 text-center mb-4">
-          <h2 className="register-title">Bli medlem</h2>
-        </div>
-        <div className="col-md-6 col-lg-5">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <form onSubmit={handleSubmit}>
-                <div className="field-container">
-                  <label htmlFor="email" className="form-label">
-                    E-post
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="user_email"
-                    value={formData.user_email}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="email"
-                  />
-                </div>
+    <section className="row justify-content-center">
+      <article className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm">
+        <section className="card-body">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <fieldset className="field-container">
+              <label htmlFor="user_email" className="form-label">
+                E-post
+              </label>
+              <input
+                type="email"
+                id="user_email"
+                className="form-control"
+                {...register('user_email', { required: 'E-post krävs' })}
+                placeholder="Ange din e-post"
+              />
+              {errors.user_email && <span>{errors.user_email.message}</span>}
+            </fieldset>
 
-                <div className="field-container">
-                  <label htmlFor="password" className="form-label">
-                    Lösenord
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="user_password"
-                    value={formData.user_password}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="new-password"
-                  />
-                </div>
-
-                <div className="field-container">
-                  <label htmlFor="password-repet" className="form-label">
-                    Repetera lösenord
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password-repet"
-                    name="user_password"
-                    value={formData.user_password}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="new-password"
-                  />
-                </div>
-
-                <div className="field-container">
-                  <label htmlFor="firstName" className="form-label">
-                    Förnamn
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="firstName"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                <div className="field-container">
-                  <label htmlFor="lastName" className="form-label">
-                    Efternamn
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="lastName"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                <div className="button-group">
-                  <Link to="/" className="btn btn-custom btn-lg">
-                    Avbryt
-                  </Link>
-                  <button
-                    type="submit"
-                    className="btn btn-custom-secondary btn-lg"
-                  >
-                    Bli medlem
-                  </button>
-                </div>
-              </form>
-
-              {error && <div className="alert alert-danger mt-3">{error}</div>}
-              {success && (
-                <div className="alert alert-success mt-3">{success}</div>
+            <fieldset className="field-container">
+              <label htmlFor="user_password" className="form-label">
+                Lösenord
+              </label>
+              <input
+                type="password"
+                id="user_password"
+                className="form-control"
+                {...register('user_password', {
+                  required: 'Lösenord krävs',
+                })}
+                placeholder="Ange ditt lösenord"
+              />
+              {errors.user_password && (
+                <span>{errors.user_password.message}</span>
               )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </fieldset>
+
+            <fieldset className="field-container">
+              <label htmlFor="confirm_password" className="form-label">
+                Repetera lösenord
+              </label>
+              <input
+                type="password"
+                id="confirm_password"
+                className="form-control"
+                {...register('confirm_password', {
+                  validate: (value) =>
+                    value === password || 'Lösenorden matchar inte',
+                })}
+                placeholder="Upprepa ditt lösenord"
+              />
+              {errors.confirm_password && (
+                <span>{errors.confirm_password.message}</span>
+              )}
+            </fieldset>
+
+            <fieldset className="field-container">
+              <label htmlFor="first_name" className="form-label">
+                Förnamn
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                className="form-control"
+                {...register('first_name', { required: 'Förnamn krävs' })}
+                placeholder="Ange ditt förnamn"
+              />
+              {errors.first_name && <span>{errors.first_name.message}</span>}
+            </fieldset>
+
+            <fieldset className="field-container">
+              <label htmlFor="last_name" className="form-label">
+                Efternamn
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                className="form-control"
+                {...register('last_name', { required: 'Efternamn krävs' })}
+                placeholder="Ange ditt efternamn"
+              />
+              {errors.last_name && <span>{errors.last_name.message}</span>}
+            </fieldset>
+
+            <section className="button-group">
+              <PrimaryBtn title="Avbryt" onClick={handleGoBack} />
+              <PrimaryBtn title="Bli medlem" type="submit" />
+            </section>
+          </form>
+
+          {error && <p className="alert alert-danger mt-3">{error}</p>}
+          {success && <p className="alert alert-success mt-3">{success}</p>}
+        </section>
+      </article>
+    </section>
   );
 };
 

@@ -1,5 +1,6 @@
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import '../../main.scss';
+import PrimaryBtn from '../buttons/PrimaryBtn';
 
 interface MovieCardProps {
   movieId: number;
@@ -21,37 +22,28 @@ function MovieCard({
   const handleCardClick = () => {
     console.log('movieId', movieId);
   };
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleButtonClick = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     console.log('screeningId ', screeningId);
   };
 
   return (
     <Card
-      className="text-center text-white border border-warning shadow movie-card"
+      className="text-center text-white border border-warning shadow movie-card py-2"
       onClick={handleCardClick}
     >
       <div className="position-relative">
-        <Card.Img
-          variant="top"
-          src={src}
-          className="img-fluid p-2 "
-          style={{ width: '100%', height: '28vh', objectFit: 'fill' }}
-        />
-        <div className="position-absolute bottom-0 end-0 bg-danger text-white p-2 rounded-circle m-3 border border-warning">
+        <Card.Img variant="top" src={src} className="img-fluid p-2 card-img" />
+        <div className="position-absolute bottom-0 end-0 bg-danger text-white digital p-2 m-3 border border-warning rounded-circle">
           {age}
         </div>
       </div>
       <Card.Body className="p-1">
-        <Card.Text className="text-capitalize">{title}</Card.Text>
-        <Card.Text className="digital m-0">{startTime}</Card.Text>
-        <Button
-          href="#"
-          className="btn btn-danger text-dark border border-warning"
-          onClick={handleButtonClick}
-        >
-          Boka
-        </Button>
+        <Card.Text className=" text-capitalize m-0 text-decoration-underline">
+          {title}
+        </Card.Text>
+        <Card.Text className="digital m-0 ">{startTime}</Card.Text>
+        <PrimaryBtn title="Boka" onClick={handleButtonClick} />
       </Card.Body>
     </Card>
   );
