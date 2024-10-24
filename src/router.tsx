@@ -5,6 +5,7 @@ import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import HomePage from './pages/homepage/HomePage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
+import LoginPage from './pages/loginpage/LoginPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import ProfilePage from './pages/profilepage/ProfilePage';
@@ -36,6 +37,13 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: '/medlem/logga-in',
+        element: <LoginPage />,
+        handle: {
+          title: 'Bli medlem',
+        },
+      },
+      {
         path: '/visning/:screeningId',
         element: <ReservePage />,
         handle: {
@@ -50,7 +58,10 @@ const router = createBrowserRouter([
           title: 'Bekräftelse',
         },
       },
-      { path: '/film/:id', element: <MovieDetailsPage /> },
+      {
+        path: '/film/:id',
+        element: <MovieDetailsPage />,
+      },
     ],
   },
 ]);
