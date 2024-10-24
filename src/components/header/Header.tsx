@@ -22,8 +22,8 @@ function Header() {
             <Dropdown.Item as="button">
               <Link to="/medlem/logga-in">Logga in</Link>
             </Dropdown.Item>
-            <Dropdown.Item as="button">
-              <Link to="/registrera">Bli medlem</Link>
+            <Dropdown.Item>
+              <Link to="/medlem/bli-medlem">Bli medlem</Link>
             </Dropdown.Item>
             <Dropdown.Item as="button">
               <Link to="/medlem">Logga ut</Link>
