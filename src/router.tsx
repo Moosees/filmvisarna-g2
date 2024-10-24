@@ -9,6 +9,7 @@ import LoginPage from './pages/loginpage/LoginPage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
+import { detailsLoader } from './api/details';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       {
         path: '/film/:id',
         element: <MovieDetailsPage />,
+        loader: detailsLoader(getQueryClient()),
       },
       {
         path: '/visning/:screeningId',
