@@ -10,7 +10,6 @@ import LoginPage from './pages/loginpage/LoginPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
