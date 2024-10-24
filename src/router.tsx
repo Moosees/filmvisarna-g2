@@ -1,15 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { bookingLoader } from './api/booking';
 import { getQueryClient } from './api/clients';
 import { reserveLoader } from './api/reserve';
-import { bookingLoader } from './api/booking';
 import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import HomePage from './pages/homepage/HomePage';
-import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import LoginPage from './pages/loginpage/LoginPage';
+import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
-
 
 const router = createBrowserRouter([
   {
@@ -40,6 +39,8 @@ const router = createBrowserRouter([
       {
         path: '/film/:id',
         element: <MovieDetailsPage />,
+      },
+      {
         path: '/visning/:screeningId',
         element: <ReservePage />,
         handle: {
@@ -48,16 +49,12 @@ const router = createBrowserRouter([
         loader: reserveLoader(getQueryClient()),
       },
       {
-        path: '/bekräftelse/:reservationNum',
+        path: '/bokning/:reservationNum',
         element: <BookingConfirmation />,
         handle: {
           title: 'Bekräftelse',
         },
         loader: bookingLoader(getQueryClient()),
-      },
-      {
-        path: '/film/:id',
-        element: <MovieDetailsPage />,
       },
     ],
   },
