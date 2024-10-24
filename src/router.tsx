@@ -3,6 +3,7 @@ import App from './App';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import HomePage from './pages/homepage/HomePage';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
+import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
           title: 'Bekräftelse',
         },
       },
+      { path: '/film/:id', element: <MovieDetailsPage /> },
     ],
   },
 ]);
