@@ -13,6 +13,25 @@ interface ScreeningData {
   };
 }
 
+interface ReservationData {
+  results: {
+    reservationNumber: string;
+    title: string;
+    startDate: string;
+    timeRange: string;
+    auditoriumName: string;
+    ticketDetails: string;
+    totalPrice: string;
+    seats: Seat[];
+  };
+}
+
+interface Seat {
+  row: number;
+  number: number;
+  seatId: number;
+}
+
 async function getScreeningData(screeningId: number) {
   const response = await getAxios().get<ScreeningData>(`seats/${screeningId}`);
   console.log(response.data.message);
@@ -34,4 +53,31 @@ export const reserveLoader =
     await client.ensureQueryData(getScreeningDataQuery(+params.screeningId));
 
     return { screeningId: +params.screeningId };
+  };
+
+//-------------BOOKING-INFORMATION---------------
+async function getBookingData(bookingNumber: string) {
+  const response = await getAxios().get<ReservationData>(
+    `/bekräftelse/${bookingNumber}`
+  );
+
+  return response.data.results;
+}
+
+export const getBookingDataQuery = (bookingNumber: string) =>
+  queryOptions({
+    queryKey: ['booking', bookingNumber],
+    queryFn: async () => await getBookingData(bookingNumber),
+  });
+
+export const bookingLoader =
+  (client: QueryClient) =>
+  async ({ params }: LoaderFunctionArgs) => {
+    const bookingNumber = params.bookingNumber;
+
+    if (!params.bookingNumber) throw new Error('Bokingsnummer saknas');
+
+    await client.ensureQueryData(getScreeningDataQuery(+params.bookingNumber));
+
+    return { bookingNumber };
   };
