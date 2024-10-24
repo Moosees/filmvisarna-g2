@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './footer.scss';
 import '../../assets/sass/fonts.scss';
 import { Instagram } from 'react-bootstrap-icons';
