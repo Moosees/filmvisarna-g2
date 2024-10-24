@@ -15,6 +15,9 @@ function App() {
   return (
     <div className="min-vh-100 d-flex flex-column gap-3">
       <Header />
+      {titles.length > 0 && titles[0].handle.title && (
+        <MainHeading title={titles[0].handle.title} />
+      )}
       <main className="flex-grow-1 container">
         <Outlet />
       </main>
