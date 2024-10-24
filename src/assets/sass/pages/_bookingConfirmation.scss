@@ -1,8 +1,5 @@
-$backPinkColor: #ff94e0;
-$primaryTextColor: black;
-
 .booking-confirmation {
-  background-color: $backPinkColor;
+  background-color: $bg-rosa;
   padding: 3rem 2rem 3rem;
   border-radius: 0.4rem;
   margin-top: 3rem;
@@ -20,7 +17,7 @@ $primaryTextColor: black;
   align-items: center;
   border: none;
   color: $primaryTextColor;
-  background-color: $backPinkColor;
+  background-color: $bg-rosa;
 }
 
 .booking-row {
