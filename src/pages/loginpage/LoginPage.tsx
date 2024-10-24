@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
@@ -18,13 +19,26 @@ const LoginPage: React.FC = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  // Function to handle async login logic
   const handleLogin: SubmitHandler<FormData> = async (data) => {
     try {
-      console.log('Login successful:', data);
-      navigate('/');
-    } catch (error) {
+      // Send a POST request to the login endpoint
+      const response = await axios.post('/api/user', {
+        user_email: data.user_email,
+        user_password: data.user_password,
+      });
+
+      console.log('Login successful:', response.data);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      navigate('/'); // Redirect to the home page after successful login
+    } catch (error: any) {
       console.error('Login failed:', error);
+
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert('An unknown error occurred.');
+      }
     }
   };
 
@@ -36,7 +50,6 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <section className="login-page-container">
-        {' '}
         <div className="login-card">
           <form onSubmit={handleSubmit(handleLogin)} className="login-form">
             <div className="field-container">
@@ -51,7 +64,6 @@ const LoginPage: React.FC = () => {
                   required: 'E-post är obligatorisk',
                 })}
                 placeholder="Ange din e-postadress"
-                required
               />
               {errors.user_email && (
                 <p className="error-text">{errors.user_email.message}</p>
@@ -70,7 +82,6 @@ const LoginPage: React.FC = () => {
                   required: 'Lösenord är obligatoriskt',
                 })}
                 placeholder="Ange ditt lösenord"
-                required
               />
               {errors.user_password && (
                 <p className="error-text">{errors.user_password.message}</p>
@@ -80,10 +91,7 @@ const LoginPage: React.FC = () => {
             <div className="button-group">
               <PrimaryBtn title="Bli Medlem" onClick={handleRegisterRedirect} />
 
-              <PrimaryBtn
-                title="Logga In"
-                onClick={() => handleSubmit(handleLogin)()}
-              />
+              <PrimaryBtn title="Logga In" type="submit" />
             </div>
           </form>
         </div>
