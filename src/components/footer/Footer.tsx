@@ -4,6 +4,7 @@ import '../../assets/sass/fonts.scss';
 import { Instagram } from 'react-bootstrap-icons';
 import { TwitterX } from 'react-bootstrap-icons';
 import { Facebook } from 'react-bootstrap-icons';
+import { PinMap } from 'react-bootstrap-icons';
 
 const Footer: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const Footer: React.FC = () => {
             <h5>Adress:</h5>
             <p>Stockholmsvägen 11</p>
             <p>193XX Norrtälje</p>
+            <PinMap size={40} />
           </div>
           <div className="col-md-3">
             <h5>Övrigt:</h5>
