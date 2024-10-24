@@ -10,6 +10,7 @@ import {
 import NavButton from '../../components/header/NavButton';
 import { useState } from 'react';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
+import MainHeading from '../../components/mainHeading/MainHeading';
 
 const movieData = {
   id: 5,
@@ -71,133 +72,136 @@ function MovieBooking() {
     console.log('Selected:', value);
   };
   return (
-    <Container className="p-0">
-      {/* Row for Poster and Video */}
-      <Row className="mb-4 d-flex align-items-center justify-content-between g-3">
-        {/* Poster Section */}
-        <Col md={4} className="d-none d-md-flex">
-          <Card className="border border-0">
-            <Card.Img
-              className=" mx-auto "
-              style={{ width: '80%', height: '45vh' }}
-              src="https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091"
-              alt="Back to the Future Poster"
-            />
-          </Card>
-        </Col>
-
-        {/* Video Section */}
-        <Col md={6}>
-          <iframe
-            style={{ width: '100%', height: '45vh' }}
-            src="https://www.youtube.com/embed/owK1qxDselE?controls=1"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </Col>
-      </Row>
-
-      {/* Date Buttons */}
-      <Row className="mb-4">
-        <Col className="d-flex justify-content-center flex-wrap gap-3">
-          <div>
-            <h5>Screening Id: {selectedOption || 'None'}</h5>
-            <ButtonGroup className="bg-rosa p-3 mb-3 d-flex align-items-center justify-content-center flex-wrap gap-3">
-              {movieData.screeningDetails.map((screening) => (
-                <Button
-                  key={screening.screeningId}
-                  className={`py-1 px-4 rounded border border-0 text-capitalize ${
-                    selectedOption === screening.screeningId
-                      ? 'body-bg-dark text-light'
-                      : 'bg-light text-dark'
-                  }`}
-                  onClick={() => handleSelect(screening.screeningId)}
-                >
-                  {screening.dayName}
-                  <br />
-                  {screening.screeningDate}{' '}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-        </Col>
-      </Row>
-
-      {/* Book Tickets Button */}
-      <Row className="mb-4">
-        <Col className="text-center">
-          <NavButton label="Boka Biljetter" to={'#'} />
-        </Col>
-      </Row>
-
-      {/* Movie Details and  Movie Description  */}
-      <Row className="my-4 d-flex align-items-center justify-content-between g-3 ">
-        <Col md={6} xl={4}>
-          <Card className="text-dark bg-rosa ">
-            <Card.Body className="py-2">
-              <Card.Title className="my-2 text-center fw-bold text-decoration-underline">
-                Detaljer
-              </Card.Title>
-              <ListGroup variant="flush">
-                <ListGroup.Item className="text-dark p-1 px-0 bg-rosa  d-flex align-items-center justify-content-between flex-wrap">
-                  <strong>Speltid:</strong> <span>116 minuter</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="text-dark p-1 px-0  bg-rosa  d-flex align-items-center justify-content-between flex-wrap">
-                  <strong>Genre:</strong> <span>Science Fiction</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-                  <strong>Regi:</strong> <span>Robert Zemeckis</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-                  <strong>Originaltitel:</strong>{' '}
-                  <span>"Back to the Future"</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-                  <strong>Skådespelare:</strong>
-                  <span>
-                    Michael J. Fox, Christopher Lloyd, Lea Thompson, Crispin
-                    Glover
-                  </span>
-                </ListGroup.Item>
-                <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-                  <strong>Inspelad:</strong> <span>1985</span>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        {/* Movie Description */}
-        <Col md={6} lg={6}>
-          <Card className="p-3 border-0 bg-rosa text-dark fw-bold">
-            <Card.Title className="my-2 fw-bold text-decoration-underline">
-              Gladiator
-            </Card.Title>
-
-            <Card.Text className="d-none d-xl-block custom-letterSpacing">
-              {fullText}
-            </Card.Text>
-
-            <Card.Text className="d-block d-xl-none custom-letterSpacing ">
-              {openCollapse ? fullText : shortText}{' '}
-            </Card.Text>
-            <div
-              style={{ width: '100%' }}
-              className="d-flex justify-content-end d-xl-none"
-            >
-              <PrimaryBtn
-                title={openCollapse ? 'Visa Mindre' : 'Visa Mer'}
-                onClick={(e) => {
-                  e?.preventDefault();
-                  setOpenCollapse(!openCollapse);
-                }}
+    <>
+      <MainHeading title="Gladiator" />
+      <Container className="p-0">
+        {/* Row for Poster and Video */}
+        <Row className="mb-4 d-flex align-items-center justify-content-between g-3">
+          {/* Poster Section */}
+          <Col md={4} className="d-none d-md-flex">
+            <Card className="border border-0">
+              <Card.Img
+                className=" mx-auto "
+                style={{ width: '80%', height: '45vh' }}
+                src="https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091"
+                alt="Back to the Future Poster"
               />
+            </Card>
+          </Col>
+
+          {/* Video Section */}
+          <Col md={6}>
+            <iframe
+              style={{ width: '100%', height: '45vh' }}
+              src="https://www.youtube.com/embed/owK1qxDselE?controls=1"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </Col>
+        </Row>
+
+        {/* Date Buttons */}
+        <Row className="mb-4">
+          <Col className="d-flex justify-content-center flex-wrap gap-3">
+            <div>
+              <h5>Screening Id: {selectedOption || 'None'}</h5>
+              <ButtonGroup className="bg-rosa p-3 mb-3 d-flex align-items-center justify-content-center flex-wrap gap-3">
+                {movieData.screeningDetails.map((screening) => (
+                  <Button
+                    key={screening.screeningId}
+                    className={`py-1 px-4 rounded border border-0 text-capitalize ${
+                      selectedOption === screening.screeningId
+                        ? 'body-bg-dark text-light'
+                        : 'bg-light text-dark'
+                    }`}
+                    onClick={() => handleSelect(screening.screeningId)}
+                  >
+                    {screening.dayName}
+                    <br />
+                    {screening.screeningDate}{' '}
+                  </Button>
+                ))}
+              </ButtonGroup>
             </div>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+        </Row>
+
+        {/* Book Tickets Button */}
+        <Row className="mb-4">
+          <Col className="text-center">
+            <NavButton label="Boka Biljetter" to={'#'} />
+          </Col>
+        </Row>
+
+        {/* Movie Details and  Movie Description  */}
+        <Row className="my-4 d-flex align-items-center justify-content-between g-3 ">
+          <Col md={6} xl={4}>
+            <Card className="text-dark bg-rosa ">
+              <Card.Body className="py-2">
+                <Card.Title className="my-2 text-center fw-bold text-decoration-underline">
+                  Detaljer
+                </Card.Title>
+                <ListGroup variant="flush">
+                  <ListGroup.Item className="text-dark p-1 px-0 bg-rosa  d-flex align-items-center justify-content-between flex-wrap">
+                    <strong>Speltid:</strong> <span>116 minuter</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="text-dark p-1 px-0  bg-rosa  d-flex align-items-center justify-content-between flex-wrap">
+                    <strong>Genre:</strong> <span>Science Fiction</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
+                    <strong>Regi:</strong> <span>Robert Zemeckis</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
+                    <strong>Originaltitel:</strong>{' '}
+                    <span>"Back to the Future"</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
+                    <strong>Skådespelare:</strong>
+                    <span>
+                      Michael J. Fox, Christopher Lloyd, Lea Thompson, Crispin
+                      Glover
+                    </span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
+                    <strong>Inspelad:</strong> <span>1985</span>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Movie Description */}
+          <Col md={6} lg={6}>
+            <Card className="p-3 border-0 bg-rosa text-dark fw-bold">
+              <Card.Title className="my-2 fw-bold text-decoration-underline">
+                Gladiator
+              </Card.Title>
+
+              <Card.Text className="d-none d-xl-block custom-letterSpacing">
+                {fullText}
+              </Card.Text>
+
+              <Card.Text className="d-block d-xl-none custom-letterSpacing ">
+                {openCollapse ? fullText : shortText}{' '}
+              </Card.Text>
+              <div
+                style={{ width: '100%' }}
+                className="d-flex justify-content-end d-xl-none"
+              >
+                <PrimaryBtn
+                  title={openCollapse ? 'Visa Mindre' : 'Visa Mer'}
+                  onClick={(e) => {
+                    e?.preventDefault();
+                    setOpenCollapse(!openCollapse);
+                  }}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
