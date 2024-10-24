@@ -28,12 +28,12 @@ const LoginPage: React.FC = () => {
       });
 
       console.log('Login successful:', response.data);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      // Use sessionStorage 
+      sessionStorage.setItem('user', JSON.stringify(response.data.user));
 
       navigate('/'); // Redirect to the home page after successful login
     } catch (error: any) {
       console.error('Login failed:', error);
-
       if (error.response) {
         alert(error.response.data.message);
       } else {
@@ -42,61 +42,57 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // Function to navigate to the registration page
   const handleRegisterRedirect = () => {
     navigate('/medlem/bli-medlem');
   };
 
   return (
-    <>
-      <section className="login-page-container">
-        <div className="login-card">
-          <form onSubmit={handleSubmit(handleLogin)} className="login-form">
-            <div className="field-container">
-              <label htmlFor="email" className="form-label">
-                E-post
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                {...register('user_email', {
-                  required: 'E-post är obligatorisk',
-                })}
-                placeholder="Ange din e-postadress"
-              />
-              {errors.user_email && (
-                <p className="error-text">{errors.user_email.message}</p>
-              )}
-            </div>
+    <section className="login-page-container">
+      <div className="login-card">
+        <form onSubmit={handleSubmit(handleLogin)} className="login-form">
+          <div className="field-container">
+            <label htmlFor="email" className="form-label">
+              E-post
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              {...register('user_email', {
+                required: 'E-post är obligatorisk',
+              })}
+              placeholder="Ange din e-postadress"
+            />
+            {errors.user_email && (
+              <p className="error-text">{errors.user_email.message}</p>
+            )}
+          </div>
 
-            <div className="field-container">
-              <label htmlFor="password" className="form-label">
-                Lösenord
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                {...register('user_password', {
-                  required: 'Lösenord är obligatoriskt',
-                })}
-                placeholder="Ange ditt lösenord"
-              />
-              {errors.user_password && (
-                <p className="error-text">{errors.user_password.message}</p>
-              )}
-            </div>
+          <div className="field-container">
+            <label htmlFor="password" className="form-label">
+              Lösenord
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              {...register('user_password', {
+                required: 'Lösenord är obligatoriskt',
+              })}
+              placeholder="Ange ditt lösenord"
+            />
+            {errors.user_password && (
+              <p className="error-text">{errors.user_password.message}</p>
+            )}
+          </div>
 
-            <div className="button-group">
-              <PrimaryBtn title="Bli Medlem" onClick={handleRegisterRedirect} />
-
-              <PrimaryBtn title="Logga In" type="submit" />
-            </div>
-          </form>
-        </div>
-      </section>
-    </>
+          <div className="button-group">
+            <PrimaryBtn title="Bli Medlem" onClick={handleRegisterRedirect} />
+            <PrimaryBtn title="Logga In" type="submit" />
+          </div>
+        </form>
+      </div>
+    </section>
   );
 };
 
