@@ -1,9 +1,8 @@
-import React from 'react';
 import axios from 'axios';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
-import './LoginPage.scss';
 
 interface FormData {
   user_email: string;
@@ -28,7 +27,7 @@ const LoginPage: React.FC = () => {
       });
 
       console.log('Login successful:', response.data);
-      // Use sessionStorage 
+      // Use sessionStorage
       sessionStorage.setItem('user', JSON.stringify(response.data.user));
 
       navigate('/'); // Redirect to the home page after successful login

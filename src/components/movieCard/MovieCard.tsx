@@ -1,5 +1,4 @@
 import { Card } from 'react-bootstrap';
-import '../../main.scss';
 import PrimaryBtn from '../buttons/PrimaryBtn';
 
 interface MovieCardProps {

@@ -3,8 +3,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
+import '../src/assets/sass/main.scss';
 import { getQueryClient } from './api/clients';
-import './main.scss';
 import router from './router';
 
 const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches
