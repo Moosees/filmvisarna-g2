@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import '../../assets/sass/bookingConfirmation.scss';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 interface Seat {
@@ -20,6 +20,8 @@ interface ReservationData {
   totalPrice: string;
   seats: Seat[];
 }
+
+// TODO change the hardcoded img
 
 function BookingConfirmation() {
   const [reservationData, setReservationData] =
@@ -43,12 +45,6 @@ function BookingConfirmation() {
       fetchReservationData();
     }
   }, [reservationNum]);
-
-  const navigate = useNavigate();
-
-  const handleButtonClick = () => {
-    navigate('/');
-  };
 
   return (
     <>
@@ -104,8 +100,12 @@ function BookingConfirmation() {
                 </li>
                 <Row className="booking-row mt-4">
                   <Col className="booking-buttons col-auto d-flex">
-                    <PrimaryBtn title={'Stäng'} onClick={handleButtonClick} />
-                    <PrimaryBtn title={'Avboka'} onClick={handleButtonClick} />
+                    <Link to="/">
+                      <PrimaryBtn title={'Stäng'} />
+                    </Link>
+                    <Link to="avboka">
+                      <PrimaryBtn title={'Avboka'} />
+                    </Link>
                   </Col>
                 </Row>
               </ul>
