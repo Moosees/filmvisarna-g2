@@ -29,7 +29,7 @@ function Header() {
               <Link to="/medlem">Logga ut</Link>
             </Dropdown.Item>
             <Dropdown.Item as="button">
-              <Link to="/medlem">Medlemssida</Link>
+              <Link to="/medlem/medlems-sida">Medlemssida</Link>
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
