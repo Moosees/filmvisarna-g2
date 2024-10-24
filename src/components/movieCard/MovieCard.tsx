@@ -1,5 +1,6 @@
 import { Card } from 'react-bootstrap';
 import PrimaryBtn from '../buttons/PrimaryBtn';
+import { useNavigate } from 'react-router-dom';
 
 interface MovieCardProps {
   movieId: number;
@@ -18,8 +19,11 @@ function MovieCard({
   movieId,
   screeningId,
 }: MovieCardProps) {
+  const navigate = useNavigate();
+
   const handleCardClick = () => {
     console.log('movieId', movieId);
+    navigate(`/film/${movieId}`);
   };
   const handleButtonClick = (e?: React.MouseEvent) => {
     e?.stopPropagation();
