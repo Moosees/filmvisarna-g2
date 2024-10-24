@@ -5,9 +5,9 @@ interface TextTableProps {
     playTime: number;
     title: string;
     genres: string[];
-    movieInfo: {
-      director: string;
-      actors: string[];
+    movieInfo?: {
+      director?: string;
+      actors?: string[];
       year_recorded: number;
     };
   };
@@ -30,7 +30,8 @@ export default function TextTable({ movieData }: TextTableProps) {
               <strong>Genre:</strong> <span>{movieData.genres.join(', ')}</span>
             </ListGroup.Item>
             <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-              <strong>Regi:</strong> <span>{movieData.movieInfo.director}</span>
+              <strong>Regi:</strong>{' '}
+              <span>{movieData.movieInfo?.director || 'okänd'}</span>
             </ListGroup.Item>
             {/* <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
                     <strong>Originaltitel:</strong>{' '}
@@ -38,11 +39,11 @@ export default function TextTable({ movieData }: TextTableProps) {
                   </ListGroup.Item> */}
             <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
               <strong>Skådespelare:</strong>
-              <span>{movieData.movieInfo.actors.join(', ')}</span>
+              <span>{movieData.movieInfo?.actors?.join(', ')}</span>
             </ListGroup.Item>
             <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
               <strong>Inspelad:</strong>{' '}
-              <span>{movieData.movieInfo.year_recorded}</span>
+              <span>{movieData.movieInfo?.year_recorded}</span>
             </ListGroup.Item>
           </ListGroup>
         </Card.Body>
