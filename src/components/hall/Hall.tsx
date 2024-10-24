@@ -13,7 +13,7 @@ function Hall({ seats }: HallProps) {
             {row.map(({ seatId, free }) => (
               <Col
                 key={seatId}
-                className={`border d-flex align-items-center justify-content-center p-2 rounded bg-light seat ${free ? '' : 'bg-rosa'}`}
+                className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${free ? 'bg-light' : 'bg-rosa'}`}
               />
             ))}
           </Row>
