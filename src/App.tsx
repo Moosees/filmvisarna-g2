@@ -1,13 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
-import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 
 function App() {
   return (
     <div className="min-vh-100 d-flex flex-column gap-5">
       <Header />
       <main className="flex-grow-1 container">
-        <MovieDetailsPage />
         <Outlet />
       </main>
       <div
