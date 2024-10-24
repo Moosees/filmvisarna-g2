@@ -12,9 +12,15 @@ const Footer: React.FC = () => {
         <div className="row">
           <div className="col-md-3">
             <h5>Sociala medier:</h5>
-            <Instagram size={35} />
-            <TwitterX size={35} />
-            <Facebook size={35} />
+            <i className="bi bi-alarm me-3">
+              <Instagram size={35} />
+            </i>
+            <i className="bi bi-alarm me-3">
+              <TwitterX size={35} />
+            </i>
+            <i className="bi bi-alarm me-3">
+              <Facebook size={35} />
+            </i>
           </div>
           <div className="col-md-3">
             <h5>Vi öppnar:</h5>
@@ -28,11 +34,46 @@ const Footer: React.FC = () => {
           </div>
           <div className="col-md-3">
             <h5>Övrigt:</h5>
-            <p>Biogodis</p>
-            <p>Teknik</p>
-            <p>Om oss</p>
-            <p>Avboka</p>
-            <p>Kontaka oss</p>
+            <p>
+              <a
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                href="#"
+              >
+                Biogodis
+              </a>
+            </p>
+            <p>
+              <a
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                href="#"
+              >
+                Teknik
+              </a>
+            </p>
+            <p>
+              <a
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                href="#"
+              >
+                Om oss
+              </a>
+            </p>
+            <p>
+              <a
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                href="#"
+              >
+                Avboka
+              </a>
+            </p>
+            <p>
+              <a
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                href="#"
+              >
+                Kontakt
+              </a>
+            </p>
           </div>
         </div>
       </div>
