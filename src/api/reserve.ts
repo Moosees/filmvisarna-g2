@@ -14,16 +14,14 @@ interface ScreeningData {
 }
 
 interface ReservationData {
-  results: {
-    reservationNumber: string;
-    title: string;
-    startDate: string;
-    timeRange: string;
-    auditoriumName: string;
-    ticketDetails: string;
-    totalPrice: string;
-    seats: Seat[];
-  };
+  reservationNumber: string;
+  title: string;
+  startDate: string;
+  timeRange: string;
+  auditoriumName: string;
+  ticketDetails: string;
+  totalPrice: string;
+  seats: Seat[];
 }
 
 interface Seat {
@@ -58,10 +56,10 @@ export const reserveLoader =
 //-------------BOOKING-INFORMATION---------------
 async function getBookingData(bookingNumber: string) {
   const response = await getAxios().get<ReservationData>(
-    `/bekräftelse/${bookingNumber}`
+    `/reservation/${bookingNumber}`
   );
 
-  return response.data.results;
+  return response.data;
 }
 
 export const getBookingDataQuery = (bookingNumber: string) =>
@@ -73,11 +71,13 @@ export const getBookingDataQuery = (bookingNumber: string) =>
 export const bookingLoader =
   (client: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
-    const bookingNumber = params.bookingNumber;
+    const bookingNumber = params.reservationNum;
 
-    if (!params.bookingNumber) throw new Error('Bokingsnummer saknas');
+    if (!bookingNumber) {
+      throw new Error('Bokingsnummer saknas');
+    }
 
-    await client.ensureQueryData(getScreeningDataQuery(+params.bookingNumber));
+    await client.ensureQueryData(getBookingDataQuery(bookingNumber));
 
     return { bookingNumber };
   };

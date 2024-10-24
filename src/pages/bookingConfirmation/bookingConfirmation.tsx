@@ -2,18 +2,15 @@ import { Col, Container, Row } from 'react-bootstrap';
 import '../../assets/sass/bookingConfirmation.scss';
 import { Link, useLoaderData } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
-import { bookingLoader, getBookingDataQuery } from '../../api/reserve';
+import { getBookingDataQuery } from '../../api/reserve';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 // TODO change the hardcoded img
 
 function BookingConfirmation() {
-  const { bookingNumber } = useLoaderData() as Awaited<
-    ReturnType<ReturnType<typeof bookingLoader>>
-  >;
+  const { bookingNumber } = useLoaderData() as { bookingNumber: string };
 
   const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
-  console.log(data);
 
   return (
     <>
