@@ -1,7 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { getQueryClient } from './api/clients';
+import { reserveLoader } from './api/reserve';
 import App from './App';
-import RegisterPage from './pages/registerpage/RegisterPage';
 import HomePage from './pages/homepage/HomePage';
+import RegisterPage from './pages/registerpage/RegisterPage';
+import ReservePage from './pages/reservepage/ReservePage';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 
@@ -25,6 +28,13 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: '/visning/:screeningId',
+        element: <ReservePage />,
+        handle: {
+          title: 'Boka platser',
+        },
+        loader: reserveLoader(getQueryClient()),
+      },
         path: '/bekräftelse/:reservationNum',
         element: <BookingConfirmation />,
         handle: {
