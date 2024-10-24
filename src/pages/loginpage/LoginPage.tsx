@@ -2,7 +2,7 @@ import React from 'react';
 import Rubrik from '../../components/rubrik/Rubrik';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.scss'; // Import the SCSS file for styling
+import './LoginPage.scss';
 
 interface FormData {
   user_email: string;
@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
       <Rubrik title="Logga In" />
       <section className="login-page-container">
         {' '}
-        {/* Wrapper for centering */}
+        
         <div className="card">
           <form onSubmit={handleSubmit(handleLogin)} className="login-form">
             <div className="field-container">
