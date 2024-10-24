@@ -43,7 +43,10 @@ const router = createBrowserRouter([
         },
         loader: bookingLoader(getQueryClient()),
       },
-      { path: '/film/:id', element: <MovieDetailsPage /> },
+      {
+        path: '/film/:id',
+        element: <MovieDetailsPage />,
+      },
     ],
   },
 ]);

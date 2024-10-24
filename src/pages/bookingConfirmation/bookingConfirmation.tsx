@@ -6,6 +6,7 @@ import { getBookingDataQuery } from '../../api/reserve';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 // TODO change the hardcoded img
+//TODO Change how it looks if a booking contains more than one seat.
 
 function BookingConfirmation() {
   const { bookingNumber } = useLoaderData() as { bookingNumber: string };
