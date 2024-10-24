@@ -34,7 +34,7 @@ function MovieCard({
     >
       <div className="position-relative">
         <Card.Img variant="top" src={src} className="img-fluid p-2 card-img" />
-        <div className="position-absolute bottom-0 end-0 bg-danger text-white p-2 rounded-circle m-3 border border-warning">
+        <div className="position-absolute bottom-0 end-0 bg-danger text-white digital p-2 m-3 border border-warning rounded-circle">
           {age}
         </div>
       </div>
