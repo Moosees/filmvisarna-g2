@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import LogoText from '../../assets/images/logoText.svg';
 import User from '../../assets/images/user.svg';
 import NavButton from './NavButton';
+import LogOut from '../Logout';
 
 function Header() {
   return (
@@ -13,7 +14,7 @@ function Header() {
         </Link>
         <NavButton to="/filmer" label="Kalender" />
         <NavButton to="/visning/3" label="Upptäck" />
-        <NavButton to="/evenemang" label="Evenameng" />
+        <NavButton to="/evenemang" label="Evenemang" />
         <Dropdown>
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
             <img src={User} alt="Medlem meny" className="img-fluid" />
@@ -22,14 +23,14 @@ function Header() {
             <Dropdown.Item as="button">
               <Link to="/medlem/logga-in">Logga in</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item as="button">
               <Link to="/medlem/bli-medlem">Bli medlem</Link>
             </Dropdown.Item>
             <Dropdown.Item as="button">
-              <Link to="/medlem">Logga ut</Link>
+              <Link to="/medlem">Medlemssida</Link>
             </Dropdown.Item>
             <Dropdown.Item as="button">
-              <Link to="/medlem">Medlemssida</Link>
+              <LogOut />
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
