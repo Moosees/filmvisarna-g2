@@ -114,7 +114,7 @@ function MovieBooking() {
           </Col>
         </Row>
         {/* Movie Details and  Movie Description  */}
-        <Row className="my-3 d-flex align-items-center justify-content-between g-3 ">
+        <Row className="my-3 mx-auto d-flex align-items-center  justify-content-around  bg-rosa rounded  col-md-10">
           <TextTable movieData={movieData} />
           {/* Movie Description */}
           <TextBox movieData={movieData} />

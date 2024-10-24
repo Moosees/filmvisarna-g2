@@ -15,9 +15,9 @@ interface TextTableProps {
 
 export default function TextTable({ movieData }: TextTableProps) {
   return (
-    <Col md={6} xl={4}>
-      <Card className="text-dark bg-rosa ">
-        <Card.Body className="py-2">
+    <Col md={6} xl={5}>
+      <Card className="text-dark bg-rosa border border-0">
+        <Card.Body className="p-0">
           <Card.Title className="my-2 text-center fw-bold text-decoration-underline">
             Detaljer
           </Card.Title>

@@ -16,9 +16,9 @@ export default function TextBox({ movieData }: TextBoxProps) {
   const fullText = movieData.movieInfo.description;
   const shortText = fullText.substring(0, 150) + '...';
   return (
-    <Col md={6} lg={6}>
-      <Card className="py-2 px-3 border-0 bg-rosa text-dark fw-bold">
-        <Card.Title className="my-2 fw-bold text-decoration-underline">
+    <Col md={6}>
+      <Card className="border-0 bg-rosa text-dark fw-bold">
+        <Card.Title className="my-3 fw-bold text-decoration-underline">
           {movieData.title}
         </Card.Title>
 
