@@ -1,5 +1,4 @@
 import React from 'react';
-import Rubrik from '../../components/rubrik/Rubrik';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
@@ -36,10 +35,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <Rubrik title="Logga In" />
       <section className="login-page-container">
         {' '}
-        <div className="card">
+        <div className="login-card">
           <form onSubmit={handleSubmit(handleLogin)} className="login-form">
             <div className="field-container">
               <label htmlFor="email" className="form-label">
@@ -81,7 +79,7 @@ const LoginPage: React.FC = () => {
 
             <div className="button-group">
               <PrimaryBtn title="Bli Medlem" onClick={handleRegisterRedirect} />
-              
+
               <PrimaryBtn
                 title="Logga In"
                 onClick={() => handleSubmit(handleLogin)()}
