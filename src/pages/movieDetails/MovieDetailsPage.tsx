@@ -72,7 +72,7 @@ function MovieBooking() {
           </div>
 
           {/* Movie Details and  Movie Description  */}
-          <Row className="d-flex flex-column g-3 col-md-5 ">
+          <Row className=" py-3 d-flex flex-column g-3 col-md-5 ">
             {/* Movie Description */}
             <TextBox movieData={movieData} />
 
