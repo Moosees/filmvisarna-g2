@@ -89,7 +89,7 @@ const FilterPage: React.FC = () => {
                 }
                 dateFormat="yyyy-MM-dd"
                 placeholderText="Välj Datum"
-                className="form-control react-datepicker-wrapper p-2"
+                className="form-control react-datepicker-wrapper p-2 m-0"
               />
 
               <X
@@ -107,18 +107,19 @@ const FilterPage: React.FC = () => {
           </Col>
 
           <Col md={6}>
-            <Form.Control
+            <input
               type="text"
               name="searchTerm"
               placeholder="Sök"
               value={filters.searchTerm}
               onChange={handleFilterChange}
+              className="form-control m-0"
             />
           </Col>
 
           <Col md={3}>
             <Form.Select
-              className="bg-light text-dark"
+              className="bg-light text-dark p-2 m-0"
               name="selectedAge"
               value={filters.selectedAge}
               onChange={handleFilterChange}
