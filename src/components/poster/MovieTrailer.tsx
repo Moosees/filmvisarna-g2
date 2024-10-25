@@ -9,13 +9,27 @@ interface MovieTrailerProps {
   };
 }
 
+const convertToEmbedLink = (trailerUrl: string) => {
+  let videoId = '';
+  if (trailerUrl.includes('watch?v=')) {
+    videoId = trailerUrl.split('v=')[1].split('&')[0];
+  } else if (trailerUrl.includes('youtu.be/')) {
+    videoId = trailerUrl.split('youtu.be/')[1].split('?')[0];
+  }
+  if (videoId) {
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  return trailerUrl;
+};
+
 export default function MovieTrailer({ movieData }: MovieTrailerProps) {
   return (
     <Col>
       {movieData.movieInfo?.trailer ? (
         <iframe
           style={{ width: '100%', height: '38vh' }}
-          src={movieData.movieInfo.trailer}
+          src={convertToEmbedLink(movieData.movieInfo.trailer)}
           title={`${movieData.title} trailer`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
