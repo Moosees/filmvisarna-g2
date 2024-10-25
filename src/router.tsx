@@ -10,6 +10,7 @@ import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import { detailsLoader } from './api/details';
+import FilterPage from './pages/filterPage/FilterPage';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,13 @@ const router = createBrowserRouter([
         element: <LoginPage />,
         handle: {
           title: 'Bli medlem',
+        },
+      },
+      {
+        path: '/film',
+        element: <FilterPage />,
+        handle: {
+          title: 'Kommande Filmer',
         },
       },
       {

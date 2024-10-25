@@ -8,7 +8,7 @@ interface CardsWrapperProps {
 function CardsWrapper({ children }: CardsWrapperProps) {
   return (
     <Container className="p-0 py-3">
-      <Row className="g-1 g-md-3 ">
+      <Row className="g-1 g-md-3 justify-content-center">
         {Children.map(children, (child) => (
           <Col xs={6} md={4} lg={3}>
             {child}
