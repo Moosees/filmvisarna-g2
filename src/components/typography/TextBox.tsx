@@ -6,18 +6,22 @@ interface TextBoxProps {
   movieData: {
     title: string;
     movieInfo: {
-      description: string;
+      description?: string;
     };
   };
 }
 export default function TextBox({ movieData }: TextBoxProps) {
   const [openCollapse, setOpenCollapse] = useState(false);
 
-  const fullText = movieData.movieInfo.description;
-  const shortText = fullText.substring(0, 150) + '...';
+  const fullText =
+    movieData.movieInfo?.description ?? 'Ingen information tillgänglig';
+  const shortText =
+    fullText.length > 150 ? fullText.substring(0, 150) + '...' : fullText;
+  const showButton = fullText.length > 150;
+
   return (
-    <Col md={6}>
-      <Card className="border-0 bg-rosa text-dark fw-bold">
+    <Col>
+      <Card className="p-3 border-0 bg-rosa text-dark fw-bold">
         <Card.Title className="my-3 fw-bold text-decoration-underline">
           {movieData.title}
         </Card.Title>
@@ -33,13 +37,15 @@ export default function TextBox({ movieData }: TextBoxProps) {
           style={{ width: '100%' }}
           className="d-flex justify-content-end d-xl-none"
         >
-          <PrimaryBtn
-            title={openCollapse ? 'Visa Mindre' : 'Visa Mer'}
-            onClick={(e) => {
-              e?.preventDefault();
-              setOpenCollapse(!openCollapse);
-            }}
-          />
+          {showButton && (
+            <PrimaryBtn
+              title={openCollapse ? 'Visa Mindre' : 'Visa Mer'}
+              onClick={(e) => {
+                e?.preventDefault();
+                setOpenCollapse(!openCollapse);
+              }}
+            />
+          )}
         </div>
       </Card>
     </Col>

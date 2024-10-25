@@ -24,7 +24,7 @@ export default function ScreeningSelect({
   return (
     <Col className="d-flex justify-content-center flex-wrap gap-3">
       <div>
-        <h5>Screening Id: {selectedScreening || 'None'}</h5>
+        {/* <h5>Screening Id: {selectedScreening || 'None'}</h5> */}
         <ButtonGroup className="bg-rosa p-2 d-flex align-items-center justify-content-center flex-wrap gap-2 ">
           {movieData.screeningDetails.map((screening) => (
             <Button
