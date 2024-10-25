@@ -63,7 +63,7 @@ const FilterPage: React.FC = () => {
       .includes(filters.searchTerm.toLowerCase());
 
     const matchesAge =
-      filters.selectedAge === '' || movie.age >= Number(filters.selectedAge);
+      filters.selectedAge === '' || movie.age <= Number(filters.selectedAge);
 
     const matchesDate =
       filters.selectedDate === null ||
@@ -78,7 +78,7 @@ const FilterPage: React.FC = () => {
       <Form>
         <Row className="mb-3">
           <Col md={3}>
-            <div style={{ position: 'relative', width: '100%' }}>
+            <div style={{ position: 'relative' }}>
               <DatePicker
                 selected={filters.selectedDate}
                 onChange={(date: Date | null) =>
