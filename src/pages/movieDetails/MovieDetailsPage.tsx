@@ -23,9 +23,7 @@ function MovieBooking() {
   return (
     <>
       <Container className="p-0">
-        <div className="mx-auto" style={{ width: '50%' }}>
-          <MainHeading title={movieData.title} />
-        </div>
+        <MainHeading title={movieData.title} />
         <div
           style={{ width: '100%' }}
           className=" p-3 d-flex flex-column flex-md-row justify-content-evenly"
