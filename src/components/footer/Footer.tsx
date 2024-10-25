@@ -1,6 +1,4 @@
 import React from 'react';
-import './footer.scss';
-import '../../assets/sass/fonts.scss';
 import { Instagram } from 'react-bootstrap-icons';
 import { TwitterX } from 'react-bootstrap-icons';
 import { Facebook } from 'react-bootstrap-icons';
