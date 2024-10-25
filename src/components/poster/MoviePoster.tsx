@@ -9,13 +9,12 @@ interface MoviePosterProps {
 export default function MoviePoster({ movieData }: MoviePosterProps) {
   return (
     <Col
-      md={4}
-      // className="d-none d-md-flex"
+    // className="d-none d-md-flex"
     >
       <Card className="border border-0">
         <Card.Img
           className=" mx-auto "
-          style={{ width: '80%', height: '38vh' }}
+          style={{ width: '70%', height: '38vh' }}
           src={movieData.posterUrl}
           alt={movieData.title}
         />
