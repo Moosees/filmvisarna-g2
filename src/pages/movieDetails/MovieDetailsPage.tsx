@@ -62,7 +62,7 @@ function MovieBooking() {
               </Col>
 
               {/* Book Tickets Button */}
-              <Col className="text-center mt-2">
+              <Col className="text-center mt-4">
                 <NavButton
                   label="Boka Biljetter"
                   to={`/visning/${selectedScreening}`}
