@@ -63,9 +63,9 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
 };
 
 const login = async (req: Request, res: Response): Promise<void> => {
-  const { user_email, user_password } = req.body;
+  const { email, password } = req.body;
 
-  if (!user_email || !user_password) {
+  if (!email || !password) {
     res.status(400).json({ message: 'Både e-post och lösenord krävs' });
     return;
   }
@@ -75,7 +75,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         `;
 
   try {
-    const [rows] = (await db.execute(query, [user_email])) as RowDataPacket[];
+    const [rows] = (await db.execute(query, [email])) as RowDataPacket[];
 
     const user = rows[0];
 
@@ -85,7 +85,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const passwordMatch = await PasswordEncryptor.check(
-      user_password,
+      password,
       user.user_password
     );
     if (!passwordMatch) {
@@ -97,7 +97,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
 
     req.session.user = {
       id: user.id,
-      email: user_email,
+      email: user.user_email,
       first_name: user.first_name,
       last_name: user.last_name,
       role: user.role,

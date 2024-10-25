@@ -4,8 +4,8 @@ import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 export interface LoginFormData extends FieldValues {
-  user_email: string;
-  user_password: string;
+  email: string;
+  password: string;
 }
 
 const LoginPage: React.FC = () => {
@@ -34,13 +34,13 @@ const LoginPage: React.FC = () => {
               type="email"
               className="form-control"
               id="email"
-              {...register('user_email', {
+              {...register('email', {
                 required: 'E-post är obligatorisk',
               })}
               placeholder="Ange din e-postadress"
             />
-            {errors.user_email && (
-              <p className="error-text">{errors.user_email.message}</p>
+            {errors.email && (
+              <p className="error-text">{errors.email.message}</p>
             )}
           </div>
 
@@ -52,21 +52,21 @@ const LoginPage: React.FC = () => {
               type="password"
               className="form-control"
               id="password"
-              {...register('user_password', {
+              {...register('password', {
                 required: 'Lösenord är obligatoriskt',
               })}
               placeholder="Ange ditt lösenord"
             />
-            {errors.user_password && (
-              <p className="error-text">{errors.user_password.message}</p>
+            {errors.password && (
+              <p className="error-text">{errors.password.message}</p>
             )}
           </div>
 
           <div className="button-group">
             <Link to="/medlem/bli-medlem">
-              <PrimaryBtn title="Bli Medlem" />
+              <PrimaryBtn title="Bli medlem" />
             </Link>
-            <PrimaryBtn title="Logga In" type="submit" />
+            <PrimaryBtn title="Logga in" type="submit" />
           </div>
         </form>
       </div>
