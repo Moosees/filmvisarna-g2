@@ -14,6 +14,17 @@ interface TextTableProps {
 }
 
 export default function TextTable({ movieData }: TextTableProps) {
+  const movieDetails = [
+    { label: 'Speltid', value: `${movieData.playTime} Minuter` },
+    { label: 'Genre', value: movieData.genres.join(', ') },
+    { label: 'Regi', value: movieData.movieInfo?.director || 'okänd' },
+    {
+      label: 'Skådespelare',
+      value: movieData.movieInfo?.actors?.join(', ') || 'okänd',
+    },
+    { label: 'Inspelad', value: movieData.movieInfo?.year_recorded || 'okänd' },
+  ];
+
   return (
     <Col md={6} xl={5}>
       <Card className="text-dark bg-rosa border border-0">
@@ -22,29 +33,14 @@ export default function TextTable({ movieData }: TextTableProps) {
             Detaljer
           </Card.Title>
           <ListGroup variant="flush">
-            <ListGroup.Item className="text-dark p-1 px-0 bg-rosa  d-flex align-items-center justify-content-between flex-wrap">
-              <strong>Speltid:</strong>{' '}
-              <span>{movieData.playTime} Minuter</span>
-            </ListGroup.Item>
-            <ListGroup.Item className="text-dark p-1 px-0  bg-rosa  d-flex align-items-center justify-content-between flex-wrap">
-              <strong>Genre:</strong> <span>{movieData.genres.join(', ')}</span>
-            </ListGroup.Item>
-            <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-              <strong>Regi:</strong>{' '}
-              <span>{movieData.movieInfo?.director || 'okänd'}</span>
-            </ListGroup.Item>
-            {/* <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-                    <strong>Originaltitel:</strong>{' '}
-                    <span>"Back to the Future"</span>
-                  </ListGroup.Item> */}
-            <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-              <strong>Skådespelare:</strong>
-              <span>{movieData.movieInfo?.actors?.join(', ')}</span>
-            </ListGroup.Item>
-            <ListGroup.Item className="text-dark p-1 px-0  bg-rosa d-flex align-items-center justify-content-between flex-wrap">
-              <strong>Inspelad:</strong>{' '}
-              <span>{movieData.movieInfo?.year_recorded}</span>
-            </ListGroup.Item>
+            {movieDetails.map((detail, index) => (
+              <ListGroup.Item
+                key={index}
+                className="text-dark p-1 px-0 bg-rosa d-flex align-items-center justify-content-between flex-wrap"
+              >
+                <strong>{detail.label}:</strong> <span>{detail.value}</span>
+              </ListGroup.Item>
+            ))}
           </ListGroup>
         </Card.Body>
       </Card>

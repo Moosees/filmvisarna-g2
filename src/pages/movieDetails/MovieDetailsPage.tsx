@@ -28,30 +28,32 @@ function MovieBooking() {
         <div className="mx-auto" style={{ width: '50%' }}>
           <MainHeading title={movieData.title} />
         </div>
+
         {/* Row for Poster and Video */}
         <Row className=" my-3 d-flex align-items-center justify-content-evenly ">
           {/* Poster Section */}
+
           {openTrailer ? (
             <MovieTrailer movieData={movieData} />
           ) : (
             <MoviePoster movieData={movieData} />
           )}
-          {/*  */}
-          {/* Video Section */}
-          {/* <MovieTrailer movieData={movieData} /> */}
           <div
             style={{ width: '100%' }}
             className="d-flex justify-content-center "
           >
-            <PrimaryBtn
-              title={openTrailer ? 'Visa Poster' : 'Visa Trailer'}
-              onClick={(e) => {
-                e?.preventDefault();
-                setOpenTrailer(!openTrailer);
-              }}
-            />
+            {movieData.movieInfo?.trailer && (
+              <PrimaryBtn
+                title={openTrailer ? 'Visa Poster' : 'Visa Trailer'}
+                onClick={(e) => {
+                  e?.preventDefault();
+                  setOpenTrailer(!openTrailer);
+                }}
+              />
+            )}
           </div>
         </Row>
+
         {/* Date Buttons */}
         <Row className="mb-3">
           <ScreeningSelect
@@ -60,6 +62,7 @@ function MovieBooking() {
             movieData={movieData}
           />
         </Row>
+
         {/* Book Tickets Button */}
         <Row className="mb-4">
           <Col className="text-center">
@@ -69,8 +72,10 @@ function MovieBooking() {
             />
           </Col>
         </Row>
+
         {/* Movie Details and  Movie Description  */}
-        <Row className="my-3 mx-auto d-flex align-items-center  justify-content-around  bg-rosa rounded  col-md-10">
+        <Row className="my-3 py-3 mx-auto d-flex align-items-center  justify-content-around  bg-rosa rounded  col-md-10">
+          {/* Movie Details */}
           <TextTable movieData={movieData} />
           {/* Movie Description */}
           <TextBox movieData={movieData} />
