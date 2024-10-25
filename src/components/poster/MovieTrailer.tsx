@@ -11,7 +11,7 @@ interface MovieTrailerProps {
 
 export default function MovieTrailer({ movieData }: MovieTrailerProps) {
   return (
-    <Col md={6}>
+    <Col>
       {movieData.movieInfo?.trailer ? (
         <iframe
           style={{ width: '100%', height: '38vh' }}

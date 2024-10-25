@@ -26,7 +26,7 @@ export default function TextTable({ movieData }: TextTableProps) {
   ];
 
   return (
-    <Col md={6} xl={5}>
+    <Col>
       <Card className="text-dark bg-rosa border border-0">
         <Card.Body className="p-0">
           <Card.Title className="my-2 text-center fw-bold text-decoration-underline">

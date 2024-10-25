@@ -20,7 +20,7 @@ export default function TextBox({ movieData }: TextBoxProps) {
   const showButton = fullText.length > 150;
 
   return (
-    <Col md={6}>
+    <Col>
       <Card className="border-0 bg-rosa text-dark fw-bold">
         <Card.Title className="my-3 fw-bold text-decoration-underline">
           {movieData.title}

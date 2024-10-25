@@ -28,58 +28,59 @@ function MovieBooking() {
         <div className="mx-auto" style={{ width: '50%' }}>
           <MainHeading title={movieData.title} />
         </div>
+        <div
+          style={{ width: '100%' }}
+          className="d-flex flex-column flex-md-row"
+        >
+          {/* Row for Poster and Video */}
+          <div className="d-flex flex-column col-md-5">
+            <Row>
+              {/* Poster Section */}
+              <Col className="text-center">
+                {openTrailer ? (
+                  <MovieTrailer movieData={movieData} />
+                ) : (
+                  <MoviePoster movieData={movieData} />
+                )}
+                {movieData.movieInfo?.trailer && (
+                  <PrimaryBtn
+                    title={openTrailer ? 'Visa Poster' : 'Visa Trailer'}
+                    onClick={(e) => {
+                      e?.preventDefault();
+                      setOpenTrailer(!openTrailer);
+                    }}
+                  />
+                )}
+              </Col>
+            </Row>
+            <Row className=" my-3 d-flex flex-column align-items-center">
+              {/* Date Buttons */}
+              <Col>
+                <ScreeningSelect
+                  selectedScreening={selectedScreening}
+                  setSelectedScreening={setSelectedScreening}
+                  movieData={movieData}
+                />
+              </Col>
 
-        {/* Row for Poster and Video */}
-        <Row className=" my-3 d-flex align-items-center justify-content-evenly ">
-          {/* Poster Section */}
-
-          {openTrailer ? (
-            <MovieTrailer movieData={movieData} />
-          ) : (
-            <MoviePoster movieData={movieData} />
-          )}
-          <div
-            style={{ width: '100%' }}
-            className="d-flex justify-content-center "
-          >
-            {movieData.movieInfo?.trailer && (
-              <PrimaryBtn
-                title={openTrailer ? 'Visa Poster' : 'Visa Trailer'}
-                onClick={(e) => {
-                  e?.preventDefault();
-                  setOpenTrailer(!openTrailer);
-                }}
-              />
-            )}
+              {/* Book Tickets Button */}
+              <Col className="text-center mt-2">
+                <NavButton
+                  label="Boka Biljetter"
+                  to={`/visning/${selectedScreening}`}
+                />
+              </Col>
+            </Row>
           </div>
-        </Row>
 
-        {/* Date Buttons */}
-        <Row className="mb-3">
-          <ScreeningSelect
-            selectedScreening={selectedScreening}
-            setSelectedScreening={setSelectedScreening}
-            movieData={movieData}
-          />
-        </Row>
-
-        {/* Book Tickets Button */}
-        <Row className="mb-4">
-          <Col className="text-center">
-            <NavButton
-              label="Boka Biljetter"
-              to={`/visning/${selectedScreening}`}
-            />
-          </Col>
-        </Row>
-
-        {/* Movie Details and  Movie Description  */}
-        <Row className="my-3 py-3 mx-auto d-flex align-items-center  justify-content-around  bg-rosa rounded  col-md-10">
-          {/* Movie Details */}
-          <TextTable movieData={movieData} />
-          {/* Movie Description */}
-          <TextBox movieData={movieData} />
-        </Row>
+          {/* Movie Details and  Movie Description  */}
+          <Row className="my-3 p-3 mx-auto d-flex align-items-center  justify-content-around flex-column bg-rosa rounded  col-md-5">
+            {/* Movie Description */}
+            <TextBox movieData={movieData} />
+            {/* Movie Details */}
+            <TextTable movieData={movieData} />
+          </Row>
+        </div>
       </Container>
     </>
   );
