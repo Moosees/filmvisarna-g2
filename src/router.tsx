@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         path: '/medlem/logga-in',
         element: <LoginPage />,
         handle: {
-          title: 'Bli medlem',
+          title: 'Logga in',
         },
       },
       {
