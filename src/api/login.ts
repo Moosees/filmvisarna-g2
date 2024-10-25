@@ -1,22 +1,28 @@
-const handleLogin: SubmitHandler<FormData> = async (data) => {
-  try {
-    // Send a POST request to the login endpoint
-    const response = await axios.post('/api/user', {
-      user_email: data.user_email,
-      user_password: data.user_password,
-    });
+import { QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { ActionFunctionArgs, redirect } from 'react-router-dom';
+import { LoginFormData } from '../pages/loginpage/LoginPage';
+import { getAxios } from './clients';
 
-    console.log('Login successful:', response.data);
-    // Use sessionStorage
-    sessionStorage.setItem('user', JSON.stringify(true));
+const login = async (data: LoginFormData) =>
+  await getAxios().post('user', data);
 
-    navigate('/'); // Redirect to the home page after successful login
-  } catch (error: any) {
-    console.error('Login failed:', error);
-    if (error.response) {
-      alert(error.response.data.message);
-    } else {
-      alert('An unknown error occurred.');
+// ActionFunctionArgs also include params key if needed
+export const loginAction =
+  (client: QueryClient) =>
+  async ({ request }: ActionFunctionArgs) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData) as unknown as LoginFormData;
+
+    try {
+      await login(data);
+      await client.invalidateQueries({ queryKey: ['user'] });
+
+      return redirect('/'); // Redirect to the home page after successful login
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        return error.response.data.message;
+      }
+      return 'Inloggning misslyckades';
     }
-  }
-};
+  };

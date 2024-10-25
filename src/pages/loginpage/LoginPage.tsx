@@ -1,23 +1,26 @@
 import React from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
-import { Link, useSubmit } from 'react-router-dom';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
-interface FormData extends FieldValues {
+export interface LoginFormData extends FieldValues {
   user_email: string;
   user_password: string;
 }
 
 const LoginPage: React.FC = () => {
   const submit = useSubmit();
+  const error = useActionData();
+  console.log({ error });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<LoginFormData>();
 
-  const onSubmit = (values: FormData) => submit(values, { method: 'POST' });
+  const onSubmit: SubmitHandler<LoginFormData> = (values) =>
+    submit(values, { method: 'post', action: '/medlem/logga-in' });
 
   return (
     <section className="login-page-container">

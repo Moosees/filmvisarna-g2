@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { bookingLoader } from './api/booking';
 import { getQueryClient } from './api/clients';
+import { detailsLoader } from './api/details';
+import { loginAction } from './api/login';
 import { reserveLoader } from './api/reserve';
 import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
@@ -9,7 +11,6 @@ import LoginPage from './pages/loginpage/LoginPage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
-import { detailsLoader } from './api/details';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
         handle: {
           title: 'Logga in',
         },
+        action: loginAction(getQueryClient()),
       },
       {
         path: '/film/:id',
