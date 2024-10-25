@@ -14,9 +14,7 @@ import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 function MovieBooking() {
   const { movieId } = useLoaderData() as { movieId: number };
-
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
-
   const [selectedScreening, setSelectedScreening] = useState<number>(
     movieData.screeningDetails[0]?.screeningId
   );
@@ -53,7 +51,7 @@ function MovieBooking() {
                 )}
               </Col>
             </Row>
-            <Row className=" my-3 d-flex flex-column align-items-center">
+            <Row className=" my-3 d-flex flex-column align-items-center d-none d-md-block">
               {/* Date Buttons */}
               <Col>
                 <ScreeningSelect
@@ -77,6 +75,25 @@ function MovieBooking() {
           <Row className="d-flex flex-column g-3 col-md-5 ">
             {/* Movie Description */}
             <TextBox movieData={movieData} />
+
+            <div className=" my-3 d-flex flex-column align-items-center d-md-none">
+              {/* Date Buttons */}
+              <Col>
+                <ScreeningSelect
+                  selectedScreening={selectedScreening}
+                  setSelectedScreening={setSelectedScreening}
+                  movieData={movieData}
+                />
+              </Col>
+
+              {/* Book Tickets Button */}
+              <Col className="text-center mt-2">
+                <NavButton
+                  label="Boka Biljetter"
+                  to={`/visning/${selectedScreening}`}
+                />
+              </Col>
+            </div>
             {/* Movie Details */}
             <TextTable movieData={movieData} />
           </Row>
