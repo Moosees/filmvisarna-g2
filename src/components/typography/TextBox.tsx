@@ -21,7 +21,7 @@ export default function TextBox({ movieData }: TextBoxProps) {
 
   return (
     <Col>
-      <Card className="border-0 bg-rosa text-dark fw-bold">
+      <Card className="p-3 border-0 bg-rosa text-dark fw-bold">
         <Card.Title className="my-3 fw-bold text-decoration-underline">
           {movieData.title}
         </Card.Title>

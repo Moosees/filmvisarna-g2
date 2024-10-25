@@ -30,10 +30,10 @@ function MovieBooking() {
         </div>
         <div
           style={{ width: '100%' }}
-          className="d-flex flex-column flex-md-row"
+          className=" p-3 d-flex flex-column flex-md-row justify-content-evenly"
         >
           {/* Row for Poster and Video */}
-          <div className="d-flex flex-column col-md-5">
+          <div className="d-flex flex-column col-md-6 col-lg-5">
             <Row>
               {/* Poster Section */}
               <Col className="text-center">
@@ -74,7 +74,7 @@ function MovieBooking() {
           </div>
 
           {/* Movie Details and  Movie Description  */}
-          <Row className="my-3 p-3 mx-auto d-flex align-items-center  justify-content-around flex-column bg-rosa rounded  col-md-5">
+          <Row className="d-flex flex-column g-3 col-md-5 ">
             {/* Movie Description */}
             <TextBox movieData={movieData} />
             {/* Movie Details */}
