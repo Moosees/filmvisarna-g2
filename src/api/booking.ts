@@ -13,7 +13,7 @@ interface ReservationData {
   seats: Seat[];
 }
 
-interface Seat {
+export interface Seat {
   row: number;
   number: number;
   seatId: number;
