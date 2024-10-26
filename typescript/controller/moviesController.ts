@@ -241,7 +241,7 @@ const filterMovies = async (req: Request, res: Response) => {
     join bondkatt.movie m on
     s.movie_id =m.id
     WHERE
-    CAST(s.start_time AS DATE) >= CURDATE()
+    CAST(s.start_time AS DATE) >= NOW()
 `;
 
     const params: (string | number)[] = [];
