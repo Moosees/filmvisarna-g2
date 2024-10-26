@@ -72,9 +72,19 @@ router.delete('/user', isAuthenticated, usersController.logout);
 router.post('/user', usersController.login);
 
 //retrieve booking history for a logged in user
-router.get('/user/booking-history', usersController.getBookingHistory);
+router.get(
+  '/user/booking-history',
+  isAuthenticated,
+  usersController.getBookingHistory
+);
 
-router.get('/user/member-info', usersController.getMemberInfo);
+router.get(
+  '/user/current-bookings',
+  isAuthenticated,
+  usersController.getCurrentBookings
+);
+
+router.get('/user/member-info', isAuthenticated, usersController.getMemberInfo);
 
 //retrieve profile page, with member info and current bookings and booking history
 router.get(

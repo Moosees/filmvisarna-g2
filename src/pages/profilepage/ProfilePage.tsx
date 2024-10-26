@@ -5,7 +5,6 @@ import { getAxios } from '../../api/clients';
 import { useQuery } from '@tanstack/react-query';
 
 interface Booking {
-  id: number;
   movie_title: string;
   date: string;
 }
@@ -22,26 +21,24 @@ const ProfilePage: React.FC = () => {
     return data;
   };
 
-  const {
-    data: memberInfo,
-    isLoading,
-    error,
-  } = useQuery<UserData, Error>({
+  const { data: memberInfo } = useQuery<UserData, Error>({
     queryKey: ['memberInfo'],
     queryFn: fetchMemberInfo,
   });
 
-  if (isLoading) {
-    return <div>Laddar...</div>;
-  }
-
-  if (error) {
-    return <div>Ett fel inträffade vid hämtning av medlemsinformation.</div>;
-  }
-
   if (!memberInfo) {
     return <div>Ingen medlemsinformation tillgänglig.</div>;
   }
+
+  const fetchBookingHistory = async (): Promise<Booking[]> => {
+    const { data } = await getAxios().get('/user/booking-history');
+    return data;
+  };
+
+  const { data: bookingHistory } = useQuery<Booking[], Error>({
+    queryKey: ['bookingHistory'],
+    queryFn: fetchBookingHistory,
+  });
 
   return (
     <>
@@ -62,7 +59,7 @@ const ProfilePage: React.FC = () => {
               <h6 className="profile-text-bg p-1 rounded">
                 Efternamn: {memberInfo?.last_name}
               </h6>
-              <h6 className="profile-text-bg p-1 rounded">Medlemsnr:</h6>
+
               <h6 className="profile-text-bg p-1 rounded">
                 E-post: {memberInfo?.user_email}
               </h6>
@@ -95,7 +92,17 @@ const ProfilePage: React.FC = () => {
                 scrollbarWidth: 'thin',
                 scrollbarColor: '#ffe4e1 #ffbfed',
               }}
-            ></ListGroup>
+            >
+              {bookingHistory && bookingHistory.length > 0 ? (
+                bookingHistory.map((booking, index) => (
+                  <ListGroup.Item key={index}>
+                    {booking.movie_title} - {booking.date}
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <ListGroup.Item>Inga tidigare bokningar</ListGroup.Item>
+              )}
+            </ListGroup>
           </Col>
         </Row>
       </Container>
