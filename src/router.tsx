@@ -11,11 +11,13 @@ import LoginPage from './pages/loginpage/LoginPage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
+import { rootLoader } from './api/root';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    loader: rootLoader(getQueryClient()),
     children: [
       {
         index: true,
