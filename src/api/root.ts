@@ -8,7 +8,7 @@ interface RootData {
 async function getRootData() {
   const response = await getAxios().get<RootData>(`ping`);
 
-  return response.data.isLoggedIn;
+  return response.data;
 }
 
 export const getRootDataQuery = () =>

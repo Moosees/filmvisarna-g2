@@ -1,13 +1,16 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { getRootDataQuery } from '../../api/root';
 import LogoText from '../../assets/images/logoText.svg';
 import User from '../../assets/images/user.svg';
 import NavButton from '../buttons/NavButton';
 import LogOut from './Logout';
 
 function Header() {
-  //check if user is logged in
-  const isLoggedIn = sessionStorage.getItem('user') !== null;
+  const {
+    data: { isLoggedIn },
+  } = useSuspenseQuery(getRootDataQuery());
 
   return (
     <header className="navbar">
