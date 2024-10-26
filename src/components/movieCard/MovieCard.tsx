@@ -9,6 +9,8 @@ interface MovieCardProps {
   age: number;
   title: string;
   startTime: string;
+  showButton?: boolean;
+  reservationNum?: string;
 }
 
 function MovieCard({
@@ -18,6 +20,8 @@ function MovieCard({
   startTime,
   movieId,
   screeningId,
+  showButton = true,
+  reservationNum,
 }: MovieCardProps) {
   const handleCardClick = () => {
     console.log('movieId', movieId);
@@ -43,7 +47,13 @@ function MovieCard({
           {title}
         </Card.Text>
         <Card.Text className="digital m-0 ">{startTime}</Card.Text>
-        <PrimaryBtn title="Boka" onClick={handleButtonClick} />
+        {reservationNum ? (
+          <Card.Text className="mt-2">
+            Bokningsnummer: {reservationNum}
+          </Card.Text>
+        ) : (
+          showButton && <PrimaryBtn title="Boka" onClick={handleButtonClick} />
+        )}
       </Card.Body>
     </Card>
   );

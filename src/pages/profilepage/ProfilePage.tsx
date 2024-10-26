@@ -3,10 +3,17 @@ import { PersonFill } from 'react-bootstrap-icons';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getAxios } from '../../api/clients';
 import { useQuery } from '@tanstack/react-query';
+import MovieCard from '../../components/movieCard/MovieCard';
+import CardsWrapper from '../../components/movieCard/CardsWrapper';
 
 interface Booking {
-  movie_title: string;
-  date: string;
+  movieId: number;
+  screeningId: number;
+  src: string;
+  age: number;
+  title: string;
+  startTime: string;
+  reservationNum: string;
 }
 
 interface UserData {
@@ -40,6 +47,16 @@ const ProfilePage: React.FC = () => {
     queryFn: fetchBookingHistory,
   });
 
+  const fetchCurrentBookings = async (): Promise<Booking[]> => {
+    const { data } = await getAxios().get('/user/current-bookings');
+    return data;
+  };
+
+  const { data: currentBookings } = useQuery<Booking[], Error>({
+    queryKey: ['currentBookings'],
+    queryFn: fetchCurrentBookings,
+  });
+
   return (
     <>
       <Container className="rounded bg-rosa shadow-sm p-5">
@@ -71,38 +88,45 @@ const ProfilePage: React.FC = () => {
             <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
               Aktuella bokningar
             </h5>
-            <ListGroup
-              style={{
-                maxHeight: '150px',
-                overflowY: 'scroll',
-                minHeight: '150px',
-                scrollbarWidth: 'thin',
-                scrollbarColor: '#ffe4e1 #ffbfed',
-              }}
-              className="mb-3"
-            ></ListGroup>
+            <CardsWrapper>
+              {currentBookings && currentBookings.length > 0 ? (
+                currentBookings.map((booking) => (
+                  <MovieCard
+                    key={booking.screeningId}
+                    movieId={booking.movieId}
+                    screeningId={booking.screeningId}
+                    src={booking.src}
+                    age={booking.age}
+                    title={booking.title}
+                    startTime={booking.startTime}
+                    showButton={false}
+                    reservationNum={booking.reservationNum}
+                  />
+                ))
+              ) : (
+                <div>Inga aktuella bokningar</div>
+              )}
+            </CardsWrapper>
             <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
               Bokningshistorik
             </h5>
-            <ListGroup
-              style={{
-                maxHeight: '150px',
-                overflowY: 'scroll',
-                minHeight: '150px',
-                scrollbarWidth: 'thin',
-                scrollbarColor: '#ffe4e1 #ffbfed',
-              }}
-            >
+            <CardsWrapper>
               {bookingHistory && bookingHistory.length > 0 ? (
-                bookingHistory.map((booking, index) => (
-                  <ListGroup.Item key={index}>
-                    {booking.movie_title} - {booking.date}
-                  </ListGroup.Item>
+                bookingHistory.map((booking) => (
+                  <MovieCard
+                    key={booking.screeningId}
+                    movieId={booking.movieId}
+                    screeningId={booking.screeningId}
+                    src={booking.src}
+                    age={booking.age}
+                    title={booking.title}
+                    startTime={booking.startTime}
+                  />
                 ))
               ) : (
-                <ListGroup.Item>Inga tidigare bokningar</ListGroup.Item>
+                <div>Inga tidigare bokningar</div>
               )}
-            </ListGroup>
+            </CardsWrapper>
           </Col>
         </Row>
       </Container>
