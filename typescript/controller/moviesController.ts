@@ -233,13 +233,15 @@ const filterMovies = async (req: Request, res: Response) => {
     m.poster_url AS posterUrl,
     json_arrayagg(json_object('screeningId', s.id,'startDate',DATE_FORMAT(s.start_time, '%Y-%m-%d'),'timeRange',concat(
         date_format(s.start_time, '%H:%i'),
-        ' - ',
+        '-',
         date_format((s.start_time + interval m.play_time minute), '%H:%i')
     ), 'dayName',(case when (cast(s.start_time as date) = curdate()) then 'idag' else dayname(s.start_time) end), 'screeningDate', date_format(s.start_time, '%d %b'))) AS screeningDetails
   from
     screening s
     join bondkatt.movie m on
     s.movie_id =m.id
+    WHERE
+    CAST(s.start_time AS DATE) >= CURDATE()
 `;
 
     const params: (string | number)[] = [];
