@@ -2,8 +2,8 @@ import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import LogoText from '../../assets/images/logoText.svg';
 import User from '../../assets/images/user.svg';
-import NavButton from './NavButton';
-import LogOut from '../Logout';
+import NavButton from '../buttons/NavButton';
+import LogOut from './Logout';
 
 function Header() {
   //check if user is logged in
