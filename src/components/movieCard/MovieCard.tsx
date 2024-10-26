@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
-import '../../main.scss';
 import PrimaryBtn from '../buttons/PrimaryBtn';
+import { useNavigate } from 'react-router-dom';
 
 interface MovieCardProps {
   movieId: number;
@@ -23,12 +23,14 @@ function MovieCard({
   showButton = true,
   reservationNum,
 }: MovieCardProps) {
+  const navigate = useNavigate();
+
   const handleCardClick = () => {
-    console.log('movieId', movieId);
+    navigate(`/film/${movieId}`);
   };
   const handleButtonClick = (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    console.log('screeningId ', screeningId);
+    navigate(`/visning/${screeningId}`);
   };
 
   return (
@@ -38,7 +40,10 @@ function MovieCard({
     >
       <div className="position-relative">
         <Card.Img variant="top" src={src} className="img-fluid p-2 card-img" />
-        <div className="position-absolute bottom-0 end-0 bg-danger text-white digital p-2 m-3 border border-warning rounded-circle">
+        <div
+          style={{ width: '1.5em', height: '1.5em' }}
+          className="position-absolute bottom-0 end-0 bg-danger text-white digital m-2 border border-warning rounded-circle"
+        >
           {age}
         </div>
       </div>

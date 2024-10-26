@@ -67,7 +67,7 @@ const getMovie = async (req: Request, res: Response) => {
 
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      ` SELECT * FROM vy_filmdetaljer vf WHERE vf.id = ?`,
+      ` SELECT * FROM vy_filmdetaljer vf WHERE vf.movieId = ?`,
       [id]
     );
 
