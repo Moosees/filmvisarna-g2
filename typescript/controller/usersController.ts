@@ -12,6 +12,13 @@ interface RegisterRequest extends Request {
   };
 }
 
+const ping = async (req: Request, res: Response) => {
+  const user = req.session.user;
+  const isLoggedIn = user && ['admin', 'member'].includes(user.role);
+
+  res.status(200).json({ isLoggedIn });
+};
+
 const register = async (req: RegisterRequest, res: Response): Promise<void> => {
   const { user_email, user_password, first_name, last_name } = req.body;
 
@@ -328,6 +335,7 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
 };
 
 export default {
+  ping,
   register,
   login,
   logout,
