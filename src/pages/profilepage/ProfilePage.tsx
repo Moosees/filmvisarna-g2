@@ -1,4 +1,4 @@
-import { Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { PersonFill } from 'react-bootstrap-icons';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getAxios } from '../../api/clients';
@@ -88,45 +88,51 @@ const ProfilePage: React.FC = () => {
             <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
               Aktuella bokningar
             </h5>
-            <CardsWrapper>
-              {currentBookings && currentBookings.length > 0 ? (
-                currentBookings.map((booking) => (
-                  <MovieCard
-                    key={booking.screeningId}
-                    movieId={booking.movieId}
-                    screeningId={booking.screeningId}
-                    src={booking.src}
-                    age={booking.age}
-                    title={booking.title}
-                    startTime={booking.startTime}
-                    showButton={false}
-                    reservationNum={booking.reservationNum}
-                  />
-                ))
-              ) : (
-                <div>Inga aktuella bokningar</div>
-              )}
-            </CardsWrapper>
-            <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
+            <div className="cards-wrapper-scroll">
+              <CardsWrapper>
+                {currentBookings && currentBookings.length > 0 ? (
+                  currentBookings.map((booking) => (
+                    <MovieCard
+                      key={booking.screeningId}
+                      movieId={booking.movieId}
+                      screeningId={booking.screeningId}
+                      src={booking.src}
+                      age={booking.age}
+                      title={booking.title}
+                      startTime={booking.startTime}
+                      showButton={false}
+                      confirmationButton={true}
+                      smallFont={true}
+                      className="profile-movie-card"
+                    />
+                  ))
+                ) : (
+                  <div>Inga aktuella bokningar</div>
+                )}
+              </CardsWrapper>
+            </div>
+            <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded mt-3">
               Bokningshistorik
             </h5>
-            <CardsWrapper>
-              {bookingHistory && bookingHistory.length > 0 ? (
-                bookingHistory.map((booking) => (
-                  <MovieCard
-                    key={booking.screeningId}
-                    movieId={booking.movieId}
-                    screeningId={booking.screeningId}
-                    src={booking.src}
-                    age={booking.age}
-                    title={booking.title}
-                    startTime={booking.startTime}
-                  />
-                ))
-              ) : (
-                <div>Inga tidigare bokningar</div>
-              )}
-            </CardsWrapper>
+            <div className="cards-wrapper-scroll">
+              <CardsWrapper>
+                {bookingHistory && bookingHistory.length > 0 ? (
+                  bookingHistory.map((booking) => (
+                    <MovieCard
+                      key={booking.screeningId}
+                      movieId={booking.movieId}
+                      screeningId={booking.screeningId}
+                      src={booking.src}
+                      age={booking.age}
+                      title={booking.title}
+                      startTime={booking.startTime}
+                    />
+                  ))
+                ) : (
+                  <div>Inga tidigare bokningar</div>
+                )}
+              </CardsWrapper>
+            </div>
           </Col>
         </Row>
       </Container>

@@ -10,7 +10,9 @@ interface MovieCardProps {
   title: string;
   startTime: string;
   showButton?: boolean;
-  reservationNum?: string;
+  className?: string;
+  confirmationButton?: boolean;
+  smallFont?: boolean;
 }
 
 function MovieCard({
@@ -21,7 +23,9 @@ function MovieCard({
   movieId,
   screeningId,
   showButton = true,
-  reservationNum,
+  className,
+  confirmationButton = false,
+  smallFont = false,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
@@ -32,10 +36,13 @@ function MovieCard({
     e?.stopPropagation();
     navigate(`/visning/${screeningId}`);
   };
+  const handleConfirmationButtonClick = () => {
+    navigate('/bokning/:reservationNum');
+  };
 
   return (
     <Card
-      className="text-center text-white border border-warning shadow movie-card py-2"
+      className={`text-center text-white border border-warning shadow movie-card py-2 ${className}`}
       onClick={handleCardClick}
     >
       <div className="position-relative">
@@ -51,11 +58,15 @@ function MovieCard({
         <Card.Text className=" text-capitalize m-0 text-decoration-underline">
           {title}
         </Card.Text>
-        <Card.Text className="digital m-0 ">{startTime}</Card.Text>
-        {reservationNum ? (
-          <Card.Text className="mt-2">
-            Bokningsnummer: {reservationNum}
-          </Card.Text>
+        <Card.Text className={`digital m-0 ${smallFont ? 'small-font' : ''}`}>
+          {startTime}
+        </Card.Text>
+        {confirmationButton ? (
+          <PrimaryBtn
+            title="Visa bokning"
+            onClick={handleConfirmationButtonClick}
+            smallFont={true}
+          />
         ) : (
           showButton && <PrimaryBtn title="Boka" onClick={handleButtonClick} />
         )}

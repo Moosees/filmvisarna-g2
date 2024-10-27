@@ -200,7 +200,7 @@ const getBookingHistory = async (
   }
 
   const query = `
-    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.userId = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') <= CURRENT_DATE
+    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.userId = ? AND DATE_FORMAT(vbh.startTime, '%Y-%m-%d') <= CURRENT_DATE
   `;
 
   try {
