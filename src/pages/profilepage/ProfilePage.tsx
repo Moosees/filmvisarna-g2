@@ -22,48 +22,58 @@ interface UserData {
   user_email: string;
 }
 
-const ProfilePage: React.FC = () => {
-  const fetchMemberInfo = async (): Promise<UserData> => {
-    const { data } = await getAxios().get('/user/member-info');
-    return data;
-  };
+const fetchMemberInfo = async (): Promise<UserData> => {
+  const { data } = await getAxios().get('/user/member-info');
+  return data;
+};
 
-  const { data: memberInfo } = useQuery<UserData, Error>({
+const fetchCurrentBookings = async (): Promise<Booking[]> => {
+  const { data } = await getAxios().get('/user/current-bookings');
+  return data;
+};
+
+// const fetchBookingHistory = async (): Promise<Booking[]> => {
+//   const { data } = await getAxios().get('/user/booking-history');
+//   return data;
+// };
+
+const ProfilePage: React.FC = () => {
+  const { data: memberInfo, error: memberError } = useQuery<UserData, Error>({
     queryKey: ['memberInfo'],
     queryFn: fetchMemberInfo,
   });
 
-  if (!memberInfo) {
-    return <div>Ingen medlemsinformation tillgänglig.</div>;
-  }
+  // const { data: bookingHistory, error: bookingError } = useQuery<
+  //   Booking[],
+  //   Error
+  // >({
+  //   queryKey: ['bookingHistory'],
+  //   queryFn: fetchBookingHistory,
+  // });
 
-  const fetchBookingHistory = async (): Promise<Booking[]> => {
-    const { data } = await getAxios().get('/user/booking-history');
-    return data;
-  };
-
-  const { data: bookingHistory } = useQuery<Booking[], Error>({
-    queryKey: ['bookingHistory'],
-    queryFn: fetchBookingHistory,
-  });
-
-  const fetchCurrentBookings = async (): Promise<Booking[]> => {
-    const { data } = await getAxios().get('/user/current-bookings');
-    return data;
-  };
-
-  const { data: currentBookings } = useQuery<Booking[], Error>({
+  const { data: currentBookings, error: currentBookingsError } = useQuery<
+    Booking[],
+    Error
+  >({
     queryKey: ['currentBookings'],
     queryFn: fetchCurrentBookings,
   });
+
+  if (memberError || currentBookingsError) {
+    return <div>Ett fel uppstod vid inläsning av data.</div>;
+  }
+
+  if (!memberInfo) {
+    return <div>Ingen medlemsinformation tillgänglig.</div>;
+  }
 
   return (
     <>
       <Container fluid className="rounded bg-rosa shadow-sm p-5">
         <Row>
           <Col
-            md={5}
-            className="d-flex flex-column align-items-center justify-content-center mb-3 ms-4"
+            md={4}
+            className="d-flex flex-column align-items-center justify-content-center mb-3 ms-2"
           >
             <h5 className="profile-page-heading d-flex align-items-center">
               <div className="rounded-icon">
@@ -88,7 +98,7 @@ const ProfilePage: React.FC = () => {
             </div>
           </Col>
 
-          <Col md={6} className="d-flex flex-column align-items-center ms-5">
+          <Col md={7} className="d-flex flex-column align-items-center">
             <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
               Aktuella bokningar
             </h5>
@@ -120,7 +130,7 @@ const ProfilePage: React.FC = () => {
             </h5>
             <div className="cards-wrapper-scroll">
               <CardsWrapper>
-                {bookingHistory && bookingHistory.length > 0 ? (
+                {/* {bookingHistory && bookingHistory.length > 0 ? (
                   bookingHistory.map((booking) => (
                     <MovieCard
                       key={booking.screeningId}
@@ -135,9 +145,9 @@ const ProfilePage: React.FC = () => {
                       className="profile-movie-card"
                     />
                   ))
-                ) : (
-                  <div>Inga tidigare bokningar</div>
-                )}
+                ) : ( */}
+                <div>Inga tidigare bokningar</div>
+                {/* )} */}
               </CardsWrapper>
             </div>
           </Col>

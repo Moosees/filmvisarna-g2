@@ -10,7 +10,7 @@
 
 .cards-wrapper-scroll {
   max-height: 350px;
-  width: 80%;
+  width: 90%;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -34,8 +34,8 @@
 }
 
 .profile-movie-card {
-  width: 120px;
-  height: 220px;
+  width: auto;
+  height: auto;
   background-color: $bg-rosa-light !important;
   border: 1px solid black !important;
   color: black !important;
