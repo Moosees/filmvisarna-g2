@@ -11,8 +11,9 @@ interface HallProps {
 const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
   if (!row[index].free) return []; // taken seats are not interactible
   if (numPersons < 1) return []; // can't reserve zero seats
+  if (numPersons === 1) return [{ seatId: row[index].seatId, index }]; // no complex logic needed for single seat reservations
 
-  return [{ seatId: row[index].seatId, index }];
+  return [];
 };
 
 function Hall({ seats, numPersons }: HallProps) {
