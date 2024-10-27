@@ -31,7 +31,7 @@ const RegisterPage: React.FC = () => {
         `Användare registrerad med rollen "member", ID: ${response.data.id}`
       );
       setError(null);
-      navigate('/');
+      navigate('/medlem/medlems-sida');
     } catch (err: any) {
       setError('Något gick fel, försök igen!');
       setSuccess(null);
@@ -57,7 +57,7 @@ const RegisterPage: React.FC = () => {
               <input
                 type="email"
                 id="user_email"
-                className="form-control"
+                className="form-control form-control-field"
                 {...register('user_email', { required: 'E-post krävs' })}
                 placeholder="Ange din e-post"
               />
@@ -71,7 +71,7 @@ const RegisterPage: React.FC = () => {
               <input
                 type="password"
                 id="user_password"
-                className="form-control"
+                className="form-control form-control-field"
                 {...register('user_password', {
                   required: 'Lösenord krävs',
                 })}
@@ -89,7 +89,7 @@ const RegisterPage: React.FC = () => {
               <input
                 type="password"
                 id="confirm_password"
-                className="form-control"
+                className="form-control form-control-field"
                 {...register('confirm_password', {
                   validate: (value) =>
                     value === password || 'Lösenorden matchar inte',
@@ -108,7 +108,7 @@ const RegisterPage: React.FC = () => {
               <input
                 type="text"
                 id="first_name"
-                className="form-control"
+                className="form-control form-control-field"
                 {...register('first_name', { required: 'Förnamn krävs' })}
                 placeholder="Ange ditt förnamn"
               />
@@ -122,7 +122,7 @@ const RegisterPage: React.FC = () => {
               <input
                 type="text"
                 id="last_name"
-                className="form-control"
+                className="form-control form-control-field"
                 {...register('last_name', { required: 'Efternamn krävs' })}
                 placeholder="Ange ditt efternamn"
               />

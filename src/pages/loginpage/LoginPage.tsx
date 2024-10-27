@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
       // Use sessionStorage
       sessionStorage.setItem('user', JSON.stringify(response.data.user));
 
-      navigate('/'); // Redirect to the home page after successful login
+      navigate('/medlem/medlems-sida'); // Redirect to the member page after successful login
     } catch (error: any) {
       console.error('Login failed:', error);
       if (error.response) {
