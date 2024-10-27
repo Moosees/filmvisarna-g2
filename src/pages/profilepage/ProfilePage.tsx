@@ -59,32 +59,36 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
-      <Container className="rounded bg-rosa shadow-sm p-5">
+      <Container fluid className="rounded bg-rosa shadow-sm p-5">
         <Row>
           <Col
-            md={6}
-            className="d-flex flex-column align-items-center justify-content-center"
+            md={5}
+            className="d-flex flex-column align-items-center justify-content-center mb-3 ms-4"
           >
             <h5 className="profile-page-heading d-flex align-items-center">
-              <PersonFill size={28} />
+              <div className="rounded-icon">
+                <PersonFill size={28} />
+              </div>
               Medlemsinfo
             </h5>
             <div className="w-100 text-start">
-              <h6 className="profile-text-bg p-1 rounded">
+              <h6 className="profile-text-bg p-1 rounded mt-3">
                 Förnamn: {memberInfo?.first_name}
               </h6>
-              <h6 className="profile-text-bg p-1 rounded">
+              <h6 className="profile-text-bg p-1 rounded mt-3">
                 Efternamn: {memberInfo?.last_name}
               </h6>
 
-              <h6 className="profile-text-bg p-1 rounded">
+              <h6 className="profile-text-bg p-1 rounded mt-3">
                 E-post: {memberInfo?.user_email}
               </h6>
             </div>
-            <PrimaryBtn title="Ändra" />
+            <div className="mt-3">
+              <PrimaryBtn title="Ändra" />
+            </div>
           </Col>
 
-          <Col md={6}>
+          <Col md={6} className="d-flex flex-column align-items-center ms-5">
             <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
               Aktuella bokningar
             </h5>
@@ -126,6 +130,9 @@ const ProfilePage: React.FC = () => {
                       age={booking.age}
                       title={booking.title}
                       startTime={booking.startTime}
+                      showButton={false}
+                      confirmationButton={false}
+                      className="profile-movie-card"
                     />
                   ))
                 ) : (

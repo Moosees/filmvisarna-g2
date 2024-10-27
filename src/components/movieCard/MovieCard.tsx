@@ -36,7 +36,7 @@ function MovieCard({
     e?.stopPropagation();
     navigate(`/visning/${screeningId}`);
   };
-  const handleConfirmationButtonClick = () => {
+  const handleConfirmationLinkClick = () => {
     navigate('/bokning/:reservationNum');
   };
 
@@ -62,11 +62,13 @@ function MovieCard({
           {startTime}
         </Card.Text>
         {confirmationButton ? (
-          <PrimaryBtn
-            title="Visa bokning"
-            onClick={handleConfirmationButtonClick}
-            smallFont={true}
-          />
+          <a
+            href="#"
+            onClick={handleConfirmationLinkClick}
+            className="text-black text-decoration-underline small-font"
+          >
+            Visa bokning
+          </a>
         ) : (
           showButton && <PrimaryBtn title="Boka" onClick={handleButtonClick} />
         )}
