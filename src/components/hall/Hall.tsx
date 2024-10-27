@@ -1,22 +1,29 @@
 import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
+type seat = { seatId: number; free: boolean };
+
 interface HallProps {
-  seats: { seatId: number; free: boolean }[][];
+  seats: seat[][];
   numPersons: number;
 }
+
+const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
+  if (!row[index].free) return []; // taken seats are not interactible
+  if (numPersons < 1) return []; // can't reserve zero seats
+
+  return [{ seatId: row[index].seatId, index }];
+};
 
 function Hall({ seats, numPersons }: HallProps) {
   const [clicked, setClicked] = useState<number[]>([]);
 
-  const handleClick = (
-    seatId: number,
-    seatIndex: number,
-    rowLength: number
-  ) => {
-    console.log({ seatId, seatIndex, rowLength, numPersons });
+  const handleClick = (seatIndex: number, row: seat[]) => {
+    console.log({ seatIndex, row, clicked: row[seatIndex] });
 
-    setClicked([seatId]);
+    setClicked(
+      getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
+    );
   };
 
   return (
@@ -27,7 +34,7 @@ function Hall({ seats, numPersons }: HallProps) {
             {row.map(({ seatId, free }, i) => (
               <Col
                 key={seatId}
-                onClick={() => handleClick(seatId, i, row.length)}
+                onClick={() => handleClick(i, row)}
                 className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${free ? 'bg-light' : 'bg-rosa'} ${clicked.includes(seatId) ? 'border-danger border-2' : 'border-primary'}`}
               />
             ))}
