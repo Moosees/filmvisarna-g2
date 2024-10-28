@@ -19,8 +19,10 @@ const LoginPage: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormData>();
 
+
   const onSubmit: SubmitHandler<LoginFormData> = (values) =>
     submit(values, { method: 'post', action: '/medlem/logga-in' });
+
 
   return (
     <section className="login-page-container">
