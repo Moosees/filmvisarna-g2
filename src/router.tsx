@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: '/film',
+        path: '/filmer',
         element: <FilterPage />,
         handle: {
           title: 'Kommande Filmer',

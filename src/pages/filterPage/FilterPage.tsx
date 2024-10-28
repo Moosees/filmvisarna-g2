@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { X } from 'react-bootstrap-icons';
+import DatePickerComponent from '../../components/datePicker/DatePicker';
+import { formatInTimeZone } from 'date-fns-tz';
 
 const movies = [
   {
@@ -13,7 +13,7 @@ const movies = [
     src: 'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
     age: 15,
     title: 'The Godfather',
-    startTime: '2024-10-25',
+    startTime: '2024-11-02',
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ const movies = [
     src: 'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
     age: 15,
     title: 'Gladiator',
-    startTime: '2024-10-25',
+    startTime: '2024-10-30',
   },
   {
     id: 4,
@@ -29,13 +29,16 @@ const movies = [
     src: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
     age: 15,
     title: 'THE GRINCH',
-    startTime: '2024-10-26',
+    startTime: '2024-11-26',
   },
 ];
 
-const FilterPage: React.FC = () => {
+const timeZone = 'Europe/Stockholm';
+
+export default function FilterPage() {
   const [filters, setFilters] = useState({
-    selectedDate: null as Date | null,
+    selectedStartDate: undefined as Date | undefined,
+    selectedEndDate: undefined as Date | undefined,
     searchTerm: '',
     selectedAge: '',
   });
@@ -50,13 +53,6 @@ const FilterPage: React.FC = () => {
     }));
   };
 
-  const handleClearDate = () => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      selectedDate: null,
-    }));
-  };
-
   const filteredMovies = movies.filter((movie) => {
     const matchesSearchTerm = movie.title
       .toLowerCase()
@@ -65,10 +61,27 @@ const FilterPage: React.FC = () => {
     const matchesAge =
       filters.selectedAge === '' || movie.age <= Number(filters.selectedAge);
 
+    const movieDate = new Date(movie.startTime);
+    const movieDateInTimeZone = formatInTimeZone(
+      movieDate,
+      timeZone,
+      'yyyy-MM-dd'
+    );
+
+    const selectedStartDateInTimeZone = filters.selectedStartDate
+      ? formatInTimeZone(filters.selectedStartDate, timeZone, 'yyyy-MM-dd')
+      : null;
+
+    const selectedEndDateInTimeZone = filters.selectedEndDate
+      ? formatInTimeZone(filters.selectedEndDate, timeZone, 'yyyy-MM-dd')
+      : null;
+
     const matchesDate =
-      filters.selectedDate === null ||
-      new Date(movie.startTime).toDateString() ===
-        filters.selectedDate.toDateString();
+      (!selectedStartDateInTimeZone && !selectedEndDateInTimeZone) ||
+      (selectedStartDateInTimeZone &&
+        movieDateInTimeZone >= selectedStartDateInTimeZone &&
+        (!selectedEndDateInTimeZone ||
+          movieDateInTimeZone <= selectedEndDateInTimeZone));
 
     return matchesSearchTerm && matchesAge && matchesDate;
   });
@@ -78,32 +91,7 @@ const FilterPage: React.FC = () => {
       <Form>
         <Row className="mb-3">
           <Col md={3}>
-            <div style={{ position: 'relative' }}>
-              <DatePicker
-                selected={filters.selectedDate}
-                onChange={(date: Date | null) =>
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    selectedDate: date,
-                  }))
-                }
-                dateFormat="yyyy-MM-dd"
-                placeholderText="Välj Datum"
-                className="form-control react-datepicker-wrapper p-2 m-0"
-              />
-
-              <X
-                onClick={handleClearDate}
-                style={{
-                  position: 'absolute',
-                  right: '10px',
-                  top: '10%',
-                  cursor: 'pointer',
-                  color: 'black',
-                }}
-                size={30}
-              />
-            </div>
+            <DatePickerComponent filters={filters} setFilters={setFilters} />
           </Col>
 
           <Col md={6}>
@@ -154,6 +142,4 @@ const FilterPage: React.FC = () => {
       </Row>
     </div>
   );
-};
-
-export default FilterPage;
+}
