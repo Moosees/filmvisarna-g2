@@ -12,7 +12,7 @@ import TextTable from '../../components/typography/TextTable';
 import TextBox from '../../components/typography/TextBox';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
-function MovieBooking() {
+function MovieDetailsPage() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
   const [selectedScreening, setSelectedScreening] = useState<number>(
@@ -101,4 +101,4 @@ function MovieBooking() {
   );
 }
 
-export default MovieBooking;
+export default MovieDetailsPage;

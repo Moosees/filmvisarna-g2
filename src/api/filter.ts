@@ -8,8 +8,25 @@ interface FormData {
   title?: string;
 }
 
+interface ScreeningDetail {
+  dayName: string;
+  startDate: string;
+  timeRange: string;
+  screeningId: number;
+  screeningDate: string;
+}
+
+interface Movie {
+  movieId: number;
+  title: string;
+  paramUrl: string;
+  age: number;
+  posterUrl: string;
+  screeningDetails: ScreeningDetail[];
+}
+
 async function getFilter(formData: FormData) {
-  const response = await axios.get(`/api/movie`, {
+  const response = await axios.get<Movie[]>(`/api/movie?date=2024-11-02`, {
     params: formData,
   });
   return response.data;
