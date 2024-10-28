@@ -8,12 +8,37 @@ interface HallProps {
   numPersons: number;
 }
 
+const checkAdjacentSeats = (
+  row: seat[],
+  currentIndex: number,
+  direction: 'left' | 'right'
+): number => {
+  if (
+    currentIndex < 0 ||
+    currentIndex >= row.length ||
+    !row[currentIndex].free
+  ) {
+    return 0;
+  }
+
+  const nextIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1;
+  return 1 + checkAdjacentSeats(row, nextIndex, direction);
+};
+
 const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
+  console.log({ row, index, numPersons });
   if (!row[index].free) return []; // taken seats are not interactible
   if (numPersons < 1) return []; // can't reserve zero seats
   if (numPersons === 1) return [{ seatId: row[index].seatId, index }]; // no complex logic needed for single seat reservations
 
-  return [];
+  const freeAround = {
+    left: checkAdjacentSeats(row, index - 1, 'left'),
+    right: checkAdjacentSeats(row, index + 1, 'right'),
+  };
+
+  if (1 + freeAround.left + freeAround.right < numPersons) return []; // can't fit that many people in the slot
+
+  return [{ seatId: row[index].seatId, index }];
 };
 
 function Hall({ seats, numPersons }: HallProps) {
