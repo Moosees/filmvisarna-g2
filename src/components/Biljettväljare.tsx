@@ -85,7 +85,9 @@ const Biljettväljarkomponent: React.FC = () => {
     // Check if adding a new ticket would exceed the limit
     if (increment && totalTickets >= 8) {
       // Show toast notification
-      toast.warn("Vid bokning av fler än 8 platser kontakta oss via e-post eller ring 07xxxxxxxx");
+      toast.warn(
+        'Vid bokning av fler än 8 platser kontakta oss via e-post filmvisarnabio@gmail.com'
+      );
       return;
     }
 
