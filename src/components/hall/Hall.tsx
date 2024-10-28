@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
-type seat = { seatId: number; free: boolean };
+type Seat = { seatId: number; free: boolean };
+type SeatWithIndex = { seatId: number; index: number };
 
 interface HallProps {
-  seats: seat[][];
+  seats: Seat[][];
   numPersons: number;
 }
 
 const checkAdjacentSeats = (
-  row: seat[],
+  row: Seat[],
   currentIndex: number,
   direction: 'left' | 'right'
 ): number => {
@@ -25,8 +26,11 @@ const checkAdjacentSeats = (
   return 1 + checkAdjacentSeats(row, nextIndex, direction);
 };
 
-const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
-  console.log({ row, index, numPersons });
+const getAffectedSeats = (
+  row: Seat[],
+  index: number,
+  numPersons: number
+): SeatWithIndex[] => {
   if (!row[index].free) return []; // taken seats are not interactible
   if (numPersons < 1) return []; // can't reserve zero seats
   if (numPersons === 1) return [{ seatId: row[index].seatId, index }]; // no complex logic needed for single seat reservations
@@ -63,15 +67,20 @@ const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
     [currentSide]:
       seatsWanted.outside - seatsMissing.outside + seatsMissing.inside,
   };
-  console.log({ currentSide, seatsToPick });
 
-  return [{ seatId: row[index].seatId, index }];
+  return row.reduce((acc: SeatWithIndex[], seat, i) => {
+    if (i >= index - seatsToPick.left && i <= index + seatsToPick.right) {
+      acc.push({ seatId: seat.seatId, index: i });
+    }
+
+    return acc;
+  }, []); // else return numPersons seats
 };
 
 function Hall({ seats, numPersons }: HallProps) {
   const [clicked, setClicked] = useState<number[]>([]);
 
-  const handleClick = (seatIndex: number, row: seat[]) => {
+  const handleClick = (seatIndex: number, row: Seat[]) => {
     console.log({ seatIndex, row, clicked: row[seatIndex] });
 
     setClicked(
