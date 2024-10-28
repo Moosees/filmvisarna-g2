@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Button, Alert, Form } from 'react-bootstrap';
-
-
-//TODO limit to 8 tickets so that toast pops up
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Define ticket prices interface
 interface TicketPrices {
@@ -76,11 +75,23 @@ const Biljettväljarkomponent: React.FC = () => {
     type: 'vuxna' | 'barn' | 'pensionär',
     increment: boolean
   ) => {
+    const newCount = increment
+      ? ticketCounts[type] + 1
+      : Math.max(ticketCounts[type] - 1, 0);
+
+    const totalTickets =
+      ticketCounts.vuxna + ticketCounts.barn + ticketCounts.pensionär;
+
+    // Check if adding a new ticket would exceed the limit
+    if (increment && totalTickets >= 8) {
+      // Show toast notification
+      toast.warn("Vid bokning av fler än 8 platser kontakta oss via e-post eller ring 07xxxxxxxx");
+      return;
+    }
+
     setTicketCounts((prevCounts) => ({
       ...prevCounts,
-      [type]: increment
-        ? prevCounts[type] + 1
-        : Math.max(prevCounts[type] - 1, 0),
+      [type]: newCount,
     }));
   };
 
@@ -157,15 +168,23 @@ const Biljettväljarkomponent: React.FC = () => {
                 </Row>
               </Container>
 
-              <Row className="total-price field-container mt-3">
-                <Col>
-                  <h3 className="text-center">Totalpris: {totalPrice} SEK</h3>
-                </Col>
-              </Row>
+              <Container className="ticket-selector">
+                <Row className="ticket-row field-container">
+                  <Col>
+                    <h3>Totalpris:</h3>
+                  </Col>
+                  <Col className="text-end">
+                    <h3>{totalPrice} SEK</h3>
+                  </Col>
+                </Row>
+              </Container>
             </>
           ) : (
             <p className="text-center">Laddar biljettpriser...</p>
           )}
+
+          {/* React Toastify Container */}
+          <ToastContainer />
         </Col>
       </Row>
     </Container>
