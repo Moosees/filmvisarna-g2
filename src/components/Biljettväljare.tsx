@@ -85,100 +85,86 @@ const Biljettväljarkomponent: React.FC = () => {
   };
 
   return (
-    <Container className="d-flex justify-content-center mt-5">
-      <Row className="col-md-8 col-lg-6 card rounded bg-light shadow-sm p-4">
-        <Col>
-          <header>
-            <h2 className="mb-4 text-center">Välj dina biljetter</h2>
-          </header>
+    <Container className="ticket-page-container">
+      <Row className="justify-content-center">
+        <Col xs={12} md={8} lg={6} className="ticket-card">
+          <h2 className="text-center">Välj dina biljetter</h2>
 
           {ticketPrices ? (
-            <Form>
-              <Form.Group className="mb-3">
-                <Row className="align-items-center">
-                  <Col xs={6}>
-                    <Form.Label>Vuxna ({ticketPrices.vuxna} SEK)</Form.Label>
+            <>
+              <Container className="ticket-selector">
+                <Row className="ticket-row field-container">
+                  <Col>
+                    <span>Vuxna ({ticketPrices.vuxna} SEK)</span>
                   </Col>
-                  <Col xs={6} className="text-end">
+                  <Col className="text-end">
                     <Button
-                      variant="warning"
-                      className="me-2"
+                      className="btn-custom"
                       onClick={() => handleTicketChange('vuxna', false)}
                     >
                       -
                     </Button>
-                    <span>{ticketCounts.vuxna}</span>
+                    <span className="mx-2">{ticketCounts.vuxna}</span>
                     <Button
-                      variant="warning"
-                      className="ms-2"
+                      className="btn-custom"
                       onClick={() => handleTicketChange('vuxna', true)}
                     >
                       +
                     </Button>
                   </Col>
                 </Row>
-              </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Row className="align-items-center">
-                  <Col xs={6}>
-                    <Form.Label>Barn ({ticketPrices.barn} SEK)</Form.Label>
+                <Row className="ticket-row field-container">
+                  <Col>
+                    <span>Barn ({ticketPrices.barn} SEK)</span>
                   </Col>
-                  <Col xs={6} className="text-end">
+                  <Col className="text-end">
                     <Button
-                      variant="warning"
-                      className="me-2"
+                      className="btn-custom"
                       onClick={() => handleTicketChange('barn', false)}
                     >
                       -
                     </Button>
-                    <span>{ticketCounts.barn}</span>
+                    <span className="mx-2">{ticketCounts.barn}</span>
                     <Button
-                      variant="warning"
-                      className="ms-2"
+                      className="btn-custom"
                       onClick={() => handleTicketChange('barn', true)}
                     >
                       +
                     </Button>
                   </Col>
                 </Row>
-              </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Row className="align-items-center">
-                  <Col xs={6}>
-                    <Form.Label>
-                      Pensionär ({ticketPrices.pensionär} SEK)
-                    </Form.Label>
+                <Row className="ticket-row field-container">
+                  <Col>
+                    <span>Pensionär ({ticketPrices.pensionär} SEK)</span>
                   </Col>
-                  <Col xs={6} className="text-end">
+                  <Col className="text-end">
                     <Button
-                      variant="warning"
-                      className="me-2"
+                      className="btn-custom"
                       onClick={() => handleTicketChange('pensionär', false)}
                     >
                       -
                     </Button>
-                    <span>{ticketCounts.pensionär}</span>
+                    <span className="mx-2">{ticketCounts.pensionär}</span>
                     <Button
-                      variant="warning"
-                      className="ms-2"
+                      className="btn-custom"
                       onClick={() => handleTicketChange('pensionär', true)}
                     >
                       +
                     </Button>
                   </Col>
                 </Row>
-              </Form.Group>
+              </Container>
 
-              <Alert variant="info" className="text-center mt-3">
-                <h3>Totalpris: {totalPrice} SEK</h3>
-              </Alert>
-            </Form>
+              <Row className="total-price field-container mt-3">
+                <Col>
+                  <h3 className="text-center">Totalpris: {totalPrice} SEK</h3>
+                </Col>
+              </Row>
+            </>
           ) : (
-            <Alert variant="secondary" className="text-center">
-              <p>Laddar biljettpriser...</p>
-            </Alert>
+            <p className="text-center">Laddar biljettpriser...</p>
           )}
         </Col>
       </Row>
