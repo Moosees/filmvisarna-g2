@@ -39,7 +39,31 @@ const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
   if (1 + freeAround.left + freeAround.right < numPersons) return []; // can't fit that many people in the slot
 
   const currentSide = index < Math.ceil(row.length / 2) ? 'left' : 'right';
-  console.log({ currentSide });
+  const freeAroundRelative = {
+    inside: freeAround[currentSide === 'left' ? 'right' : 'left'],
+    outside: freeAround[currentSide],
+  };
+  const seatsWanted = {
+    inside: Math.ceil((numPersons - 1) / 2),
+    outside: Math.floor((numPersons - 1) / 2),
+  };
+  const seatsMissing = {
+    inside:
+      seatsWanted.inside <= freeAroundRelative.inside
+        ? 0
+        : seatsWanted.inside - freeAroundRelative.inside,
+    outside:
+      seatsWanted.outside <= freeAroundRelative.outside
+        ? 0
+        : seatsWanted.outside - freeAroundRelative.outside,
+  };
+  const seatsToPick = {
+    [currentSide === 'left' ? 'right' : 'left']:
+      seatsWanted.inside - seatsMissing.inside + seatsMissing.outside,
+    [currentSide]:
+      seatsWanted.outside - seatsMissing.outside + seatsMissing.inside,
+  };
+  console.log({ currentSide, seatsToPick });
 
   return [{ seatId: row[index].seatId, index }];
 };
