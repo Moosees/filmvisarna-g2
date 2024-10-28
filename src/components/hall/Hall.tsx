@@ -79,11 +79,18 @@ const getAffectedSeats = (
 
 function Hall({ seats, numPersons }: HallProps) {
   const [clicked, setClicked] = useState<number[]>([]);
+  const [hovered, setHovered] = useState<number[]>([]);
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
     console.log({ seatIndex, row, clicked: row[seatIndex] });
 
     setClicked(
+      getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
+    );
+  };
+
+  const handleMouseEnter = (seatIndex: number, row: Seat[]) => {
+    setHovered(
       getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
     );
   };
@@ -97,7 +104,8 @@ function Hall({ seats, numPersons }: HallProps) {
               <Col
                 key={seatId}
                 onClick={() => handleClick(i, row)}
-                className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${!free ? 'bg-dark' : clicked.includes(seatId) ? 'bg-rosa' : 'bg-light'}`}
+                onMouseEnter={() => handleMouseEnter(i, row)}
+                className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${!free ? 'bg-dark' : clicked.includes(seatId) ? 'bg-rosa' : 'bg-light'} ${hovered.includes(seatId) ? 'seat-hover' : ''}`}
               />
             ))}
           </Row>
