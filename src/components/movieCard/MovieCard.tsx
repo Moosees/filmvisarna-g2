@@ -11,6 +11,7 @@ interface MovieCardProps {
   startTime: string;
   showButton?: boolean;
   className?: string;
+  reservationNum?: string;
   confirmationButton?: boolean;
   smallFont?: boolean;
   hideAge?: boolean;
@@ -25,6 +26,7 @@ function MovieCard({
   screeningId,
   showButton = true,
   className,
+  reservationNum,
   confirmationButton = false,
   smallFont = false,
   hideAge = false,
@@ -38,8 +40,9 @@ function MovieCard({
     e?.stopPropagation();
     navigate(`/visning/${screeningId}`);
   };
-  const handleConfirmationLinkClick = () => {
-    navigate('/bokning/:reservationNum');
+  const handleConfirmationLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (reservationNum) navigate('/bokning/${reservationNum}');
   };
 
   return (
@@ -69,7 +72,7 @@ function MovieCard({
         <Card.Text className={`digital m-0 ${smallFont ? 'small-font' : ''}`}>
           {startTime}
         </Card.Text>
-        {confirmationButton ? (
+        {confirmationButton && reservationNum ? (
           <a
             href="#"
             onClick={handleConfirmationLinkClick}
