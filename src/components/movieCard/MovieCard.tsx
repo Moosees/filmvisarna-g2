@@ -13,6 +13,7 @@ interface MovieCardProps {
   className?: string;
   confirmationButton?: boolean;
   smallFont?: boolean;
+  hideAge?: boolean;
 }
 
 function MovieCard({
@@ -26,6 +27,7 @@ function MovieCard({
   className,
   confirmationButton = false,
   smallFont = false,
+  hideAge = false,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
@@ -47,12 +49,14 @@ function MovieCard({
     >
       <div className="position-relative">
         <Card.Img variant="top" src={src} className="img-fluid p-2 card-img" />
-        <div
-          style={{ width: '1.5em', height: '1.5em' }}
-          className="position-absolute bottom-0 end-0 bg-danger text-white digital m-2 border border-warning rounded-circle"
-        >
-          {age}
-        </div>
+        {!hideAge && (
+          <div
+            style={{ width: '1.5em', height: '1.5em' }}
+            className="position-absolute bottom-0 end-0 bg-danger text-white digital m-2 border border-warning rounded-circle"
+          >
+            {age}
+          </div>
+        )}
       </div>
       <Card.Body className="p-1">
         <Card.Text className=" text-capitalize m-0 text-decoration-underline">

@@ -209,12 +209,7 @@ const getBookingHistory = async (
       [userId]
     );
 
-    if (results.length === 0) {
-      res.status(404).json({ message: 'Ingen bokningshistorik hittades' });
-      return;
-    }
-
-    res.status(200).json(results);
+    res.status(200).json(results.length ? results : []);
   } catch (error) {
     console.error('Fel vid hämtning av bokningshistorik:', error);
     res
@@ -244,12 +239,7 @@ const getCurrentBookings = async (
       [userId]
     );
 
-    if (results.length === 0) {
-      res.status(404).json({ message: 'Ingen bokning hittades' });
-      return;
-    }
-
-    res.status(200).json(results);
+    res.status(200).json(results.length ? results : []);
   } catch (error) {
     console.error('Fel vid hämtning av bokningar:', error);
     res
@@ -320,8 +310,10 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
     // Combine all results into one response object
     res.status(200).json({
       memberInfo: memberResults[0],
-      currentBookings: currentBookingsResults,
-      bookingHistory: bookingHistoryResults,
+      currentBookings: currentBookingsResults.length
+        ? currentBookingsResults
+        : [],
+      bookingHistory: bookingHistoryResults.length ? bookingHistoryResults : [],
     });
   } catch (error) {
     console.error('Fel vid hämtning av profilinformation:', error);

@@ -32,10 +32,10 @@ const fetchCurrentBookings = async (): Promise<Booking[]> => {
   return data;
 };
 
-// const fetchBookingHistory = async (): Promise<Booking[]> => {
-//   const { data } = await getAxios().get('/user/booking-history');
-//   return data;
-// };
+const fetchBookingHistory = async (): Promise<Booking[]> => {
+  const { data } = await getAxios().get('/user/booking-history');
+  return data;
+};
 
 const ProfilePage: React.FC = () => {
   const { data: memberInfo, error: memberError } = useQuery<UserData, Error>({
@@ -43,13 +43,13 @@ const ProfilePage: React.FC = () => {
     queryFn: fetchMemberInfo,
   });
 
-  // const { data: bookingHistory, error: bookingError } = useQuery<
-  //   Booking[],
-  //   Error
-  // >({
-  //   queryKey: ['bookingHistory'],
-  //   queryFn: fetchBookingHistory,
-  // });
+  const { data: bookingHistory, error: bookingError } = useQuery<
+    Booking[],
+    Error
+  >({
+    queryKey: ['bookingHistory'],
+    queryFn: fetchBookingHistory,
+  });
 
   const { data: currentBookings, error: currentBookingsError } = useQuery<
     Booking[],
@@ -59,7 +59,7 @@ const ProfilePage: React.FC = () => {
     queryFn: fetchCurrentBookings,
   });
 
-  if (memberError || currentBookingsError) {
+  if (memberError || bookingError || currentBookingsError) {
     return <div>Ett fel uppstod vid inläsning av data.</div>;
   }
 
@@ -117,6 +117,7 @@ const ProfilePage: React.FC = () => {
                       showButton={false}
                       confirmationButton={true}
                       smallFont={true}
+                      hideAge={true}
                       className="profile-movie-card"
                     />
                   ))
@@ -130,7 +131,7 @@ const ProfilePage: React.FC = () => {
             </h5>
             <div className="cards-wrapper-scroll">
               <CardsWrapper>
-                {/* {bookingHistory && bookingHistory.length > 0 ? (
+                {bookingHistory && bookingHistory.length > 0 ? (
                   bookingHistory.map((booking) => (
                     <MovieCard
                       key={booking.screeningId}
@@ -142,12 +143,13 @@ const ProfilePage: React.FC = () => {
                       startTime={booking.startTime}
                       showButton={false}
                       confirmationButton={false}
+                      hideAge={true}
                       className="profile-movie-card"
                     />
                   ))
-                ) : ( */}
-                <div>Inga tidigare bokningar</div>
-                {/* )} */}
+                ) : (
+                  <div>Inga tidigare bokningar</div>
+                )}
               </CardsWrapper>
             </div>
           </Col>
