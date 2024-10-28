@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 interface MovieCardProps {
   movieId: number;
   screeningId: number;
-  src: string;
+  posterUrl: string;
   age: number;
   title: string;
   startTime: string;
@@ -17,7 +17,7 @@ interface MovieCardProps {
 }
 
 function MovieCard({
-  src,
+  posterUrl,
   age,
   title,
   startTime,
@@ -48,7 +48,11 @@ function MovieCard({
       onClick={handleCardClick}
     >
       <div className="position-relative">
-        <Card.Img variant="top" src={src} className="img-fluid p-2 card-img" />
+        <Card.Img
+          variant="top"
+          src={posterUrl}
+          className="img-fluid p-2 card-img"
+        />
         {!hideAge && (
           <div
             style={{ width: '1.5em', height: '1.5em' }}

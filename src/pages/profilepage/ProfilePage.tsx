@@ -9,7 +9,7 @@ import CardsWrapper from '../../components/movieCard/CardsWrapper';
 interface Booking {
   movieId: number;
   screeningId: number;
-  src: string;
+  posterUrl: string;
   age: number;
   title: string;
   startTime: string;
@@ -110,7 +110,7 @@ const ProfilePage: React.FC = () => {
                       key={booking.screeningId}
                       movieId={booking.movieId}
                       screeningId={booking.screeningId}
-                      src={booking.src}
+                      posterUrl={booking.posterUrl}
                       age={booking.age}
                       title={booking.title}
                       startTime={booking.startTime}
@@ -137,7 +137,7 @@ const ProfilePage: React.FC = () => {
                       key={booking.screeningId}
                       movieId={booking.movieId}
                       screeningId={booking.screeningId}
-                      src={booking.src}
+                      posterUrl={booking.posterUrl}
                       age={booking.age}
                       title={booking.title}
                       startTime={booking.startTime}
