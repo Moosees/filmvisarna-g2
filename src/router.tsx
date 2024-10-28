@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         loader: reserveLoader(getQueryClient()),
       },
       {
-        path: '/bekräftelse/:reservationNum',
+        path: '/bokning/:reservationNum',
         element: <BookingConfirmation />,
         handle: {
           title: 'Bekräftelse',
