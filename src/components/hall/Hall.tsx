@@ -97,7 +97,7 @@ function Hall({ seats, numPersons }: HallProps) {
               <Col
                 key={seatId}
                 onClick={() => handleClick(i, row)}
-                className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${free ? 'bg-light' : 'bg-rosa'} ${clicked.includes(seatId) ? 'border-danger border-2' : 'border-primary'}`}
+                className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${!free ? 'bg-dark' : clicked.includes(seatId) ? 'bg-rosa' : 'bg-light'}`}
               />
             ))}
           </Row>
