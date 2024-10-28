@@ -1,13 +1,24 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { MouseEventHandler } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useLogOutMutation } from '../../api/logOut';
+import { getRootDataQuery } from '../../api/root';
 import LogoText from '../../assets/images/logoText.svg';
 import User from '../../assets/images/user.svg';
-import NavButton from './NavButton';
-import LogOut from '../Logout';
+import NavButton from '../buttons/NavButton';
 
 function Header() {
-  //check if user is logged in
-  const isLoggedIn = sessionStorage.getItem('user') !== null;
+  const {
+    data: { isLoggedIn },
+  } = useSuspenseQuery(getRootDataQuery());
+
+  const { mutate: logOut } = useLogOutMutation();
+
+  const handleLogOut: MouseEventHandler<HTMLAnchorElement> = (event) => {
+    event.preventDefault();
+    logOut();
+  };
 
   return (
     <header className="navbar">
@@ -39,7 +50,9 @@ function Header() {
                   <Link to="/medlem">Medlemssida</Link>
                 </Dropdown.Item>
                 <Dropdown.Item as="button">
-                  <LogOut />
+                  <a href="#" onClick={handleLogOut}>
+                    Logga ut
+                  </a>
                 </Dropdown.Item>
               </>
             )}
