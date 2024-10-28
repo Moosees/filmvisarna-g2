@@ -12,6 +12,13 @@ interface RegisterRequest extends Request {
   };
 }
 
+const ping = async (req: Request, res: Response) => {
+  const user = req.session.user;
+  const isLoggedIn = user && ['admin', 'member'].includes(user.role);
+
+  res.status(200).json({ isLoggedIn });
+};
+
 const register = async (req: RegisterRequest, res: Response): Promise<void> => {
   const { user_email, user_password, first_name, last_name } = req.body;
 
@@ -63,9 +70,9 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
 };
 
 const login = async (req: Request, res: Response): Promise<void> => {
-  const { user_email, user_password } = req.body;
+  const { email, password } = req.body;
 
-  if (!user_email || !user_password) {
+  if (!email || !password) {
     res.status(400).json({ message: 'Både e-post och lösenord krävs' });
     return;
   }
@@ -75,7 +82,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         `;
 
   try {
-    const [rows] = (await db.execute(query, [user_email])) as RowDataPacket[];
+    const [rows] = (await db.execute(query, [email])) as RowDataPacket[];
 
     const user = rows[0];
 
@@ -85,7 +92,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const passwordMatch = await PasswordEncryptor.check(
-      user_password,
+      password,
       user.user_password
     );
     if (!passwordMatch) {
@@ -97,21 +104,17 @@ const login = async (req: Request, res: Response): Promise<void> => {
 
     req.session.user = {
       id: user.id,
-      email: user_email,
+      email: user.user_email,
       first_name: user.first_name,
       last_name: user.last_name,
       role: user.role,
     };
 
-    res
-      .status(200)
-      .json({ message: 'Inloggning lyckades', user: req.session.user });
+    res.status(200).json({ message: 'Inloggning lyckades' });
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Fel vid inloggning:', error.message);
-      res
-        .status(500)
-        .json({ message: 'Serverfel vid inloggning', error: error.message });
+      res.status(500).json({ message: 'Serverfel vid inloggning' });
     } else {
       console.error('Ett okänt fel inträffade vid inloggning');
       res.status(500).json({ message: 'Ett okänt fel inträffade' });
@@ -324,6 +327,7 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
 };
 
 export default {
+  ping,
   register,
   login,
   logout,

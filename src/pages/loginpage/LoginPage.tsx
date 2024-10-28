@@ -1,54 +1,33 @@
-import axios from 'axios';
 import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
-interface FormData {
-  user_email: string;
-  user_password: string;
+export interface LoginFormData extends FieldValues {
+  email: string;
+  password: string;
 }
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
+  const submit = useSubmit();
+  const error = useActionData();
+  console.log({ error });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<LoginFormData>();
 
-  const handleLogin: SubmitHandler<FormData> = async (data) => {
-    try {
-      // Send a POST request to the login endpoint
-      const response = await axios.post('/api/user', {
-        user_email: data.user_email,
-        user_password: data.user_password,
-      });
 
-      console.log('Login successful:', response.data);
-      // Use sessionStorage
-      sessionStorage.setItem('user', JSON.stringify(response.data.user));
+  const onSubmit: SubmitHandler<LoginFormData> = (values) =>
+    submit(values, { method: 'post', action: '/medlem/logga-in' });
 
-      navigate('/medlem/medlems-sida'); // Redirect to the member page after successful login
-    } catch (error: any) {
-      console.error('Login failed:', error);
-      if (error.response) {
-        alert(error.response.data.message);
-      } else {
-        alert('An unknown error occurred.');
-      }
-    }
-  };
-
-  const handleRegisterRedirect = () => {
-    navigate('/medlem/bli-medlem');
-  };
 
   return (
     <section className="login-page-container">
       <div className="login-card">
-        <form onSubmit={handleSubmit(handleLogin)} className="login-form">
+        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
           <div className="field-container">
             <label htmlFor="email" className="form-label">
               E-post
@@ -57,13 +36,13 @@ const LoginPage: React.FC = () => {
               type="email"
               className="form-control"
               id="email"
-              {...register('user_email', {
+              {...register('email', {
                 required: 'E-post är obligatorisk',
               })}
               placeholder="Ange din e-postadress"
             />
-            {errors.user_email && (
-              <p className="error-text">{errors.user_email.message}</p>
+            {errors.email && (
+              <p className="error-text">{errors.email.message}</p>
             )}
           </div>
 
@@ -75,19 +54,21 @@ const LoginPage: React.FC = () => {
               type="password"
               className="form-control"
               id="password"
-              {...register('user_password', {
+              {...register('password', {
                 required: 'Lösenord är obligatoriskt',
               })}
               placeholder="Ange ditt lösenord"
             />
-            {errors.user_password && (
-              <p className="error-text">{errors.user_password.message}</p>
+            {errors.password && (
+              <p className="error-text">{errors.password.message}</p>
             )}
           </div>
 
           <div className="button-group">
-            <PrimaryBtn title="Bli Medlem" onClick={handleRegisterRedirect} />
-            <PrimaryBtn title="Logga In" type="submit" />
+            <Link to="/medlem/bli-medlem">
+              <PrimaryBtn title="Bli medlem" />
+            </Link>
+            <PrimaryBtn title="Logga in" type="submit" />
           </div>
         </form>
       </div>

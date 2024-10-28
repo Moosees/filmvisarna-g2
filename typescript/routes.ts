@@ -96,4 +96,6 @@ router.get(
 // update user info - body: {password?, firstName?, lastName?}
 router.patch('/user', usersController.updateUserDetails);
 
+router.get('/ping', usersController.ping);
+
 export default router;
