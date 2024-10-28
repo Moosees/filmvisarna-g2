@@ -12,6 +12,13 @@ interface RegisterRequest extends Request {
   };
 }
 
+const ping = async (req: Request, res: Response) => {
+  const user = req.session.user;
+  const isLoggedIn = user && ['admin', 'member'].includes(user.role);
+
+  res.status(200).json({ isLoggedIn });
+};
+
 const register = async (req: RegisterRequest, res: Response): Promise<void> => {
   const { user_email, user_password, first_name, last_name } = req.body;
 
@@ -50,12 +57,10 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
           .json({ message: 'E-postadressen är redan registrerad' });
       } else {
         console.error('Fel vid registrering:', error.message);
-        res
-          .status(500)
-          .json({
-            message: 'Serverfel vid registrering',
-            error: error.message,
-          });
+        res.status(500).json({
+          message: 'Serverfel vid registrering',
+          error: error.message,
+        });
       }
     } else {
       console.error('Ett okänt fel inträffade vid registrering');
@@ -65,9 +70,9 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
 };
 
 const login = async (req: Request, res: Response): Promise<void> => {
-  const { user_email, user_password } = req.body;
+  const { email, password } = req.body;
 
-  if (!user_email || !user_password) {
+  if (!email || !password) {
     res.status(400).json({ message: 'Både e-post och lösenord krävs' });
     return;
   }
@@ -77,7 +82,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         `;
 
   try {
-    const [rows] = (await db.execute(query, [user_email])) as RowDataPacket[];
+    const [rows] = (await db.execute(query, [email])) as RowDataPacket[];
 
     const user = rows[0];
 
@@ -87,7 +92,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const passwordMatch = await PasswordEncryptor.check(
-      user_password,
+      password,
       user.user_password
     );
     if (!passwordMatch) {
@@ -99,21 +104,17 @@ const login = async (req: Request, res: Response): Promise<void> => {
 
     req.session.user = {
       id: user.id,
-      email: user_email,
+      email: user.user_email,
       first_name: user.first_name,
       last_name: user.last_name,
       role: user.role,
     };
 
-    res
-      .status(200)
-      .json({ message: 'Inloggning lyckades', user: req.session.user });
+    res.status(200).json({ message: 'Inloggning lyckades' });
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Fel vid inloggning:', error.message);
-      res
-        .status(500)
-        .json({ message: 'Serverfel vid inloggning', error: error.message });
+      res.status(500).json({ message: 'Serverfel vid inloggning' });
     } else {
       console.error('Ett okänt fel inträffade vid inloggning');
       res.status(500).json({ message: 'Ett okänt fel inträffade' });
@@ -291,7 +292,6 @@ const getMemberInfo = async (req: Request, res: Response): Promise<void> => {
 const getProfilePage = async (req: Request, res: Response): Promise<void> => {
   const userId = req.session.user?.id;
 
-
   if (!userId) {
     res.status(401).json({ message: 'Du är inte inloggad' });
     return;
@@ -299,7 +299,10 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
 
   try {
     const memberQuery = `SELECT user_email, first_name, last_name FROM user WHERE id = ?`;
-    const [memberResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(memberQuery, [userId]);
+    const [memberResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(
+      memberQuery,
+      [userId]
+    );
     if (memberResults.length === 0) {
       res.status(404).json({ message: 'Ingen medlem hittades' });
       return;
@@ -307,13 +310,15 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
     const currentBookingsQuery = `
       SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') >= CURRENT_DATE
     `;
-    const [currentBookingsResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(currentBookingsQuery, [userId]);
+    const [currentBookingsResults]: [RowDataPacket[], FieldPacket[]] =
+      await db.execute(currentBookingsQuery, [userId]);
 
     // Retrieve booking history
     const bookingHistoryQuery = `
       SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.user_id = ? AND DATE_FORMAT(vbh.start_time, '%Y-%m-%d') <= CURRENT_DATE
     `;
-    const [bookingHistoryResults]: [RowDataPacket[], FieldPacket[]] = await db.execute(bookingHistoryQuery, [userId]);
+    const [bookingHistoryResults]: [RowDataPacket[], FieldPacket[]] =
+      await db.execute(bookingHistoryQuery, [userId]);
 
     // Combine all results into one response object
     res.status(200).json({
@@ -323,14 +328,14 @@ const getProfilePage = async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     console.error('Fel vid hämtning av profilinformation:', error);
-    res.status(500).json({ message: 'Serverfel vid hämtning av profilinformation' });
+    res
+      .status(500)
+      .json({ message: 'Serverfel vid hämtning av profilinformation' });
   }
 };
 
-
-
-
 export default {
+  ping,
   register,
   login,
   logout,
@@ -339,5 +344,5 @@ export default {
   getBookingHistory,
   getCurrentBookings,
   getMemberInfo,
-  getProfilePage
+  getProfilePage,
 };

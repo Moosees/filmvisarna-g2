@@ -3,7 +3,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getBookingDataQuery } from '../../api/booking';
 import { useSuspenseQuery } from '@tanstack/react-query';
-
+import { Seat } from '../../api/booking';
 // TODO change the hardcoded img
 //TODO Change how it looks if a booking contains more than one seat.
 
@@ -11,6 +11,16 @@ function BookingConfirmation() {
   const { bookingNumber } = useLoaderData() as { bookingNumber: string };
 
   const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
+
+  function formatSeats(seats: Seat[]): string {
+    const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
+    // One seat
+    if (seats.length === 1) {
+      return `Rad: ${firstSeat.row}, Plats: ${firstSeat.number}`;
+    }
+    // More than one seat
+    return `Rad: ${firstSeat.row}, Plats: ${lastSeat.number}-${firstSeat.number}`;
+  }
 
   return (
     <>
@@ -36,13 +46,7 @@ function BookingConfirmation() {
                 </li>
                 <li className="list-group-item">
                   <strong>Plats:</strong>
-                  <span>
-                    {data.seats.map((seat, index) => (
-                      <span key={index}>
-                        Rad: {seat.row}, Stol: {seat.number}
-                      </span>
-                    ))}
-                  </span>
+                  <span>{formatSeats(data.seats)}</span>
                 </li>
                 <li className="list-group-item">
                   <strong>Film:</strong>

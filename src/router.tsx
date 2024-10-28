@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { bookingLoader } from './api/booking';
 import { getQueryClient } from './api/clients';
+import { detailsLoader } from './api/details';
+import { loginAction } from './api/login';
 import { reserveLoader } from './api/reserve';
 import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
@@ -9,11 +11,13 @@ import LoginPage from './pages/loginpage/LoginPage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
+import { rootLoader } from './api/root';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    loader: rootLoader(getQueryClient()),
     children: [
       {
         index: true,
@@ -33,12 +37,14 @@ const router = createBrowserRouter([
         path: '/medlem/logga-in',
         element: <LoginPage />,
         handle: {
-          title: 'Bli medlem',
+          title: 'Logga in',
         },
+        action: loginAction(getQueryClient()),
       },
       {
         path: '/film/:id',
         element: <MovieDetailsPage />,
+        loader: detailsLoader(getQueryClient()),
       },
       {
         path: '/visning/:screeningId',
