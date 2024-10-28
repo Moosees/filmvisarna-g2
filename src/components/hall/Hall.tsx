@@ -38,6 +38,9 @@ const getAffectedSeats = (row: seat[], index: number, numPersons: number) => {
 
   if (1 + freeAround.left + freeAround.right < numPersons) return []; // can't fit that many people in the slot
 
+  const currentSide = index < Math.ceil(row.length / 2) ? 'left' : 'right';
+  console.log({ currentSide });
+
   return [{ seatId: row[index].seatId, index }];
 };
 
