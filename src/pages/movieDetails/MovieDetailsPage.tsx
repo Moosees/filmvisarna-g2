@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLoaderData } from 'react-router-dom';
 import { getMovieDataQuery } from '../../api/details';
-import NavButton from '../../components/header/NavButton';
+import NavButton from '../../components/buttons/NavButton';
 import MainHeading from '../../components/mainHeading/MainHeading';
 import MovieTrailer from '../../components/poster/MovieTrailer';
 import MoviePoster from '../../components/poster/MoviePoster';
