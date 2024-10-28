@@ -148,7 +148,7 @@ const FilterPage: React.FC = () => {
               />
             ))
           ) : (
-            <p>No movies match the selected filters.</p>
+            <p>Inga filmer matchar de valda filtren.</p>
           )}
         </CardsWrapper>
       </Row>
