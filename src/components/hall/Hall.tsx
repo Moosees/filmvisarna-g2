@@ -99,7 +99,11 @@ function Hall({ seats, numPersons }: HallProps) {
     <Container className="d-flex flex-column bg-rosa py-4 align-items-center rounded col-sm-12 col-lg-5 col-xl-4">
       {seats.map((row, rowIndex) => {
         return (
-          <Row key={rowIndex} className="mb-2 d-flex justify-content-center">
+          <Row
+            key={rowIndex}
+            className="mb-2 d-flex justify-content-center"
+            onMouseLeave={() => setHovered([])}
+          >
             {row.map(({ seatId, free }, i) => (
               <Col
                 key={seatId}
