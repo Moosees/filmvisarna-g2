@@ -11,6 +11,7 @@ function BookingConfirmation() {
   const { bookingNumber } = useLoaderData() as { bookingNumber: string };
 
   const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
+  console.log(data);
 
   function formatSeats(seats: Seat[]): string {
     const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
