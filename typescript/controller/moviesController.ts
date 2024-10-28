@@ -242,6 +242,7 @@ const filterMovies = async (req: Request, res: Response) => {
     s.movie_id =m.id
     WHERE
     CAST(s.start_time AS DATE) >= NOW()
+     AND CAST(s.start_time AS DATE) <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)
 `;
 
     const params: (string | number)[] = [];
