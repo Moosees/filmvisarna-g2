@@ -1,6 +1,7 @@
 import { Outlet, UIMatch, useMatches } from 'react-router-dom';
 import Header from './components/header/Header';
 import MainHeading from './components/mainHeading/MainHeading';
+import Biljettväljarkomponent from './components/Biljettväljare';
 
 interface AppMatch extends UIMatch {
   handle: {
@@ -21,6 +22,7 @@ function App() {
       <main className="flex-grow-1 container">
         <Outlet />
       </main>
+      <Biljettväljarkomponent/>
       <div
         style={{
           height: '15vh',
