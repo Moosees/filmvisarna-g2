@@ -115,7 +115,6 @@ export default function FilterPage() {
             <p>Inga filmer matchar de valda filtren.</p>
           )}
         </CardsWrapper>
-        ;
       </Row>
     </div>
   );
