@@ -12,7 +12,7 @@ interface TicketPrices {
 }
 
 // Ticket selection component
-const Biljettväljarkomponent: React.FC = () => {
+const TicketSelector: React.FC = () => {
   const [ticketPrices, setTicketPrices] = useState<TicketPrices | null>(null);
   const [ticketCounts, setTicketCounts] = useState({
     vuxna: 0,
@@ -193,4 +193,5 @@ const Biljettväljarkomponent: React.FC = () => {
   );
 };
 
-export default Biljettväljarkomponent;
+export default TicketSelector;
+
