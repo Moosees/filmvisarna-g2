@@ -195,9 +195,10 @@ const deleteMovie = async (req: Request, res: Response) => {
 
 const filterMovies = async (req: Request, res: Response) => {
   try {
-    const { age, date, title } = req.query as {
+    const { age, startDate, endDate, title } = req.query as {
       age?: number;
-      date?: string;
+      startDate?: string;
+      endDate?: string;
       title?: string;
     };
 
@@ -266,13 +267,20 @@ INNER JOIN
       params.push(age);
     }
 
-    if (date) {
-      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d')= ?`;
-      params.push(date);
+    if (startDate && endDate) {
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') BETWEEN ? AND ?`;
+      params.push(startDate, endDate);
+    } else if (startDate) {
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') >= ?`;
+      params.push(startDate);
+    } else if (endDate) {
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') <= ?`;
+      params.push(endDate);
     }
+
     if (title) {
-      query += ` AND m.url_param = ?`;
-      params.push(title);
+      query += ` AND m.url_param LIKE ?`;
+      params.push(`%${title}%`);
     }
 
     query += ` ORDER BY s.start_time ASC; `;
