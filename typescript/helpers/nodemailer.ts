@@ -34,13 +34,22 @@ export default class Mailer {
       },
     });
     // Send the mail
-    client.sendMail({
-      from: this.info.email,
-      to,
-      subject,
-      text,
-      html,
-      attachments,
-    });
+    client.sendMail(
+      {
+        from: this.info.email,
+        to,
+        subject,
+        text,
+        html,
+        attachments,
+      },
+      (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        } else {
+          console.log('Email sent successfully:', info.response);
+        }
+      }
+    );
   }
 }
