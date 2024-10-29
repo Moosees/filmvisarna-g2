@@ -44,10 +44,10 @@ export const filterLoader =
     const url = new URL(request.url);
     console.log(url);
 
-    const age = url.searchParams.get('age') || undefined;
+    const age = url.searchParams.get('alder') || undefined;
     const startDate = url.searchParams.get('startDate') || undefined;
     const endDate = url.searchParams.get('endDate') || undefined;
-    const title = url.searchParams.get('title') || undefined;
+    const title = url.searchParams.get('titel') || undefined;
 
     const filters: Filters = {
       age: age ? Number(age) : undefined,
@@ -56,9 +56,13 @@ export const filterLoader =
       title: title || undefined,
     };
 
+    console.log('Age:', age);
+    console.log('sDate:', startDate);
+    console.log('eDate:', endDate);
+    console.log('Title:', title);
     console.log(filters);
 
     await client.ensureQueryData(getFilterQuery(filters));
 
-    return filters;
+    return { filters };
   };

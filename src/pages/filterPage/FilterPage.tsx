@@ -1,107 +1,113 @@
-import React, { useState } from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
 import 'react-datepicker/dist/react-datepicker.css';
-import DatePickerComponent from '../../components/datePicker/DatePicker';
-import { formatInTimeZone } from 'date-fns-tz';
+// import DatePickerComponent from '../../components/datePicker/DatePicker';
+// import { formatInTimeZone } from 'date-fns-tz';
+import { Form as RouterForm, useLoaderData, useSubmit } from 'react-router-dom';
+import { filterLoader, getFilterQuery } from '../../api/filter';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
-const movies = [
-  {
-    id: 2,
-    screeningId: 43,
-    posterUrl:
-      'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
-    age: 15,
-    title: 'The Godfather',
-    startTime: '2024-11-02',
-  },
-  {
-    id: 3,
-    screeningId: 12,
-    posterUrl:
-      'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
-    age: 15,
-    title: 'Gladiator',
-    startTime: '2024-10-30',
-  },
-  {
-    id: 4,
-    screeningId: 33,
-    posterUrl: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
-    age: 15,
-    title: 'THE GRINCH',
-    startTime: '2024-11-26',
-  },
-];
+// const movies = [
+//   {
+//     id: 2,
+//     screeningId: 43,
+//     posterUrl:
+//       'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
+//     age: 15,
+//     title: 'The Godfather',
+//     startTime: '2024-11-02',
+//   },
+//   {
+//     id: 3,
+//     screeningId: 12,
+//     posterUrl:
+//       'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
+//     age: 15,
+//     title: 'Gladiator',
+//     startTime: '2024-10-30',
+//   },
+//   {
+//     id: 4,
+//     screeningId: 33,
+//     posterUrl: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
+//     age: 15,
+//     title: 'THE GRINCH',
+//     startTime: '2024-11-26',
+//   },
+// ];
 
-const timeZone = 'Europe/Stockholm';
+// const timeZone = 'Europe/Stockholm';
 
 export default function FilterPage() {
-  const [filters, setFilters] = useState({
-    startDate: undefined as Date | undefined,
-    endDate: undefined as Date | undefined,
-    searchTerm: '',
-    age: '',
-  });
+  const submit = useSubmit();
 
-  const handleFilterChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
+  const { filters } = useLoaderData() as Awaited<
+    ReturnType<ReturnType<typeof filterLoader>>
+  >;
 
-  const filteredMovies = movies.filter((movie) => {
-    const matchesSearchTerm = movie.title
-      .toLowerCase()
-      .includes(filters.searchTerm.toLowerCase());
+  const { data, isLoading, isError } = useSuspenseQuery(
+    getFilterQuery(filters)
+  );
 
-    const matchesAge = filters.age === '' || movie.age <= Number(filters.age);
+  if (isLoading) {
+    return <Spinner animation="border" />;
+  }
 
-    const movieDate = new Date(movie.startTime);
-    const movieDateInTimeZone = formatInTimeZone(
-      movieDate,
-      timeZone,
-      'yyyy-MM-dd'
-    );
+  if (isError) {
+    return <p>Something went wrong while fetching movies.</p>;
+  }
 
-    const selectedStartDateInTimeZone = filters.startDate
-      ? formatInTimeZone(filters.startDate, timeZone, 'yyyy-MM-dd')
-      : null;
+  // const filteredMovies = movies.filter((movie) => {
+  //   const matchesSearchTerm = movie.title
+  //     .toLowerCase()
+  //     .includes(filters.searchTerm.toLowerCase());
 
-    const selectedEndDateInTimeZone = filters.endDate
-      ? formatInTimeZone(filters.endDate, timeZone, 'yyyy-MM-dd')
-      : null;
+  //   const matchesAge = filters.age === '' || movie.age <= Number(filters.age);
 
-    const matchesDate =
-      (!selectedStartDateInTimeZone && !selectedEndDateInTimeZone) ||
-      (selectedStartDateInTimeZone &&
-        movieDateInTimeZone >= selectedStartDateInTimeZone &&
-        (!selectedEndDateInTimeZone ||
-          movieDateInTimeZone <= selectedEndDateInTimeZone));
+  //   const movieDate = new Date(movie.startTime);
+  //   const movieDateInTimeZone = formatInTimeZone(
+  //     movieDate,
+  //     timeZone,
+  //     'yyyy-MM-dd'
+  //   );
 
-    return matchesSearchTerm && matchesAge && matchesDate;
-  });
+  //   const selectedStartDateInTimeZone = filters.startDate
+  //     ? formatInTimeZone(filters.startDate, timeZone, 'yyyy-MM-dd')
+  //     : null;
+
+  //   const selectedEndDateInTimeZone = filters.endDate
+  //     ? formatInTimeZone(filters.endDate, timeZone, 'yyyy-MM-dd')
+  //     : null;
+
+  //   const matchesDate =
+  //     (!selectedStartDateInTimeZone && !selectedEndDateInTimeZone) ||
+  //     (selectedStartDateInTimeZone &&
+  //       movieDateInTimeZone >= selectedStartDateInTimeZone &&
+  //       (!selectedEndDateInTimeZone ||
+  //         movieDateInTimeZone <= selectedEndDateInTimeZone));
+
+  //   return matchesSearchTerm && matchesAge && matchesDate;
+  // });
 
   return (
     <div className="container my-4">
-      <Form>
+      <RouterForm
+        onChange={(e) => {
+          submit(e.currentTarget);
+        }}
+      >
         <Row className="mb-3">
           <Col md={3}>
-            <DatePickerComponent filters={filters} setFilters={setFilters} />
+            {/* <DatePickerComponent filters={filters} setFilters={setFilters} /> */}
           </Col>
 
           <Col md={6}>
             <input
               type="text"
-              name="searchTerm"
+              name="titel"
               placeholder="Sök"
-              value={filters.searchTerm}
-              onChange={handleFilterChange}
+              // value={filters.title}
               className="form-control m-0"
             />
           </Col>
@@ -109,9 +115,8 @@ export default function FilterPage() {
           <Col md={3}>
             <Form.Select
               className="bg-light text-dark p-2 m-0"
-              name="selectedAge"
-              value={filters.age}
-              onChange={handleFilterChange}
+              name="alder"
+              // value={filters.age}
             >
               <option value="">Ålder</option>
               <option value="7">7+</option>
@@ -120,20 +125,20 @@ export default function FilterPage() {
             </Form.Select>
           </Col>
         </Row>
-      </Form>
+      </RouterForm>
 
       <Row>
         <CardsWrapper>
-          {filteredMovies.length > 0 ? (
-            filteredMovies.map((movie) => (
+          {data.length > 0 ? (
+            data.map((movie) => (
               <MovieCard
-                movieId={movie.id}
-                screeningId={movie.screeningId}
+                movieId={movie.movieId}
+                screeningId={movie.screeningDetails[0].screeningId}
                 age={movie.age}
                 src={movie.posterUrl}
                 title={movie.title}
-                startTime={movie.startTime}
-                key={movie.id}
+                startTime={movie.screeningDetails[0].startDate}
+                key={movie.movieId}
               />
             ))
           ) : (

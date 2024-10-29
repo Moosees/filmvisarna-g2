@@ -272,7 +272,10 @@ const filterMovies = async (req: Request, res: Response) => {
 
     //Check if the movie was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film hittades inte' });
+      res.status(200).json(
+        // { message: 'Film hittades inte' }
+        []
+      );
       return;
     }
 
