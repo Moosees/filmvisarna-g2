@@ -53,14 +53,23 @@ export default function FilterPage() {
     );
   };
   return (
-    <div className="container my-4">
+    <div className="container my-4 ">
       <RouterForm
         onChange={(e) => {
           submit(e.currentTarget);
         }}
       >
-        <Row className="mb-3">
-          <Col md={3}>
+        <Row className=" mx-md-auto py-1 bg-rosa col-md-8 rounded">
+          <Col lg={4} className="d-md-none">
+            <input
+              type="text"
+              name="titel"
+              placeholder="Sök"
+              className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2"
+            />
+          </Col>
+
+          <Col lg={4} className="col-6 px-1 px-md-2">
             {/* <DatePickerComponent filters={filters} setFilters={setFilters} /> */}
             <DatePicker
               selectsRange={true}
@@ -72,22 +81,25 @@ export default function FilterPage() {
               ]}
               dateFormat="yyyy-MM-dd"
               placeholderText="Välj Datum"
-              className="form-control react-datepicker-wrapper p-2 m-0"
               isClearable={true}
+              className="form-control bg-light text-dark placeholder-gray fs-s-custom p-2 my-1 my-lg-2 "
             />
           </Col>
 
-          <Col md={6}>
+          <Col lg={4} className="d-none d-md-block ">
             <input
               type="text"
               name="titel"
               placeholder="Sök"
-              className="form-control m-0"
+              className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2"
             />
           </Col>
 
-          <Col md={3}>
-            <Form.Select className="bg-light text-dark p-2 m-0" name="alder">
+          <Col lg={4} className="col-6 px-1 px-md-2">
+            <Form.Select
+              className="bg-light text-dark my-1 my-lg-2 placeholder-gray"
+              name="alder"
+            >
               <option value="">Ålder</option>
               <option value="7">7+</option>
               <option value="11">11+</option>
