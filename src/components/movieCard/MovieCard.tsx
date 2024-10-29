@@ -42,7 +42,8 @@ function MovieCard({
   };
   const handleConfirmationLinkClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (reservationNum) navigate('/bokning/${reservationNum}');
+    e.stopPropagation();
+    if (reservationNum) navigate(`/bokning/${reservationNum}`);
   };
 
   return (
