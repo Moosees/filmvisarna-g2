@@ -7,6 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Form as RouterForm, useLoaderData, useSubmit } from 'react-router-dom';
 import { filterLoader, getFilterQuery } from '../../api/filter';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { addDays, subDays, format } from 'date-fns';
+import DatePicker from 'react-datepicker';
 
 // const timeZone = 'Europe/Stockholm';
 
@@ -21,6 +24,13 @@ export default function FilterPage() {
     getFilterQuery(filters)
   );
 
+  const [startDate, setStartDate] = useState(
+    filters.startDate ? new Date(filters.startDate) : undefined
+  );
+  const [endDate, setEndDate] = useState(
+    filters.endDate ? new Date(filters.endDate) : undefined
+  );
+
   if (isLoading) {
     return <Spinner animation="border" />;
   }
@@ -29,38 +39,19 @@ export default function FilterPage() {
     return <p>Something went wrong while fetching movies.</p>;
   }
 
-  // const filteredMovies = movies.filter((movie) => {
-  //   const matchesSearchTerm = movie.title
-  //     .toLowerCase()
-  //     .includes(filters.searchTerm.toLowerCase());
+  const handleDateChange = (dates: [Date | null, Date | null]) => {
+    const [start, end] = dates;
+    setStartDate(start || undefined);
+    setEndDate(end || undefined);
 
-  //   const matchesAge = filters.age === '' || movie.age <= Number(filters.age);
-
-  //   const movieDate = new Date(movie.startTime);
-  //   const movieDateInTimeZone = formatInTimeZone(
-  //     movieDate,
-  //     timeZone,
-  //     'yyyy-MM-dd'
-  //   );
-
-  //   const selectedStartDateInTimeZone = filters.startDate
-  //     ? formatInTimeZone(filters.startDate, timeZone, 'yyyy-MM-dd')
-  //     : null;
-
-  //   const selectedEndDateInTimeZone = filters.endDate
-  //     ? formatInTimeZone(filters.endDate, timeZone, 'yyyy-MM-dd')
-  //     : null;
-
-  //   const matchesDate =
-  //     (!selectedStartDateInTimeZone && !selectedEndDateInTimeZone) ||
-  //     (selectedStartDateInTimeZone &&
-  //       movieDateInTimeZone >= selectedStartDateInTimeZone &&
-  //       (!selectedEndDateInTimeZone ||
-  //         movieDateInTimeZone <= selectedEndDateInTimeZone));
-
-  //   return matchesSearchTerm && matchesAge && matchesDate;
-  // });
-
+    submit(
+      {
+        startDate: start ? format(start, 'yyyy-MM-dd') : '',
+        endDate: end ? format(end, 'yyyy-MM-dd') : '',
+      },
+      { replace: true }
+    );
+  };
   return (
     <div className="container my-4">
       <RouterForm
@@ -71,6 +62,19 @@ export default function FilterPage() {
         <Row className="mb-3">
           <Col md={3}>
             {/* <DatePickerComponent filters={filters} setFilters={setFilters} /> */}
+            <DatePicker
+              selectsRange={true}
+              startDate={startDate}
+              endDate={endDate}
+              onChange={handleDateChange}
+              includeDateIntervals={[
+                { start: subDays(new Date(), 1), end: addDays(new Date(), 14) },
+              ]}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Välj Datum"
+              className="form-control react-datepicker-wrapper p-2 m-0"
+              isClearable={true}
+            />
           </Col>
 
           <Col md={6}>
@@ -78,17 +82,12 @@ export default function FilterPage() {
               type="text"
               name="titel"
               placeholder="Sök"
-              // value={filters.title}
               className="form-control m-0"
             />
           </Col>
 
           <Col md={3}>
-            <Form.Select
-              className="bg-light text-dark p-2 m-0"
-              name="alder"
-              // value={filters.age}
-            >
+            <Form.Select className="bg-light text-dark p-2 m-0" name="alder">
               <option value="">Ålder</option>
               <option value="7">7+</option>
               <option value="11">11+</option>
