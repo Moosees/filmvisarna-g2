@@ -12,7 +12,7 @@ const movies = [
   },
   {
     id: 2,
-    screeningId: 43,
+    screeningId: 22,
     src: 'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
     age: 15,
     title: 'The Godfather',
