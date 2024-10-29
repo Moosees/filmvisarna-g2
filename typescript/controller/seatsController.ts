@@ -53,6 +53,11 @@ interface AllSeats extends RowDataPacket {
   startTime: string;
   screeningId: number;
   auditorium: string;
+  tickets: {
+    ticketId: number;
+    name: string;
+    price: number;
+  };
   seats: [
     {
       row: number;
@@ -68,7 +73,7 @@ const getAllSeats = async (req: Request, res: Response) => {
     const { screening_id } = req.params;
 
     const [results]: [AllSeats[], FieldPacket[]] = await db.execute(
-      'SELECT * FROM vy_all_seats WHERE screeningId =?',
+      'SELECT * FROM view_all_seats WHERE screeningId =?',
       [screening_id]
     );
 
