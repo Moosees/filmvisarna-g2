@@ -7,7 +7,7 @@ export interface ScreeningData {
   startTime: string;
   screeningId: number;
   auditorium: string;
-  tickets: { ticketId: number; name: string; price: number };
+  tickets: { ticketId: number; name: string; price: number }[];
   seats: { seatId: number; free: boolean }[][];
 }
 
