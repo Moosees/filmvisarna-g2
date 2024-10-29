@@ -35,12 +35,6 @@ function MovieCard({
 }: MovieCardProps) {
   const navigate = useNavigate();
 
-  // const handleCardClick = () => {
-  //   if (!allowConfirmationOnly) {
-  //     navigate(`/film/${movieId}`);
-  //   }
-  // };
-
   const handleCardClick = () => {
     if (allowConfirmationOnly && reservationNum) {
       navigate(`/bokning/${reservationNum}`);
