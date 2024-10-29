@@ -51,3 +51,21 @@
   justify-content: center;
   border-radius: 50%;
 }
+
+.editable-input {
+  background-color: white;
+  color: black;
+
+  &:focus {
+    background-color: white;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: none;
+    color: black;
+  }
+
+  &::placeholder {
+    color: #666666;
+    opacity: 1;
+  }
+}
