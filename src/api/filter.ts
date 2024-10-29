@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { LoaderFunctionArgs } from 'react-router-dom';
 
-interface FormData {
+interface Filters {
   age?: number;
   date?: string;
   title?: string;
@@ -25,16 +25,16 @@ interface Movie {
   screeningDetails: ScreeningDetail[];
 }
 
-async function getFilter(formData: FormData) {
+async function getFilter(filters: Filters) {
   const response = await axios.get<Movie[]>(`/api/movie`, {
-    params: formData,
+    params: filters,
   });
   return response.data;
 }
 
-export const getFilterQuery = (formData: FormData) => ({
-  queryKey: ['filter', formData],
-  queryFn: async () => await getFilter(formData),
+export const getFilterQuery = (filters: Filters) => ({
+  queryKey: ['filter', filters],
+  queryFn: async () => await getFilter(filters),
 });
 
 export const filterLoader =
@@ -47,15 +47,15 @@ export const filterLoader =
     const date = url.searchParams.get('date') || undefined;
     const title = url.searchParams.get('title') || undefined;
 
-    const formData: FormData = {
+    const filters: Filters = {
       age: age ? Number(age) : undefined,
       date: date || undefined,
       title: title || undefined,
     };
 
-    console.log(formData);
+    console.log(filters);
 
-    await client.ensureQueryData(getFilterQuery(formData));
+    await client.ensureQueryData(getFilterQuery(filters));
 
-    return null;
+    return filters;
   };

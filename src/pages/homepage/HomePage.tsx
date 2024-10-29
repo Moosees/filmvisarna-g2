@@ -45,7 +45,7 @@ export default function HomePage() {
             movieId={movie.id}
             screeningId={movie.screeningId}
             age={movie.age}
-            src={movie.src}
+            posterUrl={movie.src}
             title={movie.title}
             startTime={movie.startTime}
             key={movie.id}
