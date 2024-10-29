@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
-import { useState } from 'react';
 
 function ReservePage() {
   const [numPersons, setNumPersons] = useState(0);
@@ -17,10 +17,7 @@ function ReservePage() {
   return (
     <>
       <Hall seats={data.seats} numPersons={numPersons} />
-      <TicketSelector
-        ticketPrices={{ barn: 80, vuxna: 80, senior: 80 }}
-        setNumPersons={setNumPersons}
-      />
+      <TicketSelector tickets={data.tickets} setNumPersons={setNumPersons} />
     </>
   );
 }

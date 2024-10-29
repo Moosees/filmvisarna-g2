@@ -2,22 +2,19 @@ import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { LoaderFunctionArgs } from 'react-router-dom';
 import { getAxios } from './clients';
 
-interface ScreeningData {
-  message: string;
-  results: {
-    title: string;
-    startTime: string;
-    screeningId: number;
-    auditorium: string;
-    seats: { seatId: number; free: boolean }[][];
-  };
+export interface ScreeningData {
+  title: string;
+  startTime: string;
+  screeningId: number;
+  auditorium: string;
+  tickets: { ticketId: number; name: string; price: number };
+  seats: { seatId: number; free: boolean }[][];
 }
 
 async function getScreeningData(screeningId: number) {
   const response = await getAxios().get<ScreeningData>(`seats/${screeningId}`);
-  console.log(response.data.message);
 
-  return response.data.results;
+  return response.data;
 }
 
 export const getScreeningDataQuery = (screeningId: number) =>

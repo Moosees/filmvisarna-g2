@@ -106,9 +106,7 @@ const getAllSeats = async (req: Request, res: Response) => {
       }),
     };
 
-    res
-      .status(200)
-      .json({ message: 'Visning hittades', results: responseData });
+    res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
   }
