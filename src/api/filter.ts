@@ -4,7 +4,8 @@ import { LoaderFunctionArgs } from 'react-router-dom';
 
 interface Filters {
   age?: number;
-  date?: string;
+  startDate?: string;
+  endDate?: string;
   title?: string;
 }
 
@@ -44,12 +45,14 @@ export const filterLoader =
     console.log(url);
 
     const age = url.searchParams.get('age') || undefined;
-    const date = url.searchParams.get('date') || undefined;
+    const startDate = url.searchParams.get('startDate') || undefined;
+    const endDate = url.searchParams.get('endDate') || undefined;
     const title = url.searchParams.get('title') || undefined;
 
     const filters: Filters = {
       age: age ? Number(age) : undefined,
-      date: date || undefined,
+      startDate: startDate || undefined,
+      endDate: endDate || undefined,
       title: title || undefined,
     };
 

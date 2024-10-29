@@ -10,7 +10,8 @@ const movies = [
   {
     id: 2,
     screeningId: 43,
-    src: 'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
+    posterUrl:
+      'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
     age: 15,
     title: 'The Godfather',
     startTime: '2024-11-02',
@@ -18,7 +19,8 @@ const movies = [
   {
     id: 3,
     screeningId: 12,
-    src: 'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
+    posterUrl:
+      'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
     age: 15,
     title: 'Gladiator',
     startTime: '2024-10-30',
@@ -26,7 +28,7 @@ const movies = [
   {
     id: 4,
     screeningId: 33,
-    src: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
+    posterUrl: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
     age: 15,
     title: 'THE GRINCH',
     startTime: '2024-11-26',
@@ -37,10 +39,10 @@ const timeZone = 'Europe/Stockholm';
 
 export default function FilterPage() {
   const [filters, setFilters] = useState({
-    selectedStartDate: undefined as Date | undefined,
-    selectedEndDate: undefined as Date | undefined,
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
     searchTerm: '',
-    selectedAge: '',
+    age: '',
   });
 
   const handleFilterChange = (
@@ -58,8 +60,7 @@ export default function FilterPage() {
       .toLowerCase()
       .includes(filters.searchTerm.toLowerCase());
 
-    const matchesAge =
-      filters.selectedAge === '' || movie.age <= Number(filters.selectedAge);
+    const matchesAge = filters.age === '' || movie.age <= Number(filters.age);
 
     const movieDate = new Date(movie.startTime);
     const movieDateInTimeZone = formatInTimeZone(
@@ -68,12 +69,12 @@ export default function FilterPage() {
       'yyyy-MM-dd'
     );
 
-    const selectedStartDateInTimeZone = filters.selectedStartDate
-      ? formatInTimeZone(filters.selectedStartDate, timeZone, 'yyyy-MM-dd')
+    const selectedStartDateInTimeZone = filters.startDate
+      ? formatInTimeZone(filters.startDate, timeZone, 'yyyy-MM-dd')
       : null;
 
-    const selectedEndDateInTimeZone = filters.selectedEndDate
-      ? formatInTimeZone(filters.selectedEndDate, timeZone, 'yyyy-MM-dd')
+    const selectedEndDateInTimeZone = filters.endDate
+      ? formatInTimeZone(filters.endDate, timeZone, 'yyyy-MM-dd')
       : null;
 
     const matchesDate =
@@ -109,7 +110,7 @@ export default function FilterPage() {
             <Form.Select
               className="bg-light text-dark p-2 m-0"
               name="selectedAge"
-              value={filters.selectedAge}
+              value={filters.age}
               onChange={handleFilterChange}
             >
               <option value="">Ålder</option>
@@ -129,7 +130,7 @@ export default function FilterPage() {
                 movieId={movie.id}
                 screeningId={movie.screeningId}
                 age={movie.age}
-                src={movie.src}
+                src={movie.posterUrl}
                 title={movie.title}
                 startTime={movie.startTime}
                 key={movie.id}

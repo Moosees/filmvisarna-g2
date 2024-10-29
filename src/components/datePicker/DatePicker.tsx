@@ -4,8 +4,8 @@ import { addDays, subDays } from 'date-fns';
 interface DatePickerProps {
   setFilters: (filters: any) => void;
   filters: {
-    selectedStartDate: Date | undefined;
-    selectedEndDate: Date | undefined;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
   };
 }
 
@@ -13,13 +13,13 @@ function DatePickerComponent({ setFilters, filters }: DatePickerProps) {
   return (
     <DatePicker
       selectsRange={true}
-      startDate={filters.selectedStartDate}
-      endDate={filters.selectedEndDate}
+      startDate={filters.startDate}
+      endDate={filters.endDate}
       onChange={(update: [Date | null, Date | null]) => {
         setFilters((prevFilters: any) => ({
           ...prevFilters,
-          selectedStartDate: update[0],
-          selectedEndDate: update[1],
+          startDate: update[0],
+          endDate: update[1],
         }));
       }}
       includeDateIntervals={[
