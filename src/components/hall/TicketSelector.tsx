@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,6 +49,13 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
       )
     );
   };
+
+  // evil useEffect to set ticket count to 1 when mounting the page
+  useEffect(() => {
+    if ('Vuxen' in ticketCounts && totalPrice === 0)
+      handleTicketChange('Vuxen', true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container className="ticket-page-container">
