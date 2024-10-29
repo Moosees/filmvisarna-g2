@@ -34,7 +34,6 @@ interface MovieData {
 async function getMovieData(movieId: number) {
   try {
     const response = await getAxios().get<MovieData>(`/movie/${movieId}`);
-    console.log(response.data.message);
     return response.data;
   } catch (error) {
     console.error('Failed to fetch movie data:', error);

@@ -34,6 +34,22 @@ const movies = [
     title: 'THE GRINCH',
     startTime: '21:00-22:30',
   },
+  {
+    id: 5,
+    screeningId: 33,
+    src: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
+    age: 15,
+    title: 'THE GRINCH',
+    startTime: '21:00-22:30',
+  },
+  {
+    id: 6,
+    screeningId: 33,
+    src: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
+    age: 15,
+    title: 'THE GRINCH',
+    startTime: '21:00-22:30',
+  },
 ];
 
 export default function HomePage() {

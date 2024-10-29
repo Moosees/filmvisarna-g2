@@ -8,35 +8,6 @@ import { Form as RouterForm, useLoaderData, useSubmit } from 'react-router-dom';
 import { filterLoader, getFilterQuery } from '../../api/filter';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-// const movies = [
-//   {
-//     id: 2,
-//     screeningId: 43,
-//     posterUrl:
-//       'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
-//     age: 15,
-//     title: 'The Godfather',
-//     startTime: '2024-11-02',
-//   },
-//   {
-//     id: 3,
-//     screeningId: 12,
-//     posterUrl:
-//       'https://atthemovies.uk/cdn/shop/products/Gladiator2000us27x40in195u.jpg?v=1621385091',
-//     age: 15,
-//     title: 'Gladiator',
-//     startTime: '2024-10-30',
-//   },
-//   {
-//     id: 4,
-//     screeningId: 33,
-//     posterUrl: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
-//     age: 15,
-//     title: 'THE GRINCH',
-//     startTime: '2024-11-26',
-//   },
-// ];
-
 // const timeZone = 'Europe/Stockholm';
 
 export default function FilterPage() {
@@ -132,7 +103,7 @@ export default function FilterPage() {
           {data && data.length > 0 ? (
             data.map((movie) => (
               <MovieCard
-                key={movie.movieId}
+                key={movie.screeningId}
                 movieId={movie.movieId}
                 screeningId={movie.screeningId}
                 age={movie.age}
