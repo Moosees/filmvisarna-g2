@@ -1,67 +1,29 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Define ticket prices interface
 interface TicketPrices {
   vuxna: number;
   barn: number;
-  pensionär: number;
+  senior: number;
 }
 
 interface TicketSelectorProps {
   setNumPersons: React.Dispatch<React.SetStateAction<number>>;
+  ticketPrices: TicketPrices;
 }
 
-// Ticket selection component
-const TicketSelector: React.FC<TicketSelectorProps> = ({ setNumPersons }) => {
-  const [ticketPrices, setTicketPrices] = useState<TicketPrices | null>(null);
+const TicketSelector: React.FC<TicketSelectorProps> = ({
+  ticketPrices,
+  setNumPersons,
+}) => {
   const [ticketCounts, setTicketCounts] = useState({
     vuxna: 0,
     barn: 0,
-    pensionär: 0,
+    senior: 0,
   });
   const [totalPrice, setTotalPrice] = useState(0);
-
-  // Fetch ticket prices from the backend
-  useEffect(() => {
-    const fetchTicketPrices = async () => {
-      try {
-        const response = await axios.get('/api/ticket');
-
-        // Convert the data from backend to the expected format
-        const prices: TicketPrices = {
-          vuxna: 0,
-          barn: 0,
-          pensionär: 0,
-        };
-
-        response.data.forEach(
-          (ticket: { ticket_name: string; price: number }) => {
-            switch (ticket.ticket_name) {
-              case 'Vuxen':
-                prices.vuxna = ticket.price;
-                break;
-              case 'Barn':
-                prices.barn = ticket.price;
-                break;
-              case 'Senior':
-                prices.pensionär = ticket.price;
-                break;
-            }
-          }
-        );
-
-        setTicketPrices(prices);
-      } catch (error) {
-        console.error('Kunde inte hämta biljettpriser, försök igen:', error);
-        alert('Kunde inte hämta biljettpriser, försök igen senare.');
-      }
-    };
-    fetchTicketPrices();
-  }, []);
 
   // Update total price whenever ticket counts or prices change
   useEffect(() => {
@@ -69,25 +31,22 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({ setNumPersons }) => {
       const total =
         ticketCounts.vuxna * ticketPrices.vuxna +
         ticketCounts.barn * ticketPrices.barn +
-        ticketCounts.pensionär * ticketPrices.pensionär;
+        ticketCounts.senior * ticketPrices.senior;
       setTotalPrice(total);
       setNumPersons(
-        ticketCounts.barn + ticketCounts.vuxna + ticketCounts.pensionär
+        ticketCounts.barn + ticketCounts.vuxna + ticketCounts.senior
       );
     }
   }, [setNumPersons, ticketCounts, ticketPrices]);
 
   // Handle increment/decrement of ticket counts
-  const handleTicketChange = (
-    type: 'vuxna' | 'barn' | 'pensionär',
-    increment: boolean
-  ) => {
+  const handleTicketChange = (type: keyof TicketPrices, increment: boolean) => {
     const newCount = increment
       ? ticketCounts[type] + 1
       : Math.max(ticketCounts[type] - 1, 0);
 
     const totalTickets =
-      ticketCounts.vuxna + ticketCounts.barn + ticketCounts.pensionär;
+      ticketCounts.vuxna + ticketCounts.barn + ticketCounts.senior;
 
     // Check if adding a new ticket would exceed the limit
     if (increment && totalTickets >= 8) {
@@ -157,19 +116,19 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({ setNumPersons }) => {
 
                 <Row className="ticket-row field-container">
                   <Col>
-                    <span>Pensionär ({ticketPrices.pensionär} SEK)</span>
+                    <span>Senior ({ticketPrices.senior} SEK)</span>
                   </Col>
                   <Col className="text-end">
                     <Button
                       className="btn-custom"
-                      onClick={() => handleTicketChange('pensionär', false)}
+                      onClick={() => handleTicketChange('senior', false)}
                     >
                       -
                     </Button>
-                    <span className="mx-2">{ticketCounts.pensionär}</span>
+                    <span className="mx-2">{ticketCounts.senior}</span>
                     <Button
                       className="btn-custom"
-                      onClick={() => handleTicketChange('pensionär', true)}
+                      onClick={() => handleTicketChange('senior', true)}
                     >
                       +
                     </Button>
@@ -201,4 +160,3 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({ setNumPersons }) => {
 };
 
 export default TicketSelector;
-

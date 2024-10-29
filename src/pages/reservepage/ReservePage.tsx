@@ -17,7 +17,10 @@ function ReservePage() {
   return (
     <>
       <Hall seats={data.seats} numPersons={numPersons} />
-      <TicketSelector setNumPersons={setNumPersons} />
+      <TicketSelector
+        ticketPrices={{ barn: 80, vuxna: 80, senior: 80 }}
+        setNumPersons={setNumPersons}
+      />
     </>
   );
 }
