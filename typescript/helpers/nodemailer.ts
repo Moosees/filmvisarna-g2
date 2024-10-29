@@ -23,7 +23,7 @@ export default class Mailer {
     subject: string,
     text: string,
     html: string,
-    attachments = []
+    attachments: Array<{ filename: string; path: string }> = []
   ) {
     // Authenticate / create a mail client
     const client = nodemailer.createTransport({

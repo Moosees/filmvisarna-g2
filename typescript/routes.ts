@@ -6,6 +6,7 @@ import ticketsController from './controller/ticketsController.js';
 import { isAdmin, isAuthenticated } from './middleware/authMiddleware.js';
 // import { isAdmin } from './middleware/authMiddleware.js';
 import usersController from './controller/usersController.js';
+import Mailer from './helpers/nodemailer.js';
 
 const router = express.Router();
 
@@ -85,5 +86,18 @@ router.get(
 router.patch('/user', usersController.updateUserDetails);
 
 router.get('/ping', usersController.ping);
+
+router.get('/email/:to', (req, res) => {
+  const { to } = req.params;
+  const subject = 'Test';
+  const text = 'här kommer ditt mail';
+  const html = '<h3>This is a test:</h3>';
+  const attachments = [
+    { filename: 'example.txt', path: './path/to/example.txt' },
+  ]; // Exempel på bilaga
+
+  Mailer.send(to, subject, text, html, attachments);
+  res.send({ status: 'ok' });
+});
 
 export default router;
