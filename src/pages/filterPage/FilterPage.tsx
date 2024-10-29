@@ -129,22 +129,23 @@ export default function FilterPage() {
 
       <Row>
         <CardsWrapper>
-          {data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((movie) => (
               <MovieCard
-                movieId={movie.movieId}
-                screeningId={movie.screeningDetails[0].screeningId}
-                age={movie.age}
-                src={movie.posterUrl}
-                title={movie.title}
-                startTime={movie.screeningDetails[0].startDate}
                 key={movie.movieId}
+                movieId={movie.movieId}
+                screeningId={movie.screeningId}
+                age={movie.age}
+                posterUrl={movie.posterUrl}
+                title={movie.title}
+                startTime={movie.timeRange}
               />
             ))
           ) : (
             <p>Inga filmer matchar de valda filtren.</p>
           )}
         </CardsWrapper>
+        ;
       </Row>
     </div>
   );

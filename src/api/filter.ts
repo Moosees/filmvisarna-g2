@@ -9,21 +9,20 @@ interface Filters {
   title?: string;
 }
 
-interface ScreeningDetail {
+interface dateFormat {
   dayName: string;
-  startDate: string;
-  timeRange: string;
-  screeningId: number;
   screeningDate: string;
 }
 
 interface Movie {
   movieId: number;
   title: string;
-  paramUrl: string;
-  age: number;
   posterUrl: string;
-  screeningDetails: ScreeningDetail[];
+  age: number;
+  screeningId: number;
+  startDate: string;
+  timeRange: string;
+  dateFormat: dateFormat;
 }
 
 async function getFilter(filters: Filters) {
