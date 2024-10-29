@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         handle: {
           title: 'Kommande Filmer',
         },
-        action: filterLoader(getQueryClient()),
+        loader: filterLoader(getQueryClient()),
       },
       {
         path: '/film/:id',

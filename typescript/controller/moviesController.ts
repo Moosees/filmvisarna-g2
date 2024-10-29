@@ -201,12 +201,12 @@ const filterMovies = async (req: Request, res: Response) => {
       title?: string;
     };
 
-    if (!age && !date && !title) {
-      res
-        .status(400)
-        .json({ message: 'Parameter för ålder eller datum krävs' });
-      return;
-    }
+    // if (!age && !date && !title) {
+    //   res
+    //     .status(400)
+    //     .json({ message: 'Parameter för ålder eller datum krävs' });
+    //   return;
+    // }
 
     await db.execute('SET lc_time_names = "sv_SE"');
 

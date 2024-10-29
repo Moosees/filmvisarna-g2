@@ -26,7 +26,7 @@ interface Movie {
 }
 
 async function getFilter(formData: FormData) {
-  const response = await axios.get<Movie[]>(`/api/movie?date=2024-11-02`, {
+  const response = await axios.get<Movie[]>(`/api/movie`, {
     params: formData,
   });
   return response.data;
