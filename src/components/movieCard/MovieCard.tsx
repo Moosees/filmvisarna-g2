@@ -15,6 +15,7 @@ interface MovieCardProps {
   confirmationButton?: boolean;
   smallFont?: boolean;
   hideAge?: boolean;
+  allowConfirmationOnly?: boolean;
 }
 
 function MovieCard({
@@ -30,15 +31,28 @@ function MovieCard({
   confirmationButton = false,
   smallFont = false,
   hideAge = false,
+  allowConfirmationOnly = false,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
+  // const handleCardClick = () => {
+  //   if (!allowConfirmationOnly) {
+  //     navigate(`/film/${movieId}`);
+  //   }
+  // };
+
   const handleCardClick = () => {
-    navigate(`/film/${movieId}`);
+    if (allowConfirmationOnly && reservationNum) {
+      navigate(`/bokning/${reservationNum}`);
+    } else {
+      navigate(`/film/${movieId}`);
+    }
   };
   const handleButtonClick = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    navigate(`/visning/${screeningId}`);
+    if (!allowConfirmationOnly) {
+      e?.stopPropagation();
+      navigate(`/visning/${screeningId}`);
+    }
   };
   const handleConfirmationLinkClick = (e: React.MouseEvent) => {
     e.preventDefault();

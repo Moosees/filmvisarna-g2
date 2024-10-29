@@ -119,6 +119,7 @@ const ProfilePage: React.FC = () => {
                       smallFont={true}
                       hideAge={true}
                       reservationNum={booking.reservationNum}
+                      allowConfirmationOnly={true}
                       className="profile-movie-card"
                     />
                   ))
