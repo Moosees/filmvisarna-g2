@@ -11,8 +11,12 @@ interface TicketPrices {
   pensionär: number;
 }
 
+interface TicketSelectorProps {
+  setNumPersons: React.Dispatch<React.SetStateAction<number>>;
+}
+
 // Ticket selection component
-const TicketSelector: React.FC = () => {
+const TicketSelector: React.FC<TicketSelectorProps> = ({ setNumPersons }) => {
   const [ticketPrices, setTicketPrices] = useState<TicketPrices | null>(null);
   const [ticketCounts, setTicketCounts] = useState({
     vuxna: 0,
@@ -67,8 +71,11 @@ const TicketSelector: React.FC = () => {
         ticketCounts.barn * ticketPrices.barn +
         ticketCounts.pensionär * ticketPrices.pensionär;
       setTotalPrice(total);
+      setNumPersons(
+        ticketCounts.barn + ticketCounts.vuxna + ticketCounts.pensionär
+      );
     }
-  }, [ticketCounts, ticketPrices]);
+  }, [setNumPersons, ticketCounts, ticketPrices]);
 
   // Handle increment/decrement of ticket counts
   const handleTicketChange = (
