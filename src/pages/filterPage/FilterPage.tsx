@@ -55,7 +55,7 @@ export default function FilterPage() {
               type="text"
               name="titel"
               placeholder="Sök"
-              className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2"
+              className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2 "
             />
           </Col>
 
@@ -79,7 +79,7 @@ export default function FilterPage() {
               dateFormat="dd MMM"
               placeholderText="Välj Datum"
               isClearable={true}
-              className="form-control bg-light text-dark placeholder-gray fs-s-custom p-2 my-1 my-lg-2 "
+              className="form-control bg-light text-dark placeholder-gray fs-md-custom p-2 my-1 my-lg-2 "
             />
           </Col>
 
@@ -109,6 +109,8 @@ export default function FilterPage() {
                 posterUrl={movie.posterUrl}
                 title={movie.title}
                 startTime={movie.timeRange}
+                day={movie.dateFormat.dayName}
+                screeningDate={movie.dateFormat.screeningDate}
               />
             ))
           ) : (
