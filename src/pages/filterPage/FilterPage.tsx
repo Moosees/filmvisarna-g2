@@ -109,6 +109,8 @@ export default function FilterPage() {
                 posterUrl={movie.posterUrl}
                 title={movie.title}
                 startTime={movie.timeRange}
+                day={movie.dateFormat.dayName}
+                screeningDate={movie.dateFormat.screeningDate}
               />
             ))
           ) : (

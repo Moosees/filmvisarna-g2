@@ -9,6 +9,10 @@ const movies = [
     age: 11,
     title: 'Cinema Paradiso',
     startTime: '18:30-21:05',
+    dateFormat: {
+      dayName: 'söndag',
+      screeningDate: '03-nov',
+    },
   },
   {
     id: 2,
@@ -17,6 +21,10 @@ const movies = [
     age: 11,
     title: 'The Last Metro ',
     startTime: '15:00-17:11',
+    dateFormat: {
+      dayName: 'söndag',
+      screeningDate: '03-nov',
+    },
   },
   {
     id: 3,
@@ -25,6 +33,10 @@ const movies = [
     age: 15,
     title: 'Fanny och Alexander',
     startTime: '21:00-22:30',
+    dateFormat: {
+      dayName: 'söndag',
+      screeningDate: '03-nov',
+    },
   },
   {
     id: 4,
@@ -33,6 +45,10 @@ const movies = [
     age: 15,
     title: 'Blow Out',
     startTime: '21:00-22:30',
+    dateFormat: {
+      dayName: 'söndag',
+      screeningDate: '03-nov',
+    },
   },
 ];
 
@@ -49,6 +65,8 @@ export default function HomePage() {
             title={movie.title}
             startTime={movie.startTime}
             key={movie.id}
+            day={movie.dateFormat.dayName}
+            screeningDate={movie.dateFormat.screeningDate}
           />
         ))}
       </CardsWrapper>

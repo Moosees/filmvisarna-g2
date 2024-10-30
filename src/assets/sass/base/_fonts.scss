@@ -18,13 +18,16 @@ body {
   @include media-breakpoint-up(md) {
     font-size: 1.7em;
   }
+  @include media-breakpoint-up(xl) {
+    font-size: 1.9em;
+  }
 }
 
 .custom-letterSpacing {
   letter-spacing: 1.1px;
 }
 .fs-s-custom {
-  font-size: 0.7em;
+  font-size: 0.6em;
 }
 .fs-md-custom {
   font-size: 0.9em;
