@@ -279,7 +279,7 @@ INNER JOIN
     }
 
     if (title) {
-      query += ` AND m.url_param LIKE ?`;
+      query += ` AND m.title LIKE ?`;
       params.push(`${title}%`);
     }
 
