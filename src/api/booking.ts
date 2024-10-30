@@ -7,6 +7,7 @@ interface ReservationData {
   title: string;
   startDate: string;
   timeRange: string;
+  posterUrl: string;
   auditoriumName: string;
   ticketDetails: string;
   totalPrice: string;
