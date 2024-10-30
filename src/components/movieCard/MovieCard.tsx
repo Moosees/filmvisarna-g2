@@ -16,6 +16,8 @@ interface MovieCardProps {
   smallFont?: boolean;
   hideAge?: boolean;
   allowConfirmationOnly?: boolean;
+  day: string;
+  screeningDate: string;
 }
 
 function MovieCard({
@@ -32,6 +34,8 @@ function MovieCard({
   smallFont = false,
   hideAge = false,
   allowConfirmationOnly = false,
+  day,
+  screeningDate,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
@@ -75,11 +79,19 @@ function MovieCard({
         )}
       </div>
       <Card.Body className="p-1">
-        <Card.Text className=" text-capitalize m-0 text-decoration-underline">
+        <Card.Text
+          style={{ height: '49px' }}
+          className=" text-capitalize m-0 text-decoration-underline d-flex align-items-center justify-content-center "
+        >
           {title}
         </Card.Text>
-        <Card.Text className={`digital m-0 ${smallFont ? 'small-font' : ''}`}>
-          {startTime}
+        <Card.Text
+          className={`digital m-1 d-flex flex-column  ${
+            smallFont ? 'small-font' : ''
+          }`}
+        >
+          <span className="orbitron fs-s-custom text-capitalize">{`${day} ${screeningDate}`}</span>{' '}
+          <span>{startTime}</span>
         </Card.Text>
         {confirmationButton && reservationNum ? (
           <a
