@@ -7,8 +7,8 @@ interface CreateNewReservationRequest extends Request {
   body: {
     email: string;
     screeningId: number;
-    tickets: number[];
-    seats: number[];
+    ticketIds: string;
+    seatIds: string;
   };
 }
 
@@ -78,9 +78,24 @@ const createNewReservation = async (
   req: CreateNewReservationRequest,
   res: Response
 ) => {
-  const { email, screeningId, tickets, seats } = req.body;
+  const { email, screeningId, ticketIds, seatIds } = req.body;
+  if (
+    (!email && !req.session.user?.email) ||
+    !screeningId ||
+    !ticketIds ||
+    !seatIds
+  ) {
+    res.status(400).json({ error: 'Bokningen är inte korrekt ifylld' });
+    return;
+  }
 
-  if (!email || !screeningId || tickets?.length === 0 || seats?.length === 0) {
+  const seats = seatIds.split(',').map((seat) => +seat);
+  const tickets = ticketIds.split(',').map((ticket) => +ticket);
+  if (
+    tickets.length === 0 ||
+    seats.length === 0 ||
+    tickets.length !== seats.length
+  ) {
     res.status(400).json({ error: 'Bokningen är inte korrekt ifylld' });
     return;
   }
@@ -92,7 +107,7 @@ const createNewReservation = async (
 
     const [result] = await con.execute<ReservationData[]>(
       'CALL create_reservation(:email, :screeningId);',
-      { email, screeningId }
+      { email: email || req.session.user?.email, screeningId }
     );
     const { reservationId, reservationNum } = result[0][0];
 
