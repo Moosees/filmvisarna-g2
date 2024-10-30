@@ -195,52 +195,70 @@ const deleteMovie = async (req: Request, res: Response) => {
 
 const filterMovies = async (req: Request, res: Response) => {
   try {
-    const { age, date, title } = req.query as {
+    const { age, startDate, endDate, title } = req.query as {
       age?: number;
-      date?: string;
+      startDate?: string;
+      endDate?: string;
       title?: string;
     };
 
-    if (!age && !date && !title) {
-      res
-        .status(400)
-        .json({ message: 'Parameter för ålder eller datum krävs' });
-      return;
-    }
+    // if (!age && !date && !title) {
+    //   res
+    //     .status(400)
+    //     .json({ message: 'Parameter för ålder eller datum krävs' });
+    //   return;
+    // }
 
     await db.execute('SET lc_time_names = "sv_SE"');
 
-    //     let query = `
-    //   SELECT
-    //     m.id as movieId,
-    //     m.title,
-    //     m.poster_url as posterUrl,
-    //     m.age,
-    //     DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
-    //     concat(date_format(s.start_time, '%H:%i'), ' - ', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS timeRange
-    //     FROM
-    //     screening s
-    //     INNER JOIN
-    //     movie m ON s.movie_id = m.id
-    //     WHERE 1=1
-    // `;
     let query = `
-    select
-    m.id AS movieid,
-    m.title AS title,
-    m.url_param AS paramUrl,
-    m.age AS age,
+    SELECT
+    m.id AS movieId,
+    m.title,
     m.poster_url AS posterUrl,
-    json_arrayagg(json_object('screeningId', s.id,'startDate',DATE_FORMAT(s.start_time, '%Y-%m-%d'),'timeRange',concat(
-        date_format(s.start_time, '%H:%i'),
-        ' - ',
-        date_format((s.start_time + interval m.play_time minute), '%H:%i')
-    ), 'dayName',(case when (cast(s.start_time as date) = curdate()) then 'idag' else dayname(s.start_time) end), 'screeningDate', date_format(s.start_time, '%d %b'))) AS screeningDetails
-  from
+    m.age as age,
+    s.id as screeningId,
+    DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
+    CONCAT(
+        DATE_FORMAT(s.start_time, '%H:%i'),
+        '-',
+        DATE_FORMAT(s.start_time + INTERVAL m.play_time MINUTE, '%H:%i')
+    ) AS timeRange,
+    JSON_OBJECT(
+            'dayName', CASE
+                    WHEN DATE(s.start_time) = CURDATE() THEN 'idag'
+                    ELSE DAYNAME(s.start_time)
+                    END,
+            'screeningDate', DATE_FORMAT(s.start_time, '%d-%b')
+        ) as dateFormat
+FROM
     screening s
-    join bondkatt.movie m on
-    s.movie_id =m.id
-`;
+INNER JOIN
+    movie m ON s.movie_id = m.id
+    WHERE
+      CAST(s.start_time AS DATE) >= CURRENT_DATE()
+    `;
+
+    //     let query = `
+    //     select
+    //     m.id AS movieId,
+    //     m.title AS title,
+    //     m.url_param AS paramUrl,
+    //     m.age AS age,
+    //     m.poster_url AS posterUrl,
+    //     json_arrayagg(json_object('screeningId', s.id,'startDate',DATE_FORMAT(s.start_time, '%Y-%m-%d'),'timeRange',concat(
+    //         date_format(s.start_time, '%H:%i'),
+    //         '-',
+    //         date_format((s.start_time + interval m.play_time minute), '%H:%i')
+    //     ), 'dayName',(case when (cast(s.start_time as date) = curdate()) then 'idag' else dayname(s.start_time) end), 'screeningDate', date_format(s.start_time, '%d %b'))) AS screeningDetails
+    //   from
+    //     screening s
+    //     join bondkatt.movie m on
+    //     s.movie_id =m.id
+    //     WHERE
+    //     CAST(s.start_time AS DATE) >= NOW()
+    //      AND CAST(s.start_time AS DATE) <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+    // `;
 
     const params: (string | number)[] = [];
 
@@ -249,17 +267,23 @@ const filterMovies = async (req: Request, res: Response) => {
       params.push(age);
     }
 
-    if (date) {
-      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d')= ?`;
-      params.push(date);
-    }
-    if (title) {
-      query += ` AND m.url_param = ?`;
-      params.push(title);
+    if (startDate && endDate) {
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') BETWEEN ? AND ?`;
+      params.push(startDate, endDate);
+    } else if (startDate) {
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') >= ?`;
+      params.push(startDate);
+    } else if (endDate) {
+      query += ` AND DATE_FORMAT(s.start_time, '%Y-%m-%d') <= ?`;
+      params.push(endDate);
     }
 
-    query += ` GROUP BY m.id`;
-    // query += ` GROUP BY m.id, m.title, m.poster_url, m.age, s.start_time, timeRange`;
+    if (title) {
+      query += ` AND m.title LIKE ?`;
+      params.push(`${title}%`);
+    }
+
+    query += ` ORDER BY s.start_time ASC; `;
 
     //Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
@@ -269,14 +293,17 @@ const filterMovies = async (req: Request, res: Response) => {
 
     //Check if the movie was found
     if (results.length === 0) {
-      res.status(404).json({ message: 'Film hittades inte' });
+      res.status(200).json([]);
       return;
     }
 
     //Return the found movie
     res.status(200).json(results);
   } catch (error) {
-    res.status(500).json({ message: 'Något gick fel', error });
+    res.status(500).json({
+      message: 'Något gick fel',
+      error,
+    });
   }
 };
 

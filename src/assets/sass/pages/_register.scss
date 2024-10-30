@@ -36,3 +36,8 @@
   max-width: 200px;
   text-align: center;
 }
+
+.placeholder-gray::placeholder {
+  color: #636363;
+  opacity: 1;
+}
