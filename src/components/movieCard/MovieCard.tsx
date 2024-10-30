@@ -90,7 +90,7 @@ function MovieCard({
             smallFont ? 'small-font' : ''
           }`}
         >
-          <span className="orbitron fs-s-custom text-capitalize">{`${day} ${screeningDate}`}</span>{' '}
+          <span className="orbitron fs-s-custom">{`${day} ${screeningDate}`}</span>{' '}
           <span>{startTime}</span>
         </Card.Text>
         {confirmationButton && reservationNum ? (
