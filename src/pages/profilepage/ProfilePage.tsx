@@ -65,15 +65,11 @@ const ProfilePage: React.FC = () => {
     if (!isEditing && displayMemberInfo) reset(displayMemberInfo);
   };
 
-  const newPassword = watch('new_password');
-
   const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
     try {
       await getAxios().patch('/user', {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        current_password: data.current_password,
-        new_password: data.new_password,
+        ...data,
+        new_password: data.new_password ? data.new_password : undefined,
       });
 
       await loadMemberInfo();
@@ -83,6 +79,8 @@ const ProfilePage: React.FC = () => {
       console.error('Fel vid uppdatering:', error);
     }
   };
+
+  const newPassword = watch('new_password');
 
   const { data: bookingHistory, error: bookingError } = useQuery<
     Booking[],
@@ -157,7 +155,9 @@ const ProfilePage: React.FC = () => {
                   type="password"
                   {...register('confirm_new_password', {
                     validate: (value) =>
-                      value === newPassword || 'Lösenorden matchar inte',
+                      !newPassword ||
+                      value === newPassword ||
+                      'Lösenorden matchar inte',
                   })}
                   placeholder="Bekräfta nytt lösenord"
                   className="form-control mt-3 editable-input"
