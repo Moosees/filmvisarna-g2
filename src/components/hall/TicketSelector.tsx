@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ScreeningData } from '../../api/reserve';
 
@@ -98,9 +98,6 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
           </Col>
         </Row>
       </Container>
-
-      {/* React Toastify Container */}
-      <ToastContainer />
     </section>
   );
 };
