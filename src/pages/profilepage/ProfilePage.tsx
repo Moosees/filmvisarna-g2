@@ -27,7 +27,9 @@ interface UserData {
 interface UpdateUserData {
   first_name: string;
   last_name: string;
+  current_password: string;
   new_password?: string;
+  confirm_new_password?: string;
 }
 
 const ProfilePage: React.FC = () => {
@@ -36,7 +38,13 @@ const ProfilePage: React.FC = () => {
     null
   );
 
-  const { register, handleSubmit, reset } = useForm<UpdateUserData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<UpdateUserData>();
 
   const loadMemberInfo = async () => {
     try {
@@ -57,11 +65,15 @@ const ProfilePage: React.FC = () => {
     if (!isEditing && displayMemberInfo) reset(displayMemberInfo);
   };
 
+  const newPassword = watch('new_password');
+
   const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
     try {
       await getAxios().patch('/user', {
-        ...data,
-        new_password: data.new_password ? data.new_password : undefined,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        current_password: data.current_password,
+        new_password: data.new_password,
       });
 
       await loadMemberInfo();
@@ -118,7 +130,9 @@ const ProfilePage: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="w-100 text-start">
             {isEditing ? (
               <>
-                <p>Uppdatera den informationen du vill</p>
+                <p className="instructions-text p-1 rounded mt-3">
+                  Uppdatera den informationen du vill
+                </p>
                 <input
                   type="text"
                   {...register('first_name')}
@@ -139,6 +153,37 @@ const ProfilePage: React.FC = () => {
                   placeholder="Nytt lösenord"
                   className="form-control mt-3 editable-input"
                 />
+                <input
+                  type="password"
+                  {...register('confirm_new_password', {
+                    validate: (value) =>
+                      value === newPassword || 'Lösenorden matchar inte',
+                  })}
+                  placeholder="Bekräfta nytt lösenord"
+                  className="form-control mt-3 editable-input"
+                />
+                {errors.confirm_new_password && (
+                  <small className="text-danger">
+                    {errors.confirm_new_password.message}
+                  </small>
+                )}
+                <p className="instructions-text p-1 rounded mt-3">
+                  Ange ditt nuvarande lösenord för att spara ändringar
+                </p>
+                <input
+                  type="password"
+                  {...register('current_password', {
+                    required:
+                      'Ange ditt nuvarande lösenord för att spara ändringar',
+                  })}
+                  placeholder="Nuvarande lösenord"
+                  className="form-control mt-3 editable-input"
+                />
+                {errors.current_password && (
+                  <small className="text-danger">
+                    {errors.current_password.message}
+                  </small>
+                )}
                 <div className="d-flex flex-column align-items-center mt-3">
                   <PrimaryBtn title="Spara" type="submit" />
                   <PrimaryBtn
@@ -218,6 +263,7 @@ const ProfilePage: React.FC = () => {
                     startTime={booking.startTime.slice(0, -3)}
                     showButton={false}
                     confirmationButton={false}
+                    smallFont={true}
                     hideAge={true}
                     className="profile-movie-card"
                   />
