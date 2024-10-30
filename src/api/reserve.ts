@@ -1,5 +1,10 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
-import { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router-dom';
+import axios from 'axios';
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from 'react-router-dom';
 import { getAxios } from './clients';
 
 export interface ScreeningData {
@@ -41,9 +46,10 @@ export const reserveLoader =
   };
 
 async function postReservation(reservationData: PostReservationData) {
-  console.log({ reservationData });
-  const response = await getAxios().post('reservation', reservationData);
-  console.log(response);
+  const response = await getAxios().post<{
+    message: string;
+    reservationNum: string;
+  }>('reservation', reservationData);
 
   return response.data;
 }
@@ -60,7 +66,17 @@ export const reserveAction = async ({
 
   if (!params.screeningId) return 'Bokningen är inte korrekt';
 
-  await postReservation({ ...data, screeningId: +params.screeningId });
+  try {
+    const resData = await postReservation({
+      ...data,
+      screeningId: +params.screeningId,
+    });
 
-  return 'Test';
+    return redirect(`/bokning/${resData.reservationNum}`);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.data?.message) {
+      return error.response.data.message;
+    }
+    return 'Inloggning misslyckades';
+  }
 };

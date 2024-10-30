@@ -1,7 +1,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Col, Container } from 'react-bootstrap';
-import { Link, useLoaderData, useSubmit } from 'react-router-dom';
+import {
+  Link,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+} from 'react-router-dom';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
@@ -23,6 +28,9 @@ function ReservePage() {
   >;
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
   console.log({ data });
+
+  const error = useActionData() as unknown as string | Response;
+  console.log({ error });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
