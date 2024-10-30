@@ -58,54 +58,50 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
   }, []);
 
   return (
-    <Container className="ticket-page-container">
-      <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6} className="ticket-card">
-          <h2 className="text-center">Välj dina biljetter</h2>
+    <section>
+      <h2 className="text-center">Välj dina biljetter</h2>
 
-          <Container className="ticket-selector">
-            {tickets.map((ticket) => (
-              <Row key={ticket.ticketId} className="ticket-row field-container">
-                <Col>
-                  <span>
-                    {ticket.name} ({ticket.price} SEK)
-                  </span>
-                </Col>
-                <Col className="text-end">
-                  <Button
-                    className="btn-custom"
-                    onClick={() => handleTicketChange(ticket.name, false)}
-                  >
-                    -
-                  </Button>
-                  <span className="mx-2">{ticketCounts[ticket.name]}</span>
-                  <Button
-                    className="btn-custom"
-                    onClick={() => handleTicketChange(ticket.name, true)}
-                  >
-                    +
-                  </Button>
-                </Col>
-              </Row>
-            ))}
-          </Container>
+      <Container className="ticket-selector">
+        {tickets.map((ticket) => (
+          <Row key={ticket.ticketId} className="ticket-row field-container">
+            <Col>
+              <span>
+                {ticket.name} ({ticket.price} SEK)
+              </span>
+            </Col>
+            <Col className="text-end">
+              <Button
+                className="btn-custom"
+                onClick={() => handleTicketChange(ticket.name, false)}
+              >
+                -
+              </Button>
+              <span className="mx-2">{ticketCounts[ticket.name]}</span>
+              <Button
+                className="btn-custom"
+                onClick={() => handleTicketChange(ticket.name, true)}
+              >
+                +
+              </Button>
+            </Col>
+          </Row>
+        ))}
+      </Container>
 
-          <Container className="ticket-selector">
-            <Row className="ticket-row field-container">
-              <Col>
-                <h3>Totalpris:</h3>
-              </Col>
-              <Col className="text-end">
-                <h3>{totalPrice} SEK</h3>
-              </Col>
-            </Row>
-          </Container>
+      <Container className="ticket-selector">
+        <Row className="ticket-row field-container">
+          <Col>
+            <h3>Totalpris:</h3>
+          </Col>
+          <Col className="text-end">
+            <h3>{totalPrice} SEK</h3>
+          </Col>
+        </Row>
+      </Container>
 
-          {/* React Toastify Container */}
-          <ToastContainer />
-        </Col>
-      </Row>
-    </Container>
+      {/* React Toastify Container */}
+      <ToastContainer />
+    </section>
   );
 };
 

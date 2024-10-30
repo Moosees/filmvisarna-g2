@@ -96,7 +96,7 @@ function Hall({ seats, numPersons }: HallProps) {
   };
 
   return (
-    <Container className="d-flex flex-column bg-rosa py-4 align-items-center rounded col-sm-12 col-lg-5 col-xl-4">
+    <Container className="d-flex flex-column bg-rosa py-4 align-items-center rounded">
       {seats.map((row, rowIndex) => {
         return (
           <Row

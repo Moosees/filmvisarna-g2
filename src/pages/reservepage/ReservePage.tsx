@@ -1,7 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Col, Row } from 'react-bootstrap';
+import { Link, useLoaderData } from 'react-router-dom';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
+import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
 
@@ -15,10 +17,27 @@ function ReservePage() {
   console.log({ data });
 
   return (
-    <>
-      <Hall seats={data.seats} numPersons={numPersons} />
-      <TicketSelector tickets={data.tickets} setNumPersons={setNumPersons} />
-    </>
+    <Row>
+      <Col className="d-flex flex-column gap-3">
+        <p>{data.startTime}</p>
+        <TicketSelector tickets={data.tickets} setNumPersons={setNumPersons} />
+        <section className="d-flex flex-column">
+          <p>Namn och email</p>
+          <Link to="/medlem/bli-medlem" className="align-self-center">
+            <PrimaryBtn title="Bli medlem" />
+          </Link>
+        </section>
+      </Col>
+      <Col className="d-flex flex-column gap-3">
+        <Hall seats={data.seats} numPersons={numPersons} />
+        <section className="d-flex justify-content-center">
+          <Link to="/">
+            <PrimaryBtn title="Ångra" />
+          </Link>
+          <PrimaryBtn title="Boka" />
+        </section>
+      </Col>
+    </Row>
   );
 }
 
