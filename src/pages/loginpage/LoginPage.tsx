@@ -20,10 +20,8 @@ const LoginPage: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormData>();
 
-
   const onSubmit: SubmitHandler<LoginFormData> = (values) =>
     submit(values, { method: 'post', action: '/medlem/logga-in' });
-
 
   return (
     <Container className="d-flex justify-content-center mt-5">
@@ -61,10 +59,12 @@ const LoginPage: React.FC = () => {
             </Form.Group>
 
             <div className="button-group d-flex justify-content-between mt-3">
-              <Link to="/medlem/bli-medlem" className="me-2">
-                <PrimaryBtn title="Bli medlem" />
-              </Link>
-              <PrimaryBtn title="Logga in" type="submit" />
+              <PrimaryBtn>
+                <Link to="/medlem/bli-medlem" className="me-2">
+                  Bli medlem
+                </Link>
+              </PrimaryBtn>
+              <PrimaryBtn type="submit">Logga in</PrimaryBtn>
             </div>
           </Form>
 

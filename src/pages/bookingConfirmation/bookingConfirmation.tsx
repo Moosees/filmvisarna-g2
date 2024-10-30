@@ -70,12 +70,12 @@ function BookingConfirmation() {
                 </li>
                 <Row className="booking-row mt-4">
                   <Col className="booking-buttons col-auto d-flex">
-                    <Link to="/">
-                      <PrimaryBtn title={'Stäng'} />
-                    </Link>
-                    <Link to="avboka">
-                      <PrimaryBtn title={'Avboka'} />
-                    </Link>
+                    <PrimaryBtn>
+                      <Link to="/">Stäng</Link>
+                    </PrimaryBtn>
+                    <PrimaryBtn>
+                      <Link to="avboka">Avboka</Link>
+                    </PrimaryBtn>
                   </Col>
                 </Row>
               </ul>

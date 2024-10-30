@@ -39,12 +39,13 @@ export default function TextBox({ movieData }: TextBoxProps) {
         >
           {showButton && (
             <PrimaryBtn
-              title={openCollapse ? 'Visa Mindre' : 'Visa Mer'}
               onClick={(e) => {
                 e?.preventDefault();
                 setOpenCollapse(!openCollapse);
               }}
-            />
+            >
+              {openCollapse ? 'Visa Mindre' : 'Visa Mer'}
+            </PrimaryBtn>
           )}
         </div>
       </Card>

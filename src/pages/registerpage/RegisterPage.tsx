@@ -131,8 +131,8 @@ const RegisterPage: React.FC = () => {
             </Form.Group>
 
             <div className="button-group d-flex justify-content-between mt-3">
-              <PrimaryBtn title="Avbryt" onClick={handleGoBack} />
-              <PrimaryBtn title="Bli medlem" type="submit" />
+              <PrimaryBtn onClick={handleGoBack}>Avbryt</PrimaryBtn>
+              <PrimaryBtn type="submit">Bli medlem</PrimaryBtn>
             </div>
           </Form>
 

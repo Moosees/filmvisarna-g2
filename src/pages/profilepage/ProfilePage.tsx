@@ -93,9 +93,7 @@ const ProfilePage: React.FC = () => {
                 E-post: {memberInfo?.user_email}
               </h6>
             </div>
-            <div className="mt-3">
-              <PrimaryBtn title="Ändra" />
-            </div>
+            <PrimaryBtn className="mt-3">Ändra</PrimaryBtn>
           </Col>
 
           <Col md={7} className="d-flex flex-column align-items-center">

@@ -1,28 +1,23 @@
-import { Button } from 'react-bootstrap';
-interface YellowBtnProps {
-  title: string;
-  onClick?: (e?: React.MouseEvent) => void;
-  type?: 'button' | 'submit' | 'reset';
+import { Button, ButtonProps } from 'react-bootstrap';
+
+interface PrimaryBtnProps extends ButtonProps {
   smallFont?: boolean;
 }
 
 export default function PrimaryBtn({
-  title,
-  onClick,
-  type = 'button',
   smallFont = false,
-}: YellowBtnProps) {
+  className,
+  children,
+  ...other
+}: PrimaryBtnProps) {
   return (
-    <div>
-      <Button
-        className={`btn bg-btn text-dark border-btn m-1 px-5 py-1 fw-bold ${
-          smallFont ? 'small-font-btn' : ''
-        }`}
-        onClick={onClick}
-        type={type}
-      >
-        {title}
-      </Button>
-    </div>
+    <Button
+      className={`${className ? className : ''} primary-btn btn text-dark border-btn m-1 px-3 py-1 fw-bold ${
+        smallFont ? 'small-font-btn' : ''
+      }`}
+      {...other}
+    >
+      {children}
+    </Button>
   );
 }

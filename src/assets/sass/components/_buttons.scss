@@ -1,9 +1,12 @@
-.bg-btn {
-  background-color: $bg-btn !important;
-}
-
 .border-btn {
   border: 2px solid $btn-rosa;
+}
+
+.primary-btn a {
+  background-color: inherit;
+  color: inherit;
+  font-size: inherit;
+  text-decoration: inherit;
 }
 
 .nav-button {
@@ -22,4 +25,35 @@
 
 .small-font-btn {
   font-size: 0.85rem;
+}
+
+.btn-custom {
+  background-color: #dde052;
+  color: black;
+  border: 2px solid #f245c0;
+  padding: 8px 15px;
+  text-transform: uppercase;
+  font-size: 16px;
+  border-radius: 4px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.btn-custom:hover {
+  background-color: #fdd835;
+  color: black;
+  transform: scale(1.05);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.button-group .btn-custom {
+  flex: 1;
+  max-width: 50px;
+  text-align: center;
 }

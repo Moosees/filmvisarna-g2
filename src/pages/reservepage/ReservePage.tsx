@@ -23,18 +23,18 @@ function ReservePage() {
         <TicketSelector tickets={data.tickets} setNumPersons={setNumPersons} />
         <section className="d-flex flex-column">
           <p>Namn och email</p>
-          <Link to="/medlem/bli-medlem" className="align-self-center">
-            <PrimaryBtn title="Bli medlem" />
-          </Link>
+          <PrimaryBtn className="align-self-center">
+            <Link to="/medlem/bli-medlem">Bli medlem</Link>
+          </PrimaryBtn>
         </section>
       </Col>
       <Col className="d-flex flex-column gap-3">
         <Hall seats={data.seats} numPersons={numPersons} />
         <section className="d-flex justify-content-center">
-          <Link to="/">
-            <PrimaryBtn title="Ångra" />
-          </Link>
-          <PrimaryBtn title="Boka" />
+          <PrimaryBtn>
+            <Link to="/">Ångra</Link>
+          </PrimaryBtn>
+          <PrimaryBtn>Boka</PrimaryBtn>
         </section>
       </Col>
     </Row>
