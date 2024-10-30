@@ -75,11 +75,19 @@ function MovieCard({
         )}
       </div>
       <Card.Body className="p-1">
-        <Card.Text className=" text-capitalize m-0 text-decoration-underline">
+        <Card.Text
+          style={{ height: '49px' }}
+          className=" text-capitalize m-0 text-decoration-underline d-flex align-items-center justify-content-center "
+        >
           {title}
         </Card.Text>
-        <Card.Text className={`digital m-0 ${smallFont ? 'small-font' : ''}`}>
-          {startTime}
+        <Card.Text
+          className={`digital m-1 d-flex flex-column flex-xl-row align-items-center justify-content-around ${
+            smallFont ? 'small-font' : ''
+          }`}
+        >
+          <span className="orbitron fs-s-custom"> tors 07</span>{' '}
+          <span>{startTime}</span>
         </Card.Text>
         {confirmationButton && reservationNum ? (
           <a
