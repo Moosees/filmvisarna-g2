@@ -5,13 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ScreeningData } from '../../api/reserve';
 
 interface TicketSelectorProps {
-  setNumPersons: React.Dispatch<React.SetStateAction<number>>;
+  setTicketIds: React.Dispatch<React.SetStateAction<number[]>>;
   tickets: ScreeningData['tickets'];
 }
 
 const TicketSelector: React.FC<TicketSelectorProps> = ({
   tickets,
-  setNumPersons,
+  setTicketIds,
 }) => {
   const [ticketCounts, setTicketCounts] = useState(
     tickets.reduce((acc: Record<string, number>, ticket) => {
@@ -28,19 +28,22 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
       ? newCounts[type] + 1
       : Math.max(newCounts[type] - 1, 0);
 
-    const totalTickets = Object.values(newCounts).reduce(
-      (acc, num) => acc + num
-    );
+    const ticketIds = tickets.reduce((acc: number[], ticket) => {
+      const newIds = [...Array(newCounts[ticket.name])].map(
+        () => ticket.ticketId
+      );
+      return [...acc, ...newIds];
+    }, []);
 
     // Check if adding a new ticket would exceed the limit
-    if (increment && totalTickets >= 8) {
+    if (increment && ticketIds.length >= 8) {
       toast.warn(
         'Vid bokning av fler än 8 platser kontakta oss via e-post filmvisarnabio@gmail.com'
       );
       return;
     }
 
-    setNumPersons(totalTickets);
+    setTicketIds(ticketIds);
     setTicketCounts(newCounts);
     setTotalPrice(
       tickets.reduce(

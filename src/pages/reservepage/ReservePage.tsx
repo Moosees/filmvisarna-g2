@@ -8,7 +8,7 @@ import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
 
 function ReservePage() {
-  const [numPersons, setNumPersons] = useState(0);
+  const [ticketIds, setTicketIds] = useState<number[]>([]);
 
   const { screeningId } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof reserveLoader>>
@@ -21,10 +21,7 @@ function ReservePage() {
       <Col className="bg-rosa rounded">
         <Container fluid className="d-flex flex-column gap-3 text-dark">
           <p>{data.startTime}</p>
-          <TicketSelector
-            tickets={data.tickets}
-            setNumPersons={setNumPersons}
-          />
+          <TicketSelector tickets={data.tickets} setTicketIds={setTicketIds} />
           <section className="d-flex flex-column">
             <p>Namn och email</p>
             {/* <PrimaryBtn className="align-self-center"> */}
@@ -34,7 +31,11 @@ function ReservePage() {
         </Container>
       </Col>
       <Col className="d-flex flex-column gap-3">
-        <Hall seats={data.seats} poster={data.poster} numPersons={numPersons} />
+        <Hall
+          seats={data.seats}
+          poster={data.poster}
+          numPersons={ticketIds.length}
+        />
         <section className="button-group">
           <PrimaryBtn>
             <Link to="/">Ångra</Link>
