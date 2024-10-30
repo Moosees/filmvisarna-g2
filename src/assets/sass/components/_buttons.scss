@@ -50,10 +50,14 @@
   display: flex;
   gap: 10px;
   align-items: center;
-}
 
-.button-group .btn-custom {
-  flex: 1;
-  max-width: 50px;
-  text-align: center;
+  button {
+    flex: 1;
+  }
+
+  .btn-custom {
+    flex: 1;
+    max-width: 50px;
+    text-align: center;
+  }
 }

@@ -47,7 +47,7 @@ const RegisterPage: React.FC = () => {
   const password = watch('user_password');
 
   return (
-    <Container className="d-flex justify-content-center mt-5">
+    <Container className="d-flex justify-content-center">
       <Row className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm p-4">
         <Col>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -130,7 +130,7 @@ const RegisterPage: React.FC = () => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <div className="button-group d-flex justify-content-between mt-3">
+            <div className="button-group">
               <PrimaryBtn onClick={handleGoBack}>Avbryt</PrimaryBtn>
               <PrimaryBtn type="submit">Bli medlem</PrimaryBtn>
             </div>

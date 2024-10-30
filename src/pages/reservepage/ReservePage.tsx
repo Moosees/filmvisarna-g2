@@ -30,7 +30,7 @@ function ReservePage() {
       </Col>
       <Col className="d-flex flex-column gap-3">
         <Hall seats={data.seats} numPersons={numPersons} />
-        <section className="d-flex justify-content-center">
+        <section className="button-group">
           <PrimaryBtn>
             <Link to="/">Ångra</Link>
           </PrimaryBtn>
