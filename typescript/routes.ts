@@ -6,6 +6,7 @@ import ticketsController from './controller/ticketsController.js';
 import { isAdmin, isAuthenticated } from './middleware/authMiddleware.js';
 // import { isAdmin } from './middleware/authMiddleware.js';
 import usersController from './controller/usersController.js';
+import Mailer from './helpers/nodemailer.js';
 
 const router = express.Router();
 
@@ -97,5 +98,25 @@ router.get(
 router.patch('/user', usersController.updateUserDetails);
 
 router.get('/ping', usersController.ping);
+
+router.post('/send-email', (req, res) => {
+  const { to, subject, text, html, attachments } = req.body;
+
+  console.log('Sending email with details:', {
+    to,
+    subject,
+    text,
+    html,
+    attachments,
+  });
+
+  try {
+    Mailer.send(to, subject, text, html, attachments);
+    res.status(200).send('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).send('Error sending email');
+  }
+});
 
 export default router;
