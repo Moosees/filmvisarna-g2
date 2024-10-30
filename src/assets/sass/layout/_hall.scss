@@ -31,3 +31,7 @@
 
 // // `xxl` applies to x-large devices (large desktops, less than 1400px)
 // @media (max-width: 1399.98px) { ... }
+
+.seat-hover {
+  outline: 2px solid var(--bs-primary);
+}

@@ -47,7 +47,7 @@ function Header() {
             {isLoggedIn && ( // Render these items only when logged in
               <>
                 <Dropdown.Item as="button">
-                  <Link to="/medlem">Medlemssida</Link>
+                  <Link to="/medlem/medlems-sida">Medlemssida</Link>
                 </Dropdown.Item>
                 <Dropdown.Item as="button">
                   <a href="#" onClick={handleLogOut}>

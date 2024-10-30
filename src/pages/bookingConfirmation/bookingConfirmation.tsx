@@ -4,8 +4,6 @@ import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getBookingDataQuery } from '../../api/booking';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Seat } from '../../api/booking';
-// TODO change the hardcoded img
-// TODO fixed small screens
 
 function BookingConfirmation() {
   const { bookingNumber } = useLoaderData() as { bookingNumber: string };
@@ -29,7 +27,7 @@ function BookingConfirmation() {
         <Row className="booking-row">
           <Col>
             <img
-              src="https://upload.wikimedia.org/wikipedia/en/0/04/Gladiator_II_%282024%29_poster.jpg"
+              src={data.posterUrl}
               alt="Gladiator-movie"
               className="img-fluid"
             />

@@ -13,6 +13,11 @@ import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import { rootLoader } from './api/root';
 
+import FilterPage from './pages/filterPage/FilterPage';
+import { filterLoader } from './api/filter';
+
+import ProfilePage from './pages/profilepage/ProfilePage';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -34,12 +39,27 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: '/medlem/medlems-sida',
+        element: <ProfilePage />,
+        handle: {
+          title: 'Medlem',
+        },
+      },
+      {
         path: '/medlem/logga-in',
         element: <LoginPage />,
         handle: {
           title: 'Logga in',
         },
         action: loginAction(getQueryClient()),
+      },
+      {
+        path: '/filmer',
+        element: <FilterPage />,
+        handle: {
+          title: 'Kommande Filmer',
+        },
+        loader: filterLoader(getQueryClient()),
       },
       {
         path: '/film/:id',

@@ -12,7 +12,7 @@ const movies = [
   },
   {
     id: 2,
-    screeningId: 43,
+    screeningId: 22,
     src: 'https://posterhouse.org/wp-content/uploads/2021/05/godfather_0.jpg',
     age: 15,
     title: 'The Godfather',
@@ -34,6 +34,22 @@ const movies = [
     title: 'THE GRINCH',
     startTime: '21:00-22:30',
   },
+  {
+    id: 5,
+    screeningId: 33,
+    src: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
+    age: 15,
+    title: 'THE GRINCH',
+    startTime: '21:00-22:30',
+  },
+  {
+    id: 6,
+    screeningId: 33,
+    src: 'https://i.ebayimg.com/images/g/86UAAOSweIlb5A3Q/s-l1600.webp',
+    age: 15,
+    title: 'THE GRINCH',
+    startTime: '21:00-22:30',
+  },
 ];
 
 export default function HomePage() {
@@ -45,7 +61,7 @@ export default function HomePage() {
             movieId={movie.id}
             screeningId={movie.screeningId}
             age={movie.age}
-            src={movie.src}
+            posterUrl={movie.src}
             title={movie.title}
             startTime={movie.startTime}
             key={movie.id}
