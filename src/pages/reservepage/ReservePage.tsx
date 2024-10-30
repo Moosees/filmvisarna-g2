@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
@@ -18,15 +18,20 @@ function ReservePage() {
 
   return (
     <Row>
-      <Col className="d-flex flex-column gap-3">
-        <p>{data.startTime}</p>
-        <TicketSelector tickets={data.tickets} setNumPersons={setNumPersons} />
-        <section className="d-flex flex-column">
-          <p>Namn och email</p>
-          <PrimaryBtn className="align-self-center">
-            <Link to="/medlem/bli-medlem">Bli medlem</Link>
-          </PrimaryBtn>
-        </section>
+      <Col className="bg-rosa rounded">
+        <Container fluid className="d-flex flex-column gap-3 text-dark">
+          <p>{data.startTime}</p>
+          <TicketSelector
+            tickets={data.tickets}
+            setNumPersons={setNumPersons}
+          />
+          <section className="d-flex flex-column">
+            <p>Namn och email</p>
+            {/* <PrimaryBtn className="align-self-center"> */}
+            {/*   <Link to="/medlem/bli-medlem">Bli medlem</Link> */}
+            {/* </PrimaryBtn> */}
+          </section>
+        </Container>
       </Col>
       <Col className="d-flex flex-column gap-3">
         <Hall seats={data.seats} numPersons={numPersons} />

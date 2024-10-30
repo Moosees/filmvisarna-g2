@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ScreeningData } from '../../api/reserve';
@@ -58,25 +58,28 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
   }, []);
 
   return (
-    <section>
-      <h2 className="text-center">Välj dina biljetter</h2>
+    <Row>
+      <Col className="d-flex flex-column gap-1">
+        <h2 className="text-center fs-5">Välj dina biljetter</h2>
 
-      <Container className="ticket-selector">
         {tickets.map((ticket) => (
-          <Row key={ticket.ticketId} className="ticket-row field-container">
+          <Row
+            key={ticket.ticketId}
+            className="field-container align-items-center py-1"
+          >
             <Col>
-              <span>
-                {ticket.name} ({ticket.price} SEK)
-              </span>
+              {ticket.name} ({ticket.price} SEK)
             </Col>
-            <Col className="text-end">
+            <Col className="d-flex align-items-center col-auto">
               <Button
                 className="btn-custom"
                 onClick={() => handleTicketChange(ticket.name, false)}
               >
                 -
               </Button>
-              <span className="mx-2">{ticketCounts[ticket.name]}</span>
+              <div className="text-center" style={{ minWidth: '2ch' }}>
+                {ticketCounts[ticket.name]}
+              </div>
               <Button
                 className="btn-custom"
                 onClick={() => handleTicketChange(ticket.name, true)}
@@ -86,19 +89,13 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
             </Col>
           </Row>
         ))}
-      </Container>
 
-      <Container className="ticket-selector">
-        <Row className="ticket-row field-container">
-          <Col>
-            <h3>Totalpris:</h3>
-          </Col>
-          <Col className="text-end">
-            <h3>{totalPrice} SEK</h3>
-          </Col>
+        <Row className="mt-1 field-container align-items-center">
+          <Col>Totalpris:</Col>
+          <Col className="text-end">{totalPrice} SEK</Col>
         </Row>
-      </Container>
-    </section>
+      </Col>
+    </Row>
   );
 };
 
