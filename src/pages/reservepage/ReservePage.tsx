@@ -9,6 +9,7 @@ import TicketSelector from '../../components/hall/TicketSelector';
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
+  const [seatIds, setSeatIds] = useState<number[]>([]);
 
   const { screeningId } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof reserveLoader>>
@@ -35,6 +36,8 @@ function ReservePage() {
           seats={data.seats}
           poster={data.poster}
           numPersons={ticketIds.length}
+          seatIds={seatIds}
+          setSeatIds={setSeatIds}
         />
         <section className="button-group">
           <PrimaryBtn>
