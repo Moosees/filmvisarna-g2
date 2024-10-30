@@ -186,11 +186,13 @@ const ProfilePage: React.FC = () => {
                     posterUrl={booking.posterUrl}
                     age={booking.age}
                     title={booking.title}
-                    startTime={booking.startTime}
+                    startTime={booking.startTime.slice(0, -3)}
                     showButton={false}
                     confirmationButton={true}
                     smallFont={true}
                     hideAge={true}
+                    reservationNum={booking.reservationNum}
+                    allowConfirmationOnly={true}
                     className="profile-movie-card"
                   />
                 ))
@@ -213,7 +215,7 @@ const ProfilePage: React.FC = () => {
                     posterUrl={booking.posterUrl}
                     age={booking.age}
                     title={booking.title}
-                    startTime={booking.startTime}
+                    startTime={booking.startTime.slice(0, -3)}
                     showButton={false}
                     confirmationButton={false}
                     hideAge={true}
