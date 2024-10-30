@@ -63,7 +63,14 @@ function ReservePage() {
           <PrimaryBtn>
             <Link to="/">Ångra</Link>
           </PrimaryBtn>
-          <PrimaryBtn type="submit">Boka</PrimaryBtn>
+          <PrimaryBtn
+            type="submit"
+            disabled={
+              ticketIds.length === 0 || ticketIds.length !== seatIds.length
+            }
+          >
+            Boka
+          </PrimaryBtn>
         </section>
       </Col>
     </form>
