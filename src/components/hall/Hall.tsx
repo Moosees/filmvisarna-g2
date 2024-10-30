@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CardImg, Col, Container, Row } from 'react-bootstrap';
-import { getAffectedSeats, type Seat } from './hallHelpers.js';
+import { getAffectedSeats, type Seat } from './hallHelpers';
 
 interface HallProps {
   seats: Seat[][];
