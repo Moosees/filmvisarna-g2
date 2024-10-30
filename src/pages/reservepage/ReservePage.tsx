@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Col, Container } from 'react-bootstrap';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useSubmit } from 'react-router-dom';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
@@ -12,6 +12,7 @@ function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
   const [email, setEmail] = useState('');
+  const submit = useSubmit();
 
   const {
     data: { isLoggedIn },
@@ -23,8 +24,13 @@ function ReservePage() {
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
   console.log({ data });
 
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    submit({ seatIds, ticketIds, email }, { method: 'POST' });
+  };
+
   return (
-    <form className="row">
+    <form onSubmit={handleSubmit} className="row">
       <Col className="bg-rosa rounded">
         <Container fluid className="d-flex flex-column gap-3 text-dark">
           <p>{data.startTime}</p>

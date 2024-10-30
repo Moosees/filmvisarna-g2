@@ -1,5 +1,5 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
-import { LoaderFunctionArgs } from 'react-router-dom';
+import { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router-dom';
 import { getAxios } from './clients';
 
 export interface ScreeningData {
@@ -9,6 +9,13 @@ export interface ScreeningData {
   poster: string;
   tickets: { ticketId: number; name: string; price: number }[];
   seats: { seatId: number; free: boolean }[][];
+}
+
+interface PostReservationData {
+  email: string;
+  screeningId: number;
+  tickets: number[];
+  seats: number[];
 }
 
 async function getScreeningData(screeningId: number) {
@@ -32,3 +39,28 @@ export const reserveLoader =
 
     return { screeningId: +params.screeningId };
   };
+
+async function postReservation(reservationData: PostReservationData) {
+  console.log({ reservationData });
+  const response = await getAxios().post('reservation', reservationData);
+  console.log(response);
+
+  return response.data;
+}
+
+export const reserveAction = async ({
+  request,
+  params,
+}: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData) as unknown as Omit<
+    PostReservationData,
+    'screeningId'
+  >;
+
+  if (!params.screeningId) return 'Bokningen är inte korrekt';
+
+  await postReservation({ ...data, screeningId: +params.screeningId });
+
+  return 'Test';
+};

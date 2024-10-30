@@ -3,7 +3,7 @@ import { bookingLoader } from './api/booking';
 import { getQueryClient } from './api/clients';
 import { detailsLoader } from './api/details';
 import { loginAction } from './api/login';
-import { reserveLoader } from './api/reserve';
+import { reserveAction, reserveLoader } from './api/reserve';
 import App from './App';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import HomePage from './pages/homepage/HomePage';
@@ -61,6 +61,7 @@ const router = createBrowserRouter([
           title: 'Boka platser',
         },
         loader: reserveLoader(getQueryClient()),
+        action: reserveAction,
       },
       {
         path: '/bokning/:reservationNum',
