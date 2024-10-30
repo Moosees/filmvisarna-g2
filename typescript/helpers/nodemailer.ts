@@ -1,47 +1,41 @@
-import fs from 'fs';
-import path from 'path';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-export default class Mailer {
-  // Get info (sender email and app password from gmail-secret.json)
-  static info = (() => {
-    try {
-      return JSON.parse(
-        fs.readFileSync(
-          path.join(import.meta.dirname, 'gmail-secret.json'),
-          'utf-8'
-        )
-      );
-    } catch {
-      console.warn('\nMissing gmail-secret.json file!');
-      return {};
-    }
-  })();
+// Load environment variables
+dotenv.config();
 
+class Mailer {
   static send(
     to: string,
     subject: string,
     text: string,
     html: string,
-    attachments: Array<{ filename: string; path: string }> = []
-  ) {
-    // Authenticate / create a mail client
+    attachments: Array<{ filename: string; path: string }> = [] // Default to empty array
+  ): void {
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
+
+    if (!emailUser || !emailPass) {
+      console.error('Missing email credentials in environment variables');
+      return;
+    }
+
     const client = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: this.info.email,
-        pass: this.info.appPassword,
+        user: emailUser,
+        pass: emailPass,
       },
     });
-    // Send the mail
+
     client.sendMail(
       {
-        from: this.info.email,
+        from: emailUser,
         to,
         subject,
         text,
         html,
-        attachments,
+        attachments, 
       },
       (error, info) => {
         if (error) {
@@ -53,3 +47,5 @@ export default class Mailer {
     );
   }
 }
+
+export default Mailer;

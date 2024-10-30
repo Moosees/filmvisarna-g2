@@ -87,17 +87,24 @@ router.patch('/user', usersController.updateUserDetails);
 
 router.get('/ping', usersController.ping);
 
-router.get('/email/:to', (req, res) => {
-  const { to } = req.params;
-  const subject = 'Test';
-  const text = 'här kommer ditt mail';
-  const html = '<h3>This is a test:</h3>';
-  const attachments = [
-    { filename: 'example.txt', path: './path/to/example.txt' },
-  ]; // Exempel på bilaga
+router.post('/send-email', (req, res) => {
+  const { to, subject, text, html, attachments } = req.body;
 
-  Mailer.send(to, subject, text, html, attachments);
-  res.send({ status: 'ok' });
+  console.log('Sending email with details:', {
+    to,
+    subject,
+    text,
+    html,
+    attachments,
+  });
+
+  try {
+    Mailer.send(to, subject, text, html, attachments);
+    res.status(200).send('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).send('Error sending email');
+  }
 });
 
 export default router;
