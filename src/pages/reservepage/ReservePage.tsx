@@ -34,7 +34,7 @@ function ReservePage() {
         </Container>
       </Col>
       <Col className="d-flex flex-column gap-3">
-        <Hall seats={data.seats} numPersons={numPersons} />
+        <Hall seats={data.seats} poster={data.poster} numPersons={numPersons} />
         <section className="button-group">
           <PrimaryBtn>
             <Link to="/">Ångra</Link>

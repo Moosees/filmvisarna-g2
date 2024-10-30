@@ -52,7 +52,7 @@ interface AllSeats extends RowDataPacket {
   title: string;
   startTime: string;
   screeningId: number;
-  auditorium: string;
+  poster: string;
   tickets: {
     ticketId: number;
     name: string;

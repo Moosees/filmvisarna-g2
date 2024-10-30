@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, CardImg } from 'react-bootstrap';
 
 type Seat = { seatId: number; free: boolean };
 type SeatWithIndex = { seatId: number; index: number };
 
 interface HallProps {
   seats: Seat[][];
+  poster: string;
   numPersons: number;
 }
 
@@ -77,7 +78,7 @@ const getAffectedSeats = (
   }, []); // else return numPersons seats
 };
 
-function Hall({ seats, numPersons }: HallProps) {
+function Hall({ seats, poster, numPersons }: HallProps) {
   const [clicked, setClicked] = useState<number[]>([]);
   const [hovered, setHovered] = useState<number[]>([]);
 
@@ -96,12 +97,17 @@ function Hall({ seats, numPersons }: HallProps) {
   };
 
   return (
-    <Container className="d-flex flex-column bg-rosa py-4 align-items-center rounded">
+    <Container className="d-flex flex-column bg-rosa py-2 align-items-center rounded gap-1">
+      <Row className="justify-content-center">
+        <Col className="col-6">
+          <CardImg src={poster} className="rounded" />
+        </Col>
+      </Row>
       {seats.map((row, rowIndex) => {
         return (
           <Row
             key={rowIndex}
-            className="mb-2 d-flex justify-content-center"
+            className="justify-content-center"
             onMouseLeave={() => setHovered([])}
           >
             {row.map(({ seatId, free }, i) => (
@@ -109,7 +115,9 @@ function Hall({ seats, numPersons }: HallProps) {
                 key={seatId}
                 onClick={() => handleClick(i, row)}
                 onMouseEnter={() => handleMouseEnter(i, row)}
-                className={`border d-flex align-items-center justify-content-center p-2 rounded seat ${!free ? 'bg-dark' : clicked.includes(seatId) ? 'bg-rosa' : 'bg-light'} ${hovered.includes(seatId) ? 'seat-hover' : ''}`}
+                className={`border d-flex align-items-center justify-content-center p-2 rounded seat 
+                  ${!free ? 'bg-dark' : clicked.includes(seatId) ? 'bg-rosa' : 'bg-light'} ${hovered.includes(seatId) ? 'seat-hover' : ''}
+                `}
               />
             ))}
           </Row>

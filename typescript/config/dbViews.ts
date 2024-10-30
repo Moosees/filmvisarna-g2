@@ -1,6 +1,6 @@
 const viewAllSeats = `
   CREATE OR REPLACE VIEW view_all_seats AS
-  SELECT m.title, s2.start_time AS startTime, s2.id AS screeningId, a.auditorium_name AS auditorium, 
+  SELECT m.title, s2.start_time AS startTime, s2.id AS screeningId, m.poster_url AS poster, 
   (SELECT json_arrayagg(json_object('seatId',s.id ,'row', s.seat_row,'number', s.seat_num, 'free', IF(rss.reservation_id IS NULL, TRUE, FALSE)))
   FROM seat s
   LEFT JOIN res_seat_screen rss ON (s.id = rss.seat_id AND rss.screening_id = screeningId)
