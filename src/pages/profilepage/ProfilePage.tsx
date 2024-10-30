@@ -5,6 +5,8 @@ import { getAxios } from '../../api/clients';
 import { useQuery } from '@tanstack/react-query';
 import MovieCard from '../../components/movieCard/MovieCard';
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface Booking {
   movieId: number;
@@ -22,33 +24,63 @@ interface UserData {
   user_email: string;
 }
 
-const fetchMemberInfo = async (): Promise<UserData> => {
-  const { data } = await getAxios().get('/user/member-info');
-  return data;
-};
-
-const fetchCurrentBookings = async (): Promise<Booking[]> => {
-  const { data } = await getAxios().get('/user/current-bookings');
-  return data;
-};
-
-const fetchBookingHistory = async (): Promise<Booking[]> => {
-  const { data } = await getAxios().get('/user/booking-history');
-  return data;
-};
+interface UpdateUserData {
+  first_name: string;
+  last_name: string;
+  new_password?: string;
+}
 
 const ProfilePage: React.FC = () => {
-  const { data: memberInfo, error: memberError } = useQuery<UserData, Error>({
-    queryKey: ['memberInfo'],
-    queryFn: fetchMemberInfo,
-  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(
+    null
+  );
+
+  const { register, handleSubmit, reset } = useForm<UpdateUserData>();
+
+  const loadMemberInfo = async () => {
+    try {
+      const { data } = await getAxios().get<UserData>('/user/member-info');
+      setDisplayMemberInfo(data);
+      reset(data);
+    } catch (error) {
+      console.error('Kunde inte ladda medlemsinfo:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadMemberInfo();
+  }, []);
+
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+    if (!isEditing && displayMemberInfo) reset(displayMemberInfo);
+  };
+
+  const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
+    try {
+      await getAxios().patch('/user', {
+        ...data,
+        new_password: data.new_password ? data.new_password : undefined,
+      });
+
+      await loadMemberInfo();
+      setIsEditing(false);
+      console.log('Data sparat och medlemsinfo uppdaterad');
+    } catch (error) {
+      console.error('Fel vid uppdatering:', error);
+    }
+  };
 
   const { data: bookingHistory, error: bookingError } = useQuery<
     Booking[],
     Error
   >({
     queryKey: ['bookingHistory'],
-    queryFn: fetchBookingHistory,
+    queryFn: async () => {
+      const { data } = await getAxios().get('/user/booking-history');
+      return data;
+    },
   });
 
   const { data: currentBookings, error: currentBookingsError } = useQuery<
@@ -56,47 +88,88 @@ const ProfilePage: React.FC = () => {
     Error
   >({
     queryKey: ['currentBookings'],
-    queryFn: fetchCurrentBookings,
+    queryFn: async () => {
+      const { data } = await getAxios().get('/user/current-bookings');
+      return data;
+    },
   });
 
-  if (memberError || bookingError || currentBookingsError) {
-    return <div>Ett fel uppstod vid inläsning av data.</div>;
+  if (!displayMemberInfo) {
+    return <div>Laddar medlemsinformation...</div>;
   }
 
-  if (!memberInfo) {
-    return <div>Ingen medlemsinformation tillgänglig.</div>;
+  if (bookingError || currentBookingsError) {
+    return <div>Ett fel uppstod vid inläsning av bokningsdata.</div>;
   }
 
   return (
-    <>
-      <Container fluid className="rounded bg-rosa shadow-sm p-5">
-        <Row>
-          <Col
-            md={4}
-            className="d-flex flex-column align-items-center justify-content-center mb-3 ms-2"
-          >
-            <h5 className="profile-page-heading d-flex align-items-center">
-              <div className="rounded-icon">
-                <PersonFill size={28} />
-              </div>
-              Medlemsinfo
-            </h5>
-            <div className="w-100 text-start">
-              <h6 className="profile-text-bg p-1 rounded mt-3">
-                Förnamn: {memberInfo?.first_name}
-              </h6>
-              <h6 className="profile-text-bg p-1 rounded mt-3">
-                Efternamn: {memberInfo?.last_name}
-              </h6>
-
-              <h6 className="profile-text-bg p-1 rounded mt-3">
-                E-post: {memberInfo?.user_email}
-              </h6>
+    <Container fluid className="rounded bg-rosa shadow-sm p-5">
+      <Row>
+        <Col
+          md={4}
+          className="d-flex flex-column align-items-center justify-content-center mb-3 ms-2"
+        >
+          <h5 className="profile-page-heading d-flex align-items-center">
+            <div className="rounded-icon">
+              <PersonFill size={28} />
             </div>
-            <div className="mt-3">
-              <PrimaryBtn title="Ändra" />
-            </div>
-          </Col>
+            Medlemsinfo
+          </h5>
+          <form onSubmit={handleSubmit(onSubmit)} className="w-100 text-start">
+            {isEditing ? (
+              <>
+                <p>Uppdatera den informationen du vill</p>
+                <input
+                  type="text"
+                  {...register('first_name')}
+                  placeholder="Förnamn"
+                  className="form-control mt-3 editable-input"
+                  defaultValue={displayMemberInfo.first_name || ''}
+                />
+                <input
+                  type="text"
+                  {...register('last_name')}
+                  placeholder="Efternamn"
+                  className="form-control mt-3 editable-input"
+                  defaultValue={displayMemberInfo.last_name || ''}
+                />
+                <input
+                  type="password"
+                  {...register('new_password')}
+                  placeholder="Nytt lösenord"
+                  className="form-control mt-3 editable-input"
+                />
+                <div className="d-flex flex-column align-items-center mt-3">
+                  <PrimaryBtn title="Spara" type="submit" />
+                  <PrimaryBtn
+                    title="Avbryt"
+                    type="button"
+                    onClick={toggleEdit}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <h6 className="profile-text-bg p-1 rounded mt-3">
+                  Förnamn: {displayMemberInfo.first_name}
+                </h6>
+                <h6 className="profile-text-bg p-1 rounded mt-3">
+                  Efternamn: {displayMemberInfo.last_name}
+                </h6>
+                <h6 className="profile-text-bg p-1 rounded mt-3">
+                  E-post: {displayMemberInfo.user_email}
+                </h6>
+                <div className="d-flex flex-column align-items-center mt-3">
+                  <PrimaryBtn
+                    title="Ändra"
+                    onClick={toggleEdit}
+                    type="button"
+                  />
+                </div>
+              </>
+            )}
+          </form>
+        </Col>
 
           <Col md={7} className="d-flex flex-column align-items-center">
             <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
