@@ -44,8 +44,8 @@ export const filterLoader =
     console.log(url);
 
     const age = url.searchParams.get('alder') || undefined;
-    const startDate = url.searchParams.get('startDate') || undefined;
-    const endDate = url.searchParams.get('endDate') || undefined;
+    const startDate = url.searchParams.get('startDatum') || undefined;
+    const endDate = url.searchParams.get('slutDatum') || undefined;
     const title = url.searchParams.get('titel') || undefined;
 
     const filters: Filters = {
