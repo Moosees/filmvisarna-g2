@@ -44,7 +44,7 @@ const ProfilePage: React.FC = () => {
     data: { isLoggedIn },
   } = useSuspenseQuery(getRootDataQuery());
 
-  const { register, handleSubmit, reset } = useForm<UpdateUserData>();
+  const {
     register,
     handleSubmit,
     reset,
