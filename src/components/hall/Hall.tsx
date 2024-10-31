@@ -14,8 +14,6 @@ function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
   const [hovered, setHovered] = useState<number[]>([]);
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
-    console.log({ seatIndex, row, clicked: row[seatIndex] });
-
     setSeatIds(
       getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
     );

@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import {
   Link,
@@ -12,6 +12,7 @@ import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
+import { toast } from 'react-toastify';
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
@@ -27,10 +28,11 @@ function ReservePage() {
     ReturnType<ReturnType<typeof reserveLoader>>
   >;
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
-  console.log({ data });
 
   const error = useActionData() as unknown as string | Response;
-  console.log({ error });
+  useEffect(() => {
+    if (typeof error === 'string') toast.warning(error);
+  }, [error]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();

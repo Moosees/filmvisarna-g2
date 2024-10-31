@@ -65,7 +65,7 @@ export const reserveAction = async ({
     'screeningId'
   >;
 
-  if (!params.screeningId) return 'Bokningen är inte korrekt';
+  if (!params.screeningId) return 'Bokningen är inte korrekt ifylld';
 
   try {
     const resData = await postReservation({
@@ -75,9 +75,12 @@ export const reserveAction = async ({
 
     return redirect(`/bokning/${resData.reservationNum}`);
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data?.message) {
-      return error.response.data.message;
+    if (
+      axios.isAxiosError(error) &&
+      (error.response?.data?.message || error.response?.data?.error)
+    ) {
+      return error.response.data.message || error.response.data.error;
     }
-    return 'Inloggning misslyckades';
+    return 'Din bokning kunde inte slutföras, var god försök igen eller kontakta oss på filmvisarnabio@gmail.com';
   }
 };
