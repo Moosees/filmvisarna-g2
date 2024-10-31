@@ -13,14 +13,14 @@ const CancelReservationPage: React.FC = () => {
   const submit = useSubmit();
   const error = useActionData() as string | null;
 
-const {
+  const {
     register,
     handleSubmit,
     formState: { errors },
-} = useForm<CancelReservationFormData>();
+  } = useForm<CancelReservationFormData>();
 
-const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
-  submit(values, { method: 'post', action: '/reservation/cancel' });
+  const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
+    submit(values, { method: 'post', action: '/reservation/cancel' });
 
   return (
     <Container className="d-flex justify-content-center">
@@ -40,16 +40,36 @@ const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
                 {errors.email?.message}
               </Form.Control.Feedback>
             </Form.Group>
-                <Form.Group controlId="bookingNumber" className="field-container mb-3">
+            <Form.Group
+              controlId="bookingNumber"
+              className="field-container mb-3"
+            >
               <Form.Label className="form-label">Booking Number</Form.Label>
               <Form.Control
                 type="text"
                 className="form-control-field"
                 placeholder="Enter your booking number"
-                {...register('bookingNumber', { required: 'Booking number is required' })}
+                {...register('bookingNumber', {
+                  required: 'Booking number is required',
+                })}
                 isInvalid={!!errors.bookingNumber}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.bookingNumber?.message}
               </Form.Control.Feedback>
             </Form.Group>
+            <div className="button-group">
+              <PrimaryBtn type="submit">Cancel Reservation</PrimaryBtn>
+            </div>
+          </Form>
+
+          {error && (
+            <Alert variant="danger" className="mt-3">
+              {error}
+            </Alert>
+          )}
+        </Col>
+      </Row>
+    </Container>
+  );
+};
