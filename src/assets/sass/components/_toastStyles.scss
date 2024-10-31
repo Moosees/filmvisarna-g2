@@ -1,0 +1,27 @@
+:root {
+  --toastify-toast-background: #{$bg-rosa};
+  --toastify-color-light: #{$bg-rosa};
+  --toastify-color-dark:#{$bg-rosa};
+  --toastify-color-warning: #ffffff;
+  --toastify-text-color-light:black;
+  --toastify-text-color-dark: black;
+
+}
+
+// Style for success toast
+.Toastify__toast--success {
+  color: white;
+
+}
+
+
+// Style for error toast
+.Toastify__toast--error {
+  background-color: #ff4c4c;
+  color: white;
+}
+
+// Add hover effect
+.Toastify__toast:hover {
+  opacity: 0.9;
+}

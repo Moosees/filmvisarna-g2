@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { ScreeningData } from '../../api/reserve';
 
 interface TicketSelectorProps {
@@ -37,7 +36,7 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
 
     // Check if adding a new ticket would exceed the limit
     if (increment && ticketIds.length > 8) {
-      toast.warn(
+      toast.warning(
         'Vid bokning av fler än 8 platser kontakta oss via e-post filmvisarnabio@gmail.com'
       );
       return;
