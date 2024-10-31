@@ -10,6 +10,11 @@ export interface CancelReservationFormData extends FieldValues {
 }
 
 const CancelReservationPage: React.FC = () => {
-  const submit = useSubmit(); // Initializes the submit function to handle form submission
+  const submit = useSubmit();
   const error = useActionData() as string | null;
 
+const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CancelReservationFormData>();
