@@ -20,4 +20,23 @@ const {
 } = useForm<CancelReservationFormData>();
 
 const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
-    submit(values, { method: 'post', action: '/reservation/cancel' });
+  submit(values, { method: 'post', action: '/reservation/cancel' });
+
+  return (
+    <Container className="d-flex justify-content-center">
+      <Row className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm p-4">
+        <Col>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form.Group controlId="email" className="field-container mb-3">
+              <Form.Label className="form-label">Email</Form.Label>
+              <Form.Control
+                type="email"
+                className="form-control-field"
+                placeholder="Enter your email"
+                {...register('email', { required: 'Email is required' })}
+                isInvalid={!!errors.email}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
