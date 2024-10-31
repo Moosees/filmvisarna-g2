@@ -24,15 +24,15 @@ function BookingConfirmation() {
   return (
     <>
       <Container className="booking-confirmation">
-        <Row className="booking-row">
-          <Col>
+        <Row className="d-flex flex-column flex-md-row booking-row align-items-start">
+          <Col md={6} className="order-md-1 mb-4 mb-md-0">
             <img
               src={data.posterUrl}
               alt="Gladiator-movie"
-              className="img-fluid"
+              className="img-fluid booking-image"
             />
           </Col>
-          <Col>
+          <Col md={6} className="order-md-2">
             {data ? (
               <ul className="list-group">
                 <li className="list-group-item ">
