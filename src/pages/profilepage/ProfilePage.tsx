@@ -225,7 +225,7 @@ const ProfilePage: React.FC = () => {
               {currentBookings && currentBookings.length > 0 ? (
                 currentBookings.map((booking) => (
                   <MovieCard
-                    key={booking.screeningId}
+                    key={booking.reservationNum}
                     movieId={booking.movieId}
                     screeningId={booking.screeningId}
                     posterUrl={booking.posterUrl}
@@ -254,7 +254,7 @@ const ProfilePage: React.FC = () => {
               {bookingHistory && bookingHistory.length > 0 ? (
                 bookingHistory.map((booking) => (
                   <MovieCard
-                    key={booking.screeningId}
+                    key={booking.reservationNum}
                     movieId={booking.movieId}
                     screeningId={booking.screeningId}
                     posterUrl={booking.posterUrl}
