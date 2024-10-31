@@ -32,13 +32,8 @@ interface MovieData {
 
 //-------------Movie-details---------------
 async function getMovieData(movieId: number) {
-  try {
-    const response = await getAxios().get<MovieData>(`/movie/${movieId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Failed to fetch movie data:', error);
-    throw new Error('Failed to fetch movie data');
-  }
+  const response = await getAxios().get<MovieData>(`/movie/${movieId}`);
+  return response.data;
 }
 
 export const getMovieDataQuery = (movieId: number) =>
@@ -52,7 +47,7 @@ export const detailsLoader =
   async ({ params }: LoaderFunctionArgs) => {
     const movieId = Number(params.id);
     if (isNaN(movieId)) {
-      throw new Error('Invalid movie id');
+      throw new Error('Ogiltigt filmId');
     }
 
     await client.ensureQueryData(getMovieDataQuery(movieId));

@@ -1,17 +1,17 @@
-import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
-import 'react-datepicker/dist/react-datepicker.css';
 import {
   Form as RouterForm,
   useLoaderData,
   useSearchParams,
   useSubmit,
 } from 'react-router-dom';
+import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { filterLoader, getFilterQuery } from '../../api/filter';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { addDays, format, subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
+import { addDays, format, subDays } from 'date-fns';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function FilterPage() {
   const submit = useSubmit();

@@ -41,7 +41,6 @@ export const filterLoader =
   (client: QueryClient) =>
   async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url);
-    console.log(url);
 
     const age = url.searchParams.get('alder') || undefined;
     const startDate = url.searchParams.get('startDatum') || undefined;
@@ -54,13 +53,6 @@ export const filterLoader =
       endDate: endDate || undefined,
       title: title || undefined,
     };
-
-    console.log('Age:', age);
-    console.log('sDate:', startDate);
-    console.log('eDate:', endDate);
-    console.log('Title:', title);
-    console.log(filters);
-
     await client.ensureQueryData(getFilterQuery(filters));
 
     return { filters };
