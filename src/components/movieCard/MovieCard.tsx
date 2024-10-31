@@ -16,8 +16,8 @@ interface MovieCardProps {
   smallFont?: boolean;
   hideAge?: boolean;
   allowConfirmationOnly?: boolean;
-  day: string;
-  screeningDate: string;
+  day?: string;
+  screeningDate?: string;
 }
 
 function MovieCard({
@@ -90,7 +90,9 @@ function MovieCard({
             smallFont ? 'small-font' : ''
           }`}
         >
-          <span className="orbitron fs-s-custom">{`${day} ${screeningDate}`}</span>{' '}
+          {day && screeningDate && (
+            <span className="orbitron fs-s-custom">{`${day} ${screeningDate}`}</span>
+          )}{' '}
           <span>{startTime}</span>
         </Card.Text>
         {confirmationButton && reservationNum ? (

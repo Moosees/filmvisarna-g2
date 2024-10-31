@@ -29,7 +29,9 @@ interface UserData {
 interface UpdateUserData {
   first_name: string;
   last_name: string;
+  current_password: string;
   new_password?: string;
+  confirm_new_password?: string;
 }
 
 const ProfilePage: React.FC = () => {
@@ -43,6 +45,12 @@ const ProfilePage: React.FC = () => {
   } = useSuspenseQuery(getRootDataQuery());
 
   const { register, handleSubmit, reset } = useForm<UpdateUserData>();
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<UpdateUserData>();
 
   const loadMemberInfo = async () => {
     try {
@@ -77,6 +85,8 @@ const ProfilePage: React.FC = () => {
       console.error('Fel vid uppdatering:', error);
     }
   };
+
+  const newPassword = watch('new_password');
 
   const { data: bookingHistory, error: bookingError } = useQuery<
     Booking[],
@@ -126,7 +136,9 @@ const ProfilePage: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="w-100 text-start">
             {isEditing ? (
               <>
-                <p>Uppdatera den informationen du vill</p>
+                <p className="instructions-text p-1 rounded mt-3">
+                  Uppdatera den informationen du vill
+                </p>
                 <input
                   type="text"
                   {...register('first_name')}
@@ -147,6 +159,39 @@ const ProfilePage: React.FC = () => {
                   placeholder="Nytt lösenord"
                   className="form-control mt-3 editable-input"
                 />
+                <input
+                  type="password"
+                  {...register('confirm_new_password', {
+                    validate: (value) =>
+                      !newPassword ||
+                      value === newPassword ||
+                      'Lösenorden matchar inte',
+                  })}
+                  placeholder="Bekräfta nytt lösenord"
+                  className="form-control mt-3 editable-input"
+                />
+                {errors.confirm_new_password && (
+                  <small className="text-danger">
+                    {errors.confirm_new_password.message}
+                  </small>
+                )}
+                <p className="instructions-text p-1 rounded mt-3">
+                  Ange ditt nuvarande lösenord för att spara ändringar
+                </p>
+                <input
+                  type="password"
+                  {...register('current_password', {
+                    required:
+                      'Ange ditt nuvarande lösenord för att spara ändringar',
+                  })}
+                  placeholder="Nuvarande lösenord"
+                  className="form-control mt-3 editable-input"
+                />
+                {errors.current_password && (
+                  <small className="text-danger">
+                    {errors.current_password.message}
+                  </small>
+                )}
                 <div className="d-flex flex-column align-items-center mt-3">
                   <PrimaryBtn type="submit">Spara</PrimaryBtn>
                   <PrimaryBtn type="button" onClick={toggleEdit}>
@@ -184,7 +229,7 @@ const ProfilePage: React.FC = () => {
               {currentBookings && currentBookings.length > 0 ? (
                 currentBookings.map((booking) => (
                   <MovieCard
-                    key={booking.screeningId}
+                    key={booking.reservationNum}
                     movieId={booking.movieId}
                     screeningId={booking.screeningId}
                     posterUrl={booking.posterUrl}
@@ -213,7 +258,7 @@ const ProfilePage: React.FC = () => {
               {bookingHistory && bookingHistory.length > 0 ? (
                 bookingHistory.map((booking) => (
                   <MovieCard
-                    key={booking.screeningId}
+                    key={booking.reservationNum}
                     movieId={booking.movieId}
                     screeningId={booking.screeningId}
                     posterUrl={booking.posterUrl}
@@ -222,6 +267,7 @@ const ProfilePage: React.FC = () => {
                     startTime={booking.startTime.slice(0, -3)}
                     showButton={false}
                     confirmationButton={false}
+                    smallFont={true}
                     hideAge={true}
                     className="profile-movie-card"
                   />
