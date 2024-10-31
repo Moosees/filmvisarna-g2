@@ -72,6 +72,7 @@ const getAllSeats = async (req: Request, res: Response) => {
   try {
     const { screening_id } = req.params;
 
+    await db.execute('SET lc_time_names = "sv_SE"');
     const [results]: [AllSeats[], FieldPacket[]] = await db.execute(
       'SELECT * FROM view_all_seats WHERE screeningId =?',
       [screening_id]
