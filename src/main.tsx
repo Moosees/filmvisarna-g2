@@ -9,7 +9,8 @@ import router from './router';
 
 const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches
   ? 'dark'
-  : 'light';
+  : 'dark';
+// : 'light';
 document.documentElement.setAttribute('data-bs-theme', colorScheme);
 
 createRoot(document.getElementById('root')!).render(

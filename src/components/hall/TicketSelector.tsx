@@ -36,7 +36,7 @@ const TicketSelector: React.FC<TicketSelectorProps> = ({
     }, []);
 
     // Check if adding a new ticket would exceed the limit
-    if (increment && ticketIds.length >= 8) {
+    if (increment && ticketIds.length > 8) {
       toast.warn(
         'Vid bokning av fler än 8 platser kontakta oss via e-post filmvisarnabio@gmail.com'
       );
