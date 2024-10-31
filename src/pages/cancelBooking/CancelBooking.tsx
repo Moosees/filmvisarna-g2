@@ -40,3 +40,16 @@ const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
                 {errors.email?.message}
               </Form.Control.Feedback>
             </Form.Group>
+                <Form.Group controlId="bookingNumber" className="field-container mb-3">
+              <Form.Label className="form-label">Booking Number</Form.Label>
+              <Form.Control
+                type="text"
+                className="form-control-field"
+                placeholder="Enter your booking number"
+                {...register('bookingNumber', { required: 'Booking number is required' })}
+                isInvalid={!!errors.bookingNumber}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.bookingNumber?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
