@@ -1,23 +1,32 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
-import { LoaderFunctionArgs } from 'react-router-dom';
+import axios from 'axios';
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from 'react-router-dom';
 import { getAxios } from './clients';
 
-interface ScreeningData {
-  message: string;
-  results: {
-    title: string;
-    startTime: string;
-    screeningId: number;
-    auditorium: string;
-    seats: { seatId: number; free: boolean }[][];
-  };
+export interface ScreeningData {
+  title: string;
+  startTime: string;
+  screeningId: number;
+  poster: string;
+  tickets: { ticketId: number; name: string; price: number }[];
+  seats: { seatId: number; free: boolean }[][];
+}
+
+interface PostReservationData {
+  email: string;
+  screeningId: number;
+  tickets: number[];
+  seats: number[];
 }
 
 async function getScreeningData(screeningId: number) {
   const response = await getAxios().get<ScreeningData>(`seats/${screeningId}`);
-  console.log(response.data.message);
 
-  return response.data.results;
+  return response.data;
 }
 
 export const getScreeningDataQuery = (screeningId: number) =>
@@ -35,3 +44,39 @@ export const reserveLoader =
 
     return { screeningId: +params.screeningId };
   };
+
+async function postReservation(reservationData: PostReservationData) {
+  const response = await getAxios().post<{
+    message: string;
+    reservationNum: string;
+  }>('reservation', reservationData);
+
+  return response.data;
+}
+
+export const reserveAction = async ({
+  request,
+  params,
+}: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData) as unknown as Omit<
+    PostReservationData,
+    'screeningId'
+  >;
+
+  if (!params.screeningId) return 'Bokningen är inte korrekt';
+
+  try {
+    const resData = await postReservation({
+      ...data,
+      screeningId: +params.screeningId,
+    });
+
+    return redirect(`/bokning/${resData.reservationNum}`);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.data?.message) {
+      return error.response.data.message;
+    }
+    return 'Inloggning misslyckades';
+  }
+};

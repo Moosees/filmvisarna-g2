@@ -102,7 +102,9 @@ function MovieCard({
             Visa bokning
           </a>
         ) : (
-          showButton && <PrimaryBtn title="Boka" onClick={handleButtonClick} />
+          showButton && (
+            <PrimaryBtn onClick={handleButtonClick}>Boka</PrimaryBtn>
+          )
         )}
       </Card.Body>
     </Card>

@@ -40,12 +40,13 @@ function MovieDetailsPage() {
                 )}
                 {movieData.movieInfo?.trailer && (
                   <PrimaryBtn
-                    title={openTrailer ? 'Visa Poster' : 'Visa Trailer'}
                     onClick={(e) => {
                       e?.preventDefault();
                       setOpenTrailer(!openTrailer);
                     }}
-                  />
+                  >
+                    {openTrailer ? 'Visa Poster' : 'Visa Trailer'}
+                  </PrimaryBtn>
                 )}
               </Col>
             </Row>

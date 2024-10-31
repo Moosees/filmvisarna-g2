@@ -52,7 +52,12 @@ interface AllSeats extends RowDataPacket {
   title: string;
   startTime: string;
   screeningId: number;
-  auditorium: string;
+  poster: string;
+  tickets: {
+    ticketId: number;
+    name: string;
+    price: number;
+  };
   seats: [
     {
       row: number;
@@ -68,7 +73,7 @@ const getAllSeats = async (req: Request, res: Response) => {
     const { screening_id } = req.params;
 
     const [results]: [AllSeats[], FieldPacket[]] = await db.execute(
-      'SELECT * FROM vy_all_seats WHERE screeningId =?',
+      'SELECT * FROM view_all_seats WHERE screeningId =?',
       [screening_id]
     );
 
@@ -101,9 +106,7 @@ const getAllSeats = async (req: Request, res: Response) => {
       }),
     };
 
-    res
-      .status(200)
-      .json({ message: 'Visning hittades', results: responseData });
+    res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
   }

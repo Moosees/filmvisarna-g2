@@ -20,13 +20,11 @@ const LoginPage: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormData>();
 
-
   const onSubmit: SubmitHandler<LoginFormData> = (values) =>
     submit(values, { method: 'post', action: '/medlem/logga-in' });
 
-
   return (
-    <Container className="d-flex justify-content-center mt-5">
+    <Container className="d-flex justify-content-center">
       <Row className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm p-4">
         <Col>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -60,11 +58,13 @@ const LoginPage: React.FC = () => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <div className="button-group d-flex justify-content-between mt-3">
-              <Link to="/medlem/bli-medlem" className="me-2">
-                <PrimaryBtn title="Bli medlem" />
-              </Link>
-              <PrimaryBtn title="Logga in" type="submit" />
+            <div className="button-group">
+              <PrimaryBtn>
+                <Link to="/medlem/bli-medlem" className="me-2">
+                  Bli medlem
+                </Link>
+              </PrimaryBtn>
+              <PrimaryBtn type="submit">Logga in</PrimaryBtn>
             </div>
           </Form>
 

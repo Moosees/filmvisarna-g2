@@ -1,12 +1,9 @@
 import React from 'react';
-import { Instagram } from 'react-bootstrap-icons';
-import { TwitterX } from 'react-bootstrap-icons';
-import { Facebook } from 'react-bootstrap-icons';
-import { PinMap } from 'react-bootstrap-icons';
+import { Facebook, Instagram, PinMap, TwitterX } from 'react-bootstrap-icons';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="custom-footer text-center mt-auto">
+    <footer className="custom-footer text-center">
       <div className="container">
         <div className="row">
           <div className="col-md-3">

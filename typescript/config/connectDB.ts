@@ -1,4 +1,5 @@
 import mysql, { PoolOptions } from 'mysql2/promise';
+import { allViews } from './dbViews.js';
 
 export const dbOptions: PoolOptions = {
   host: process.env.DB_HOST,
@@ -16,6 +17,11 @@ const db = mysql.createPool(dbOptions);
 // Testa anslutningen
 db.getConnection()
   .then((con) => {
+    // console.log('Setting up database...');
+    // allViews.forEach(async (view) => {
+    //   await con.query(view);
+    // });
+
     console.log(`Connected to MySQL ${process.env.DB_NAME} database!`);
     db.releaseConnection(con);
   })
