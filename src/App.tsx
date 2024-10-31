@@ -4,9 +4,6 @@ import Footer from './components/footer/Footer';
 import Header from './components/header/Header';
 import MainHeading from './components/mainHeading/MainHeading';
 
-
-
-
 interface AppMatch extends UIMatch {
   handle: {
     title?: string;
@@ -21,7 +18,7 @@ function App() {
     <>
       <div className="min-vh-100 d-flex flex-column gap-3">
         <Header />
-        <main className="flex-grow-1 container d-flex flex-column gap-3">
+        <main className="flex-grow-1 container-lg d-flex flex-column gap-3">
           {titles.length > 0 && titles[0].handle.title && (
             <MainHeading title={titles[0].handle.title} />
           )}
@@ -30,7 +27,7 @@ function App() {
         <Footer />
       </div>
       {/* React Toastify Container */}
-      <ToastContainer position='bottom-right'/>
+      <ToastContainer position="bottom-right" />
     </>
   );
 }
