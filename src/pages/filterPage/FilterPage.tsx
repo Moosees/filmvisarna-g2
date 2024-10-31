@@ -12,6 +12,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import DatePicker from 'react-datepicker';
 import { addDays, format, subDays } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import { sv } from 'date-fns/locale/sv';
 
 export default function FilterPage() {
   const submit = useSubmit();
@@ -24,7 +26,7 @@ export default function FilterPage() {
   const { data, isLoading, isError } = useSuspenseQuery(
     getFilterQuery(filters)
   );
-
+  registerLocale('sv', sv);
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setSearchParams((params) => {
@@ -61,6 +63,7 @@ export default function FilterPage() {
 
           <Col lg={4} className="col-6 px-1 px-md-2">
             <DatePicker
+              locale="sv"
               selectsRange={true}
               startDate={
                 searchParams.get('startDatum')
