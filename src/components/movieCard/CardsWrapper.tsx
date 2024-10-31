@@ -28,7 +28,7 @@ function CardsWrapper({ children }: CardsWrapperProps) {
       </Row>
       {visibleCards < totalChildren && (
         <div className="text-center mt-3">
-          <PrimaryBtn title=" Visa Mer" onClick={showMoreCards} />
+          <PrimaryBtn onClick={showMoreCards}>Visa mer</PrimaryBtn>
         </div>
       )}
     </Container>
