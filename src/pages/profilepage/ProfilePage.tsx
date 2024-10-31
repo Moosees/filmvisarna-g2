@@ -1,12 +1,14 @@
-import { Container, Row, Col } from 'react-bootstrap';
-import { PersonFill } from 'react-bootstrap-icons';
-import PrimaryBtn from '../../components/buttons/PrimaryBtn';
-import { getAxios } from '../../api/clients';
-import { useQuery } from '@tanstack/react-query';
-import MovieCard from '../../components/movieCard/MovieCard';
-import CardsWrapper from '../../components/movieCard/CardsWrapper';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
+import { PersonFill } from 'react-bootstrap-icons';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
+import { getAxios } from '../../api/clients';
+import { getRootDataQuery } from '../../api/root';
+import PrimaryBtn from '../../components/buttons/PrimaryBtn';
+import CardsWrapper from '../../components/movieCard/CardsWrapper';
+import MovieCard from '../../components/movieCard/MovieCard';
 
 interface Booking {
   movieId: number;
@@ -35,6 +37,10 @@ const ProfilePage: React.FC = () => {
   const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(
     null
   );
+
+  const {
+    data: { isLoggedIn },
+  } = useSuspenseQuery(getRootDataQuery());
 
   const { register, handleSubmit, reset } = useForm<UpdateUserData>();
 
@@ -101,6 +107,8 @@ const ProfilePage: React.FC = () => {
   if (bookingError || currentBookingsError) {
     return <div>Ett fel uppstod vid inläsning av bokningsdata.</div>;
   }
+
+  if (!isLoggedIn) return <Navigate to="/" replace />;
 
   return (
     <Container fluid className="rounded bg-rosa shadow-sm p-5">
