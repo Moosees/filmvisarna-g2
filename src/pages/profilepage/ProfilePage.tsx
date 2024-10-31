@@ -124,7 +124,7 @@ const ProfilePage: React.FC = () => {
     <Container fluid className="rounded bg-rosa shadow-sm p-5">
       <Row>
         <Col
-          md={4}
+          lg={4}
           className="d-flex flex-column align-items-center justify-content-center mb-3 ms-2"
         >
           <h5 className="profile-page-heading d-flex align-items-center">
@@ -220,7 +220,7 @@ const ProfilePage: React.FC = () => {
           </form>
         </Col>
 
-        <Col md={7} className="d-flex flex-column align-items-center">
+        <Col lg={7} className="d-flex flex-column align-items-center">
           <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
             Aktuella bokningar
           </h5>

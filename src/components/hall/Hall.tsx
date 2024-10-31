@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CardImg, Col, Container, Row } from 'react-bootstrap';
+import { CardImg, Col, Row } from 'react-bootstrap';
 import { getAffectedSeats, type Seat } from './hallHelpers';
 
 interface HallProps {
@@ -14,8 +14,6 @@ function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
   const [hovered, setHovered] = useState<number[]>([]);
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
-    console.log({ seatIndex, row, clicked: row[seatIndex] });
-
     setSeatIds(
       getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
     );
@@ -28,12 +26,8 @@ function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
   };
 
   return (
-    <Container className="d-flex flex-column bg-rosa py-2 align-items-center rounded gap-1">
-      <Row className="justify-content-center">
-        <Col className="col-6">
-          <CardImg src={poster} className="rounded" />
-        </Col>
-      </Row>
+    <section className="bg-rosa rounded d-flex flex-column py-2 align-items-center gap-1 container-fluid">
+      <CardImg src={poster} className="rounded w-50" />
       {seats.map((row, rowIndex) => {
         return (
           <Row
@@ -54,7 +48,7 @@ function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
           </Row>
         );
       })}
-    </Container>
+    </section>
   );
 }
 

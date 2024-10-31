@@ -25,7 +25,10 @@ function BookingConfirmation() {
     <>
       <Container className="booking-confirmation">
         <Row className="d-flex flex-column flex-md-row booking-row align-items-start">
-          <Col md={6} className="order-md-1 mb-4 mb-md-0">
+          <Col
+            md={6}
+            className="order-md-1 mb-4 mb-md-0 d-flex justify-content-center"
+          >
             <img
               src={data.posterUrl}
               alt="Gladiator-movie"

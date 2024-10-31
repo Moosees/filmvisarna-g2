@@ -22,12 +22,12 @@ function Header() {
 
   return (
     <header className="navbar">
-      <nav className="px-0 container-fluid container-md">
+      <nav className="container-sm">
         <Link to="/">
           <img src={LogoText} alt="Filmvisarna logo" className="img-fluid" />
         </Link>
         <NavButton to="/filmer" label="Kalender" />
-        <NavButton to="/filmer" label="Upptäck" />
+        <NavButton to="/filmer?alder=7" label="Upptäck" />
         {/* <NavButton to="/evenemang" label="Evenemang" /> */}
         <Dropdown>
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">

@@ -125,7 +125,7 @@ const createNewReservation = async (
   } catch (error) {
     console.log(error);
     await con?.rollback();
-    res.status(500).json({ message: 'Någonting gick fel', error });
+    res.status(500).json({ message: 'Någonting gick fel' });
   } finally {
     con?.release();
   }
