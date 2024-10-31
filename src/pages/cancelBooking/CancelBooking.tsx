@@ -17,4 +17,7 @@ const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CancelReservationFormData>();
+} = useForm<CancelReservationFormData>();
+
+const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
+    submit(values, { method: 'post', action: '/reservation/cancel' });
