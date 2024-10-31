@@ -9,7 +9,8 @@ import { getAxios } from './clients';
 
 export interface ScreeningData {
   title: string;
-  startTime: string;
+  date: string;
+  time: string;
   screeningId: number;
   poster: string;
   tickets: { ticketId: number; name: string; price: number }[];
