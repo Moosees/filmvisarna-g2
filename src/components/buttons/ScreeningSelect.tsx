@@ -30,7 +30,7 @@ export default function ScreeningSelect({
             <Button
               key={screening.screeningId}
               style={{ fontSize: '.7em' }}
-              className={`py-1 px-3 rounded border-0 text-capitalize ${
+              className={`py-1 px-3 rounded border-0  ${
                 selectedScreening === screening.screeningId
                   ? 'body-bg-dark text-light'
                   : 'bg-light text-dark'
