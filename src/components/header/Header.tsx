@@ -27,8 +27,8 @@ function Header() {
           <img src={LogoText} alt="Filmvisarna logo" className="img-fluid" />
         </Link>
         <NavButton to="/filmer" label="Kalender" />
-        <NavButton to="/visning/3" label="Upptäck" />
-        <NavButton to="/evenemang" label="Evenemang" />
+        <NavButton to="/filmer" label="Upptäck" />
+        {/* <NavButton to="/evenemang" label="Evenemang" /> */}
         <Dropdown>
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
             <img src={User} alt="Medlem meny" className="img-fluid" />
