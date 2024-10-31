@@ -140,12 +140,10 @@ const ProfilePage: React.FC = () => {
                   className="form-control mt-3 editable-input"
                 />
                 <div className="d-flex flex-column align-items-center mt-3">
-                  <PrimaryBtn title="Spara" type="submit" />
-                  <PrimaryBtn
-                    title="Avbryt"
-                    type="button"
-                    onClick={toggleEdit}
-                  />
+                  <PrimaryBtn type="submit">Spara</PrimaryBtn>
+                  <PrimaryBtn type="button" onClick={toggleEdit}>
+                    Avbryt
+                  </PrimaryBtn>
                 </div>
               </>
             ) : (
@@ -160,11 +158,9 @@ const ProfilePage: React.FC = () => {
                   E-post: {displayMemberInfo.user_email}
                 </h6>
                 <div className="d-flex flex-column align-items-center mt-3">
-                  <PrimaryBtn
-                    title="Ändra"
-                    onClick={toggleEdit}
-                    type="button"
-                  />
+                  <PrimaryBtn onClick={toggleEdit} type="button">
+                    Ändra
+                  </PrimaryBtn>
                 </div>
               </>
             )}
