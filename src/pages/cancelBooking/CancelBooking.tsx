@@ -58,6 +58,7 @@ const CancelReservationPage: React.FC = () => {
                 {errors.bookingNumber?.message}
               </Form.Control.Feedback>
             </Form.Group>
+
             <div className="button-group">
               <PrimaryBtn type="submit">Cancel Reservation</PrimaryBtn>
             </div>
@@ -73,3 +74,5 @@ const CancelReservationPage: React.FC = () => {
     </Container>
   );
 };
+
+export default CancelReservationPage;
