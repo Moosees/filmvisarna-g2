@@ -8,3 +8,8 @@ export interface CancelReservationFormData extends FieldValues {
   email: string;
   bookingNumber: string;
 }
+
+const CancelReservationPage: React.FC = () => {
+  const submit = useSubmit(); // Initializes the submit function to handle form submission
+  const error = useActionData() as string | null;
+
