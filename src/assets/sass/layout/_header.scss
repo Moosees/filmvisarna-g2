@@ -1,6 +1,7 @@
 .custom-toggle {
   background-color: transparent !important;
   border: 0;
+  padding: 0;
 }
 
 .navbar {
@@ -21,6 +22,6 @@
 }
 
 .navbar img {
-  min-height: max(6vw, 35px);
+  min-height: max(6vw, 45px);
   filter: drop-shadow(var(--bs-box-shadow));
 }
