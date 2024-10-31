@@ -4,6 +4,9 @@ import Footer from './components/footer/Footer';
 import Header from './components/header/Header';
 import MainHeading from './components/mainHeading/MainHeading';
 
+
+
+
 interface AppMatch extends UIMatch {
   handle: {
     title?: string;
@@ -27,7 +30,7 @@ function App() {
         <Footer />
       </div>
       {/* React Toastify Container */}
-      <ToastContainer />
+      <ToastContainer position='bottom-right'/>
     </>
   );
 }
