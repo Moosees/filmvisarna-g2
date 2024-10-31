@@ -28,12 +28,12 @@ const CancelReservationPage: React.FC = () => {
         <Col>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="email" className="field-container mb-3">
-              <Form.Label className="form-label">Email</Form.Label>
+              <Form.Label className="form-label">Epost</Form.Label>
               <Form.Control
                 type="email"
                 className="form-control-field"
-                placeholder="Enter your email"
-                {...register('email', { required: 'Email is required' })}
+                placeholder="Fyll i din epost"
+                {...register('email', { required: 'Epost krävs' })}
                 isInvalid={!!errors.email}
               />
               <Form.Control.Feedback type="invalid">
@@ -44,13 +44,13 @@ const CancelReservationPage: React.FC = () => {
               controlId="bookingNumber"
               className="field-container mb-3"
             >
-              <Form.Label className="form-label">Booking Number</Form.Label>
+              <Form.Label className="form-label">Bokningsnummer</Form.Label>
               <Form.Control
                 type="text"
                 className="form-control-field"
-                placeholder="Enter your booking number"
+                placeholder="Fyll i ditt bokningsnummer"
                 {...register('bookingNumber', {
-                  required: 'Booking number is required',
+                  required: 'Bokningsnummer krävs',
                 })}
                 isInvalid={!!errors.bookingNumber}
               />
