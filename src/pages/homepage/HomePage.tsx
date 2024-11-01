@@ -10,8 +10,8 @@ const movies = [
     title: 'Cinema Paradiso',
     startTime: '18:30-21:05',
     dateFormat: {
-      dayName: 'söndag',
-      screeningDate: '03 nov',
+      dayName: 'idag',
+      screeningDate: '01 nov',
     },
   },
   {
@@ -22,8 +22,8 @@ const movies = [
     title: 'The Last Metro ',
     startTime: '15:00-17:11',
     dateFormat: {
-      dayName: 'söndag',
-      screeningDate: '03 nov',
+      dayName: 'idag',
+      screeningDate: '01 nov',
     },
   },
   {
@@ -34,8 +34,8 @@ const movies = [
     title: 'Fanny och Alexander',
     startTime: '21:00-22:30',
     dateFormat: {
-      dayName: 'söndag',
-      screeningDate: '03 nov',
+      dayName: 'idag',
+      screeningDate: '01 nov',
     },
   },
   {
@@ -46,8 +46,8 @@ const movies = [
     title: 'Blow Out',
     startTime: '21:00-22:30',
     dateFormat: {
-      dayName: 'söndag',
-      screeningDate: '03 nov',
+      dayName: 'idag',
+      screeningDate: '01 nov',
     },
   },
 ];
