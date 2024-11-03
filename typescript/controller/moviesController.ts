@@ -93,8 +93,16 @@ const getTodaysMovie = async (req: Request, res: Response) => {
       m.title,
       m.poster_url as posterUrl,
       m.age,
-      DATE_FORMAT(s.start_time, '%Y-%m-%d') AS startDate,
-      concat(date_format(s.start_time, '%H:%i'), ' - ', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS timeRange FROM screening s
+      s.id AS screeningId,
+      concat(date_format(s.start_time, '%H:%i'), '-', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS startTime,
+      JSON_OBJECT(
+            'dayName', CASE
+                    WHEN DATE(s.start_time) = CURDATE() THEN 'idag'
+                    ELSE DAYNAME(s.start_time)
+                    END,
+            'screeningDate', DATE_FORMAT(s.start_time, '%d-%b')
+        ) as dateFormat
+      FROM screening s
       INNER JOIN movie m ON s.movie_id = m.id
       WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()`
     );
