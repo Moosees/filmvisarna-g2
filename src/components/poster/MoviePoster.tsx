@@ -13,7 +13,7 @@ export default function MoviePoster({ movieData }: MoviePosterProps) {
     >
       <Card className="border border-0">
         <Card.Img
-          className=" mx-auto "
+          className=" mx-auto mb-1 "
           style={{ width: '70%', height: '38vh' }}
           src={movieData.posterUrl}
           alt={movieData.title}
