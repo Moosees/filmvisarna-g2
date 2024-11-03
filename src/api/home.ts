@@ -28,7 +28,7 @@ export const getTodaysMoviesQuery = () =>
     queryFn: async () => await getTodaysMovies(),
   });
 
-export const detailsLoader = (client: QueryClient) => async () => {
+export const TodaysMoviesLoader = (client: QueryClient) => async () => {
   await client.ensureQueryData(getTodaysMoviesQuery());
 
   return null;
