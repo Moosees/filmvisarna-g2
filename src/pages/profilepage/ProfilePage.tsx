@@ -291,6 +291,7 @@ const ProfilePage: React.FC = () => {
                     smallFont={true}
                     hideAge={true}
                     className="profile-movie-card"
+                    isStatic={true}
                   />
                 ))
               ) : (
