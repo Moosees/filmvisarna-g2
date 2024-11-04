@@ -62,6 +62,20 @@ function MovieCard({
     if (reservationNum) navigate(`/bokning/${reservationNum}`);
   };
 
+  // Function to check if the showtime has started
+  const isShowtime = () => {
+    // Extract the start time from the format "HH:MM-HH:MM"
+    const [start] = startTime.split('-');
+    // Split hours and minutes and convert to numbers
+    const [hours, minutes] = start.split(':').map(Number);
+    const showtime = new Date();
+    showtime.setHours(hours, minutes, 0);
+    console.log(showtime);
+    return new Date() > showtime;
+  };
+
+  const showButtonDisabled = isShowtime();
+
   return (
     <Card
       className={`text-center text-white border border-warning shadow movie-card py-2 ${className} ${
@@ -111,7 +125,12 @@ function MovieCard({
           </a>
         ) : (
           showButton && (
-            <PrimaryBtn onClick={handleButtonClick}>Boka</PrimaryBtn>
+            <PrimaryBtn
+              disabled={showButtonDisabled}
+              onClick={handleButtonClick}
+            >
+              Boka
+            </PrimaryBtn>
           )
         )}
       </Card.Body>
