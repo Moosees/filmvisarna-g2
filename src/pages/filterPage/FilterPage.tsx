@@ -4,7 +4,6 @@ import {
   Form as RouterForm,
   useLoaderData,
   useSearchParams,
-  useSubmit,
 } from 'react-router-dom';
 import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { filterLoader, getFilterQuery } from '../../api/filter';
@@ -16,17 +15,13 @@ import { registerLocale } from 'react-datepicker';
 import { sv } from 'date-fns/locale/sv';
 
 export default function FilterPage() {
-  const submit = useSubmit();
   const [searchParams, setSearchParams] = useSearchParams();
-
   const { filters } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof filterLoader>>
   >;
-
-  const { data, isLoading, isError } = useSuspenseQuery(
-    getFilterQuery(filters)
-  );
+  const { data, isLoading } = useSuspenseQuery(getFilterQuery(filters));
   registerLocale('sv', sv);
+
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setSearchParams((params) => {
@@ -36,27 +31,31 @@ export default function FilterPage() {
     });
   };
 
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setSearchParams((params) => {
+      params.set(name, value);
+      return params;
+    });
+  };
+
   if (isLoading) {
     return <Spinner animation="border" />;
   }
 
-  if (isError) {
-    return <p>Something went wrong while fetching movies.</p>;
-  }
-
   return (
     <div className="container my-4 ">
-      <RouterForm
-        onChange={(e) => {
-          submit(e.currentTarget);
-        }}
-      >
+      <RouterForm>
         <Row className=" mx-md-auto py-1 bg-rosa col-md-8 rounded">
           <Col lg={4}>
             <input
               type="text"
               name="titel"
               placeholder="Sök"
+              value={searchParams.get('titel') || ''}
+              onChange={handleInputChange}
               className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2 "
             />
           </Col>
@@ -90,6 +89,8 @@ export default function FilterPage() {
             <Form.Select
               className="bg-light text-dark my-1 my-lg-2 placeholder-gray"
               name="alder"
+              onChange={handleInputChange}
+              value={searchParams.get('alder') || ''}
             >
               <option value="">Ålder</option>
               <option value="7">7+</option>
