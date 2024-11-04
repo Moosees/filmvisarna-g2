@@ -18,6 +18,7 @@ interface MovieCardProps {
   allowConfirmationOnly?: boolean;
   day?: string;
   screeningDate?: string;
+  isStatic?: boolean;
 }
 
 function MovieCard({
@@ -36,14 +37,17 @@ function MovieCard({
   allowConfirmationOnly = false,
   day,
   screeningDate,
+  isStatic = false,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    if (allowConfirmationOnly && reservationNum) {
-      navigate(`/bokning/${reservationNum}`);
-    } else {
-      navigate(`/film/${movieId}`);
+    if (!isStatic) {
+      if (allowConfirmationOnly && reservationNum) {
+        navigate(`/bokning/${reservationNum}`);
+      } else {
+        navigate(`/film/${movieId}`);
+      }
     }
   };
   const handleButtonClick = (e?: React.MouseEvent) => {
@@ -60,8 +64,10 @@ function MovieCard({
 
   return (
     <Card
-      className={`text-center text-white border border-warning shadow movie-card py-2 ${className}`}
-      onClick={handleCardClick}
+      className={`text-center text-white border border-warning shadow movie-card py-2 ${className} ${
+        isStatic ? 'static-card' : ''
+      }`}
+      onClick={isStatic ? undefined : handleCardClick}
     >
       <div className="position-relative">
         <Card.Img
