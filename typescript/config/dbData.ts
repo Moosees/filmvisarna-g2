@@ -1,13 +1,13 @@
 const genres = `
   INSERT INTO genre (genre_name) VALUES
-  ('Action'),
-  ('Rysare'),
-  ('Fantasy'),
-  ('Komedi'),
-  ('Skräck'),
-  ('Drama'),
-  ('Dokumentär'),
-  ('Science fiction');
+  ('action'),
+  ('rysare'),
+  ('fantasy'),
+  ('komedi'),
+  ('skräck'),
+  ('drama'),
+  ('dokumentär'),
+  ('science fiction');
 `;
 
 const tickets = `
@@ -19,8 +19,8 @@ const tickets = `
 
 const auditoriums = `
   INSERT INTO auditorium (auditorium_name) VALUES
-  ('Stora salongen'),
-  ('Lilla salongen');
+  ('stora salongen'),
+  ('lilla salongen');
 `;
 
 const seatsStora = `
