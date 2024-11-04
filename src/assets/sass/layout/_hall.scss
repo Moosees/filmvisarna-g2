@@ -33,5 +33,9 @@
 // @media (max-width: 1399.98px) { ... }
 
 .seat-hover {
-  outline: 2px solid var(--bs-primary);
+  outline: 2px solid $success;
+
+  &:hover {
+    cursor: pointer;
+  }
 }

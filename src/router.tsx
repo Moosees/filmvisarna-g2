@@ -12,12 +12,11 @@ import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import { rootLoader } from './api/root';
-
 import FilterPage from './pages/filterPage/FilterPage';
 import { filterLoader } from './api/filter';
-
 import ProfilePage from './pages/profilepage/ProfilePage';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
+import { TodaysMoviesLoader } from './api/home';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +30,7 @@ const router = createBrowserRouter([
         handle: {
           title: 'Dagens filmer',
         },
+        loader: TodaysMoviesLoader(getQueryClient()),
       },
       {
         path: '/medlem/bli-medlem',

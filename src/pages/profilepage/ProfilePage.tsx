@@ -39,6 +39,7 @@ const ProfilePage: React.FC = () => {
   const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(
     null
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     data: { isLoggedIn },
@@ -68,21 +69,35 @@ const ProfilePage: React.FC = () => {
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
+    setErrorMessage(null); // Rensa eventuellt tidigare felmeddelande
     if (!isEditing && displayMemberInfo) reset(displayMemberInfo);
   };
 
   const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
     try {
-      await getAxios().patch('/user', {
-        ...data,
+      const response = await getAxios().patch('/user', {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        current_password: data.current_password,
         new_password: data.new_password ? data.new_password : undefined,
       });
 
-      await loadMemberInfo();
-      setIsEditing(false);
-      console.log('Data sparat och medlemsinfo uppdaterad');
-    } catch (error) {
-      console.error('Fel vid uppdatering:', error);
+      if (response.status === 200) {
+        await loadMemberInfo();
+        setIsEditing(false);
+        setErrorMessage(null); // Rensa felmeddelande vid framgång
+        console.log('Data sparat och medlemsinfo uppdaterad');
+      }
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setErrorMessage(error.response.data.message); // Visa felmeddelandet från backend
+      } else {
+        console.error('Fel vid uppdatering:', error);
+      }
     }
   };
 
@@ -124,7 +139,7 @@ const ProfilePage: React.FC = () => {
     <Container fluid className="rounded bg-rosa shadow-sm p-5">
       <Row>
         <Col
-          md={4}
+          lg={4}
           className="d-flex flex-column align-items-center justify-content-center mb-3 ms-2"
         >
           <h5 className="profile-page-heading d-flex align-items-center">
@@ -183,6 +198,7 @@ const ProfilePage: React.FC = () => {
                   {...register('current_password', {
                     required:
                       'Ange ditt nuvarande lösenord för att spara ändringar',
+                    onChange: () => setErrorMessage(null),
                   })}
                   placeholder="Nuvarande lösenord"
                   className="form-control mt-3 editable-input"
@@ -190,6 +206,11 @@ const ProfilePage: React.FC = () => {
                 {errors.current_password && (
                   <small className="text-danger">
                     {errors.current_password.message}
+                  </small>
+                )}
+                {errorMessage && (
+                  <small className="text-danger d-block mt-3">
+                    {errorMessage}
                   </small>
                 )}
                 <div className="d-flex flex-column align-items-center mt-3">
@@ -220,7 +241,7 @@ const ProfilePage: React.FC = () => {
           </form>
         </Col>
 
-        <Col md={7} className="d-flex flex-column align-items-center">
+        <Col lg={7} className="d-flex flex-column align-items-center">
           <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
             Aktuella bokningar
           </h5>

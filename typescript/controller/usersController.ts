@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import bcrypt from 'bcryptjs';
 import db from '../config/connectDB.js';
 import { PasswordEncryptor } from '../helpers/passwordEncrypter.js';
 
@@ -161,7 +162,7 @@ const updateUserDetails = async (
   res: Response
 ): Promise<void> => {
   const userId = req.session.user?.id;
-  const { first_name, last_name, new_password } = req.body;
+  const { first_name, last_name, current_password, new_password } = req.body;
 
   if (!userId) {
     res.status(401).json({ message: 'Du är inte inloggad' });
@@ -169,10 +170,37 @@ const updateUserDetails = async (
   }
 
   try {
+    // Hämta det nuvarande hashade lösenordet från databasen
+    const [rows] = (await db.execute(
+      'SELECT user_password FROM user WHERE id = ?',
+      [userId]
+    )) as unknown as [RowDataPacket[]];
+    const user = rows[0];
+
+    if (!user) {
+      res.status(404).json({ message: 'Användaren hittades inte' });
+      return;
+    }
+
+    // Kontrollera om det nuvarande lösenordet stämmer
+    const isPasswordValid = await bcrypt.compare(
+      current_password,
+      user.user_password
+    );
+
+    if (!isPasswordValid) {
+      res
+        .status(400)
+        .json({ message: 'Det nuvarande lösenordet är felaktigt' });
+      return;
+    }
+
+    // Om ett nytt lösenord är tillgängligt, hash det
     const hashedPassword = new_password
-      ? await PasswordEncryptor.encrypt({ new_password }['new_password'])
+      ? await PasswordEncryptor.encrypt(new_password)
       : null;
 
+    // Uppdatera användarinformationen
     await db.execute(
       `UPDATE user SET
         first_name = COALESCE(?, first_name),
@@ -203,7 +231,7 @@ const getBookingHistory = async (
   }
 
   const query = `
-    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.userId = ? AND DATE_FORMAT(vbh.startTime, '%Y-%m-%d') <= CURRENT_DATE
+    SELECT * FROM vy_bokningsHistorik vbh WHERE vbh.userId = ? AND DATE_FORMAT(vbh.startTime, '%Y-%m-%d') < CURRENT_DATE
   `;
 
   try {

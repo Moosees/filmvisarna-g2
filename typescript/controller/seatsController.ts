@@ -50,7 +50,8 @@ const getOreservedSeats = async (req: Request, res: Response) => {
 
 interface AllSeats extends RowDataPacket {
   title: string;
-  startTime: string;
+  date: string;
+  time: string;
   screeningId: number;
   poster: string;
   tickets: {
@@ -72,6 +73,7 @@ const getAllSeats = async (req: Request, res: Response) => {
   try {
     const { screening_id } = req.params;
 
+    await db.execute('SET lc_time_names = "sv_SE"');
     const [results]: [AllSeats[], FieldPacket[]] = await db.execute(
       'SELECT * FROM view_all_seats WHERE screeningId =?',
       [screening_id]
@@ -108,7 +110,8 @@ const getAllSeats = async (req: Request, res: Response) => {
 
     res.status(200).json(responseData);
   } catch (error) {
-    res.status(500).json({ message: 'Något gick fel', error });
+    console.log(error);
+    res.status(500).json({ message: 'Något gick fel' });
   }
 };
 

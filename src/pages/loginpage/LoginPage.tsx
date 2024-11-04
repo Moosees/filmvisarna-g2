@@ -3,6 +3,10 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+
+
+
 
 export interface LoginFormData extends FieldValues {
   email: string;
@@ -11,8 +15,7 @@ export interface LoginFormData extends FieldValues {
 
 const LoginPage: React.FC = () => {
   const submit = useSubmit();
-  const error = useActionData() as string | null; // Type assertion to string | null
-  console.log({ error });
+  const error = useActionData() as string | null;
 
   const {
     register,
@@ -20,8 +23,15 @@ const LoginPage: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormData>();
 
-  const onSubmit: SubmitHandler<LoginFormData> = (values) =>
+  const onSubmit: SubmitHandler<LoginFormData> = (values) => {
     submit(values, { method: 'post', action: '/medlem/logga-in' });
+
+    toast.success('Du är nu inloggad', {
+      closeOnClick: true,
+      autoClose: 3000,
+      hideProgressBar: true,
+    });
+  };
 
   return (
     <Container className="d-flex justify-content-center">
@@ -70,7 +80,7 @@ const LoginPage: React.FC = () => {
 
           {error && (
             <Alert variant="danger" className="mt-3">
-              {error} {/* Ensure error is a string */}
+              {error}
             </Alert>
           )}
         </Col>
