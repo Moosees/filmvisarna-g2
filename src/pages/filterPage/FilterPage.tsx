@@ -27,6 +27,7 @@ export default function FilterPage() {
     getFilterQuery(filters)
   );
   registerLocale('sv', sv);
+
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setSearchParams((params) => {
@@ -57,6 +58,7 @@ export default function FilterPage() {
               type="text"
               name="titel"
               placeholder="Sök"
+              value={searchParams.get('titel') || ''}
               className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2 "
             />
           </Col>
@@ -90,6 +92,7 @@ export default function FilterPage() {
             <Form.Select
               className="bg-light text-dark my-1 my-lg-2 placeholder-gray"
               name="alder"
+              value={searchParams.get('alder') || ''}
             >
               <option value="">Ålder</option>
               <option value="7">7+</option>
