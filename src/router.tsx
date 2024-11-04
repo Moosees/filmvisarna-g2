@@ -15,6 +15,7 @@ import { rootLoader } from './api/root';
 import FilterPage from './pages/filterPage/FilterPage';
 import { filterLoader } from './api/filter';
 import ProfilePage from './pages/profilepage/ProfilePage';
+import CancelReservationPage from './pages/cancelReservation/CancelReservation';
 import { TodaysMoviesLoader } from './api/home';
 
 const router = createBrowserRouter([
@@ -82,6 +83,13 @@ const router = createBrowserRouter([
           title: 'Bekräftelse',
         },
         loader: bookingLoader(getQueryClient()),
+      },
+      {
+        path: '/avbokning/:reservationNum',
+        element: <CancelReservationPage />,
+        handle: {
+          title: 'Avboka platser',
+        },
       },
     ],
   },
