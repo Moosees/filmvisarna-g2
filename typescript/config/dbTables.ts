@@ -94,6 +94,7 @@ const screening = `
   CREATE TABLE IF NOT EXISTS screening (
     id int unsigned AUTO_INCREMENT PRIMARY KEY,
     start_time datetime NOT NULL,
+    url_param varchar(50) NOT NULL UNIQUE,
     movie_id int unsigned,
     auditorium_id int unsigned,
     FOREIGN KEY (movie_id) REFERENCES movie (id),
