@@ -3,6 +3,7 @@ const movie = `
     id int unsigned AUTO_INCREMENT PRIMARY KEY,
     url_param varchar(50) NOT NULL UNIQUE,
     title varchar(100) NOT NULL,
+    alternate_title varchar(100) NOT NULL,
     play_time smallint unsigned NOT NULL,
     age smallint unsigned NOT NULL,
     poster_url varchar(255) NOT NULL,
@@ -15,11 +16,12 @@ const movie = `
                 "description": "Various misc info about a movie",
                 "type": "object",
                 "properties": {
-                    "original_title": {"type": "string"},
                     "year_recorded": {"type": "integer"},
                     "director": {"type": "string"},
                     "actors": {"type": "array", "items": {"type": "string"}},
                     "description": {"type": "string"},
+                    "language": {"type": "string"},
+                    "subtitles": {"type": "string"},
                     "trailer": {"type": "string", "description": "A URL to play the movie trailer"},
                 }
             }',
