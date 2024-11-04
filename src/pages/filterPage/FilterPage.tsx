@@ -23,9 +23,7 @@ export default function FilterPage() {
     ReturnType<ReturnType<typeof filterLoader>>
   >;
 
-  const { data, isLoading, isError } = useSuspenseQuery(
-    getFilterQuery(filters)
-  );
+  const { data, isLoading } = useSuspenseQuery(getFilterQuery(filters));
   registerLocale('sv', sv);
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
@@ -39,10 +37,6 @@ export default function FilterPage() {
 
   if (isLoading) {
     return <Spinner animation="border" />;
-  }
-
-  if (isError) {
-    return <p>Something went wrong while fetching movies.</p>;
   }
 
   return (
