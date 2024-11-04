@@ -1,4 +1,5 @@
 import mysql, { PoolOptions } from 'mysql2/promise';
+import { allData } from './dbData.js';
 import { allTables } from './dbTables.js';
 import { allViews } from './dbViews.js';
 
@@ -17,6 +18,7 @@ const db = mysql.createPool(dbOptions);
 
 const setup = {
   createTables: false,
+  createData: false,
   createViews: false,
 };
 
@@ -25,8 +27,15 @@ db.getConnection()
   .then((con) => {
     if (setup.createTables) {
       console.log('Creating tables...');
-      allTables.forEach(async (view) => {
-        await con.query(view);
+      allTables.forEach(async (table) => {
+        await con.query(table);
+      });
+    }
+
+    if (setup.createData) {
+      console.log('Creating data...');
+      allData.forEach(async (data) => {
+        await con.query(data);
       });
     }
 
