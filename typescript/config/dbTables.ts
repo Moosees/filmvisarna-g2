@@ -67,7 +67,8 @@ const eventMovie = `
 const ticket = `
   CREATE TABLE IF NOT EXISTS ticket (
     id int unsigned AUTO_INCREMENT PRIMARY KEY,
-    ticket_name varchar(30) NOT NULL,
+    name_one varchar(30) NOT NULL,
+    name_many varchar(30) NOT NULL,
     price smallint unsigned NOT NULL
   );
 `;

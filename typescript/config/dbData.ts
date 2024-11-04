@@ -11,10 +11,10 @@ const genres = `
 `;
 
 const tickets = `
-  INSERT INTO ticket (ticket_name, price) VALUES
-  ('Vuxen', 140),
-  ('Barn', 80),
-  ('Senior', 120);
+  INSERT INTO ticket (name_one, name_many, price) VALUES
+  ('vuxen', 'vuxna', 140),
+  ('barn', 'barn', 80),
+  ('senior', 'senierer', 120);
 `;
 
 const auditoriums = `
