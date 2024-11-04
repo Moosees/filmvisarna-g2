@@ -28,16 +28,41 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
     return;
   }
 
-  const hashedPassword = await PasswordEncryptor.encrypt(
-    { user_password }['user_password']
-  );
-
-  const query = `
-    INSERT INTO user (user_email, user_password, first_name, last_name, role)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-
   try {
+    const [existingUser] = (await db.execute(
+      'SELECT * FROM user WHERE user_email = ?',
+      [user_email]
+    )) as unknown as [any[]];
+
+    if (existingUser.length > 0) {
+      if (existingUser[0].role === 'visitor') {
+        const hashedPassword = await PasswordEncryptor.encrypt(user_password);
+
+        await db.execute(
+          'UPDATE user SET user_password = ?, role = "member", first_name = ?, last_name = ? WHERE user_email = ?',
+          [hashedPassword, first_name, last_name, user_email]
+        );
+
+        res.status(200).json({
+          message: 'Användaren har uppgraderats till medlem',
+          memberId: existingUser[0].id,
+        });
+        return;
+      } else {
+        res
+          .status(409)
+          .json({ message: 'E-postadressen är redan registrerad som medlem' });
+        return;
+      }
+    }
+
+    const hashedPassword = await PasswordEncryptor.encrypt(user_password);
+
+    const query = `
+      INSERT INTO user (user_email, user_password, first_name, last_name, role)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
     const [result] = (await db.execute(query, [
       user_email,
       hashedPassword,
@@ -52,17 +77,11 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      if (error.message.includes('Duplicate entry')) {
-        res
-          .status(409)
-          .json({ message: 'E-postadressen är redan registrerad' });
-      } else {
-        console.error('Fel vid registrering:', error.message);
-        res.status(500).json({
-          message: 'Serverfel vid registrering',
-          error: error.message,
-        });
-      }
+      console.error('Fel vid registrering:', error.message);
+      res.status(500).json({
+        message: 'Serverfel vid registrering',
+        error: error.message,
+      });
     } else {
       console.error('Ett okänt fel inträffade vid registrering');
       res.status(500).json({ message: 'Ett okänt fel inträffade' });
