@@ -290,7 +290,7 @@ INNER JOIN
 
     if (title) {
       query += ` AND m.title LIKE ?`;
-      params.push(`${title}%`);
+      params.push(`%${title}%`);
     }
 
     query += ` ORDER BY s.start_time ASC; `;
