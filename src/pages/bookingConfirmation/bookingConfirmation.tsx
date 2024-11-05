@@ -24,7 +24,7 @@ function BookingConfirmation() {
   return (
     <>
       <Container className="booking-confirmation">
-        <Row className="d-flex flex-column flex-md-row booking-row align-items-start">
+        <Row className="d-flex flex-column flex-md-row booking-row align-items-center">
           <Col
             md={6}
             className="order-md-1 mb-4 mb-md-0 d-flex justify-content-center"
