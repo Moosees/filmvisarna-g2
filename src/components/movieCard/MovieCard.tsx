@@ -70,8 +70,11 @@ function MovieCard({
     const [hours, minutes] = start.split(':').map(Number);
     const showtime = new Date();
     showtime.setHours(hours, minutes, 0);
-    console.log(showtime);
-    return new Date() > showtime;
+    // Create a new date for 15 minutes before the showtime
+    const showtimeMinus15 = new Date(showtime);
+    showtimeMinus15.setMinutes(showtime.getMinutes() - 15);
+    console.log(showtimeMinus15);
+    return new Date() > showtimeMinus15;
   };
 
   const showButtonDisabled = isShowtime();

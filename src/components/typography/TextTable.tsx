@@ -36,7 +36,7 @@ export default function TextTable({ movieData }: TextTableProps) {
             {movieDetails.map((detail, index) => (
               <ListGroup.Item
                 key={index}
-                className="text-dark p-1 px-0 bg-rosa d-flex align-items-center justify-content-between flex-wrap"
+                className="text-dark bg-rosa p-1 px-0 d-flex align-items-center justify-content-between flex-wrap border border-0"
               >
                 <strong>{detail.label}:</strong> <span>{detail.value}</span>
               </ListGroup.Item>
