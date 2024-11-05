@@ -246,7 +246,7 @@ FROM
 INNER JOIN
     movie m ON s.movie_id = m.id
     WHERE
-      CAST(s.start_time AS DATE) >= CURRENT_DATE()
+      s.start_time > DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 15 MINUTE)
     `;
 
     //     let query = `
