@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getBookingDataQuery } from '../../api/booking';
@@ -21,6 +21,17 @@ function BookingConfirmation() {
     return `Rad: ${firstSeat.row}, Plats: ${lastSeat.number}-${firstSeat.number}`;
   }
 
+  const confirmationDetails = [
+    { label: 'Bokning-nr', value: `${data.reservationNumber}` },
+    { label: 'Salong', value: data.auditoriumName },
+    { label: 'Plats', value: formatSeats(data.seats) },
+    { label: 'Film', value: data.title },
+    { label: 'Datum', value: data.startDate },
+    { label: 'Tid', value: data.timeRange },
+    { label: 'Antal personer', value: data.ticketDetails },
+    { label: 'Totalt pris', value: data.totalPrice },
+  ];
+
   return (
     <>
       <Container className="bg-rosa rounded py-3" style={{ maxWidth: '900px' }}>
@@ -33,53 +44,23 @@ function BookingConfirmation() {
             />
           </Col>
           <Col md={6}>
-            {data ? (
-              <ul className="list-group">
-                <li className="list-group-item ">
-                  <strong>Bokings-nr:</strong>
-                  <span>{data.reservationNumber}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Salong:</strong>
-                  <span>{data.auditoriumName}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Plats:</strong>
-                  <span>{formatSeats(data.seats)}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Film:</strong>
-                  <span>{data.title}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Datum:</strong>
-                  <span>{data.startDate}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Tid:</strong>
-                  <span>{data.timeRange}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Antal personer:</strong>
-                  <span>{data.ticketDetails}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Totalt pris:</strong>
-                  <span>{data.totalPrice}</span>
-                </li>
+            <ListGroup>
+              {confirmationDetails.map((details, index) => (
+                <ListGroup.Item key={index}>
+                  <strong>{details.label}</strong>
+                  <span>{details.value}</span>
+                </ListGroup.Item>
+              ))}
 
-                <Col className="mx-auto">
-                  <PrimaryBtn>
-                    <Link to="/">Stäng</Link>
-                  </PrimaryBtn>
-                  <PrimaryBtn>
-                    <Link to="avboka">Avboka</Link>
-                  </PrimaryBtn>
-                </Col>
-              </ul>
-            ) : (
-              <p>Laddar bokningsinformation...</p>
-            )}
+              <Col className="mx-auto">
+                <PrimaryBtn>
+                  <Link to="/">Stäng</Link>
+                </PrimaryBtn>
+                <PrimaryBtn>
+                  <Link to="avboka">Avboka</Link>
+                </PrimaryBtn>
+              </Col>
+            </ListGroup>
           </Col>
         </Row>
       </Container>
