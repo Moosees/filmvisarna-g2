@@ -24,18 +24,15 @@ function BookingConfirmation() {
   return (
     <>
       <Container className="booking-confirmation">
-        <Row className="d-flex flex-column flex-md-row booking-row align-items-center">
-          <Col
-            md={6}
-            className="order-md-1 mb-4 mb-md-0 d-flex justify-content-center"
-          >
+        <Row className="flex-column flex-md-row align-items-center">
+          <Col md={6}>
             <img
               src={data.posterUrl}
-              alt="Gladiator-movie"
-              className="img-fluid booking-image"
+              alt={data.title}
+              className="img-fluid p-3"
             />
           </Col>
-          <Col md={6} className="order-md-2">
+          <Col md={6}>
             {data ? (
               <ul className="list-group">
                 <li className="list-group-item ">
@@ -70,16 +67,15 @@ function BookingConfirmation() {
                   <strong>Totalt pris:</strong>
                   <span>{data.totalPrice}</span>
                 </li>
-                <Row className="booking-row mt-4">
-                  <Col className="booking-buttons col-auto d-flex">
-                    <PrimaryBtn>
-                      <Link to="/">Stäng</Link>
-                    </PrimaryBtn>
-                    <PrimaryBtn>
-                      <Link to="avboka">Avboka</Link>
-                    </PrimaryBtn>
-                  </Col>
-                </Row>
+
+                <Col className="mx-auto">
+                  <PrimaryBtn>
+                    <Link to="/">Stäng</Link>
+                  </PrimaryBtn>
+                  <PrimaryBtn>
+                    <Link to="avboka">Avboka</Link>
+                  </PrimaryBtn>
+                </Col>
               </ul>
             ) : (
               <p>Laddar bokningsinformation...</p>
