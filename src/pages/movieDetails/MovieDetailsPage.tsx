@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLoaderData } from 'react-router-dom';
 import { getMovieDataQuery } from '../../api/details';
-import NavButton from '../../components/buttons/NavButton';
 import MainHeading from '../../components/mainHeading/MainHeading';
 import MovieTrailer from '../../components/poster/MovieTrailer';
 import MoviePoster from '../../components/poster/MoviePoster';
@@ -16,7 +15,7 @@ function MovieDetailsPage() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
   const [selectedScreening, setSelectedScreening] = useState<number>(
-    movieData.screeningDetails[0]?.screeningId
+    movieData.screeningDetails?.[0]?.screeningId
   );
   const [openTrailer, setOpenTrailer] = useState(false);
 
@@ -59,14 +58,6 @@ function MovieDetailsPage() {
                   movieData={movieData}
                 />
               </Col>
-
-              {/* Book Tickets Button */}
-              <Col className="text-center mt-4">
-                <NavButton
-                  label="Boka Biljetter"
-                  to={`/visning/${selectedScreening}`}
-                />
-              </Col>
             </Row>
           </div>
 
@@ -82,14 +73,6 @@ function MovieDetailsPage() {
                   selectedScreening={selectedScreening}
                   setSelectedScreening={setSelectedScreening}
                   movieData={movieData}
-                />
-              </Col>
-
-              {/* Book Tickets Button */}
-              <Col className="text-center mt-2">
-                <NavButton
-                  label="Boka Biljetter"
-                  to={`/visning/${selectedScreening}`}
                 />
               </Col>
             </div>
