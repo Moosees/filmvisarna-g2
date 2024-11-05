@@ -22,7 +22,7 @@ function BookingConfirmation() {
   }
 
   const confirmationDetails = [
-    { label: 'Bokning-nr', value: `${data.reservationNumber}` },
+    { label: 'Bokning-nr', value: data.reservationNumber },
     { label: 'Salong', value: data.auditoriumName },
     { label: 'Plats', value: formatSeats(data.seats) },
     { label: 'Film', value: data.title },
@@ -46,13 +46,16 @@ function BookingConfirmation() {
           <Col md={6}>
             <ListGroup>
               {confirmationDetails.map((details, index) => (
-                <ListGroup.Item key={index}>
+                <ListGroup.Item
+                  key={index}
+                  className="bg-rosa border border-0 text-dark d-flex aline-items-center justify-content-between"
+                >
                   <strong>{details.label}</strong>
                   <span>{details.value}</span>
                 </ListGroup.Item>
               ))}
 
-              <Col className="mx-auto">
+              <Col className="d-flex aline-items-center justify-content-evenly my-2 ">
                 <PrimaryBtn>
                   <Link to="/">Stäng</Link>
                 </PrimaryBtn>
