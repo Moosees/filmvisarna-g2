@@ -93,6 +93,7 @@ const getTodaysMovie = async (req: Request, res: Response) => {
       m.title,
       m.poster_url as posterUrl,
       m.age,
+      s.start_time as fullDate,
       s.id AS screeningId,
       concat(date_format(s.start_time, '%H:%i'), '-', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS startTime,
       JSON_OBJECT(

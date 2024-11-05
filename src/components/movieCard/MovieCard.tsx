@@ -19,6 +19,7 @@ interface MovieCardProps {
   day?: string;
   screeningDate?: string;
   isStatic?: boolean;
+  fullDate?: string;
 }
 
 function MovieCard({
@@ -38,6 +39,7 @@ function MovieCard({
   day,
   screeningDate,
   isStatic = false,
+  fullDate,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
@@ -64,17 +66,17 @@ function MovieCard({
 
   // Function to check if the showtime has started
   const isShowtime = () => {
-    // Extract the start time from the format "HH:MM-HH:MM"
-    const [start] = startTime.split('-');
-    // Split hours and minutes and convert to numbers
-    const [hours, minutes] = start.split(':').map(Number);
-    const showtime = new Date();
-    showtime.setHours(hours, minutes, 0);
+    if (!fullDate) {
+      return false;
+    }
+    const screeningDateTime = new Date(fullDate);
+
     // Create a new date for 15 minutes before the showtime
-    const showtimeMinus15 = new Date(showtime);
-    showtimeMinus15.setMinutes(showtime.getMinutes() - 15);
-    console.log(showtimeMinus15);
-    return new Date() > showtimeMinus15;
+    const showtimeMinus15 = new Date(screeningDateTime);
+    showtimeMinus15.setMinutes(screeningDateTime.getMinutes() - 15);
+
+    const now = new Date();
+    return now > showtimeMinus15;
   };
 
   const showButtonDisabled = isShowtime();
