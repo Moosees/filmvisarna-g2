@@ -2,21 +2,23 @@ import { createBrowserRouter } from 'react-router-dom';
 import { bookingLoader } from './api/booking';
 import { getQueryClient } from './api/clients';
 import { detailsLoader } from './api/details';
+import { filterLoader } from './api/filter';
+import { TodaysMoviesLoader } from './api/home';
 import { loginAction } from './api/login';
 import { reserveAction, reserveLoader } from './api/reserve';
+import { rootLoader } from './api/root';
 import App from './App';
+import AdminMovieEdit from './pages/admin/adminMovieEdit';
+import AdminMovieNew from './pages/admin/adminMovieNew';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
+import CancelReservationPage from './pages/cancelReservation/CancelReservation';
+import FilterPage from './pages/filterPage/FilterPage';
 import HomePage from './pages/homepage/HomePage';
 import LoginPage from './pages/loginpage/LoginPage';
 import MovieDetailsPage from './pages/movieDetails/MovieDetailsPage';
+import ProfilePage from './pages/profilepage/ProfilePage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
-import { rootLoader } from './api/root';
-import FilterPage from './pages/filterPage/FilterPage';
-import { filterLoader } from './api/filter';
-import ProfilePage from './pages/profilepage/ProfilePage';
-import CancelReservationPage from './pages/cancelReservation/CancelReservation';
-import { TodaysMoviesLoader } from './api/home';
 
 const router = createBrowserRouter([
   {
@@ -90,6 +92,20 @@ const router = createBrowserRouter([
         handle: {
           title: 'Avboka platser',
         },
+      },
+      {
+        path: '/admin',
+        children: [
+          {
+            path: 'film',
+            element: <AdminMovieNew />,
+          },
+          {
+            path: 'film/:id',
+            element: <AdminMovieEdit />,
+            loader: detailsLoader(getQueryClient()),
+          },
+        ],
       },
     ],
   },
