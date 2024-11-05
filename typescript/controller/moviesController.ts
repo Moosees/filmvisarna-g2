@@ -104,7 +104,9 @@ const getTodaysMovie = async (req: Request, res: Response) => {
         ) as dateFormat
       FROM screening s
       INNER JOIN movie m ON s.movie_id = m.id
-      WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()`
+      WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()
+       ORDER BY s.start_time ASC;
+      `
     );
 
     // Check if the movie was found
