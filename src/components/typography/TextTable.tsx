@@ -16,7 +16,7 @@ interface TextTableProps {
 export default function TextTable({ movieData }: TextTableProps) {
   const movieDetails = [
     { label: 'Speltid', value: `${movieData.playTime} Minuter` },
-    { label: 'Genre', value: movieData.genres.join(', ') },
+    { label: 'Genre', value: movieData.genres?.join(', ') || 'okänd' },
     { label: 'Regi', value: movieData.movieInfo?.director || 'okänd' },
     {
       label: 'Skådespelare',

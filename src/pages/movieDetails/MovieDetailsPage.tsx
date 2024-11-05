@@ -29,7 +29,7 @@ function MovieDetailsPage() {
           className=" p-3 d-flex flex-column flex-md-row justify-content-evenly"
         >
           {/* Row for Poster and Video */}
-          <div className="d-flex flex-column col-md-6 col-lg-5">
+          <div className="flex-column col-md-6 col-lg-5">
             <Row>
               {/* Poster Section */}
               <Col className="text-center">
@@ -50,7 +50,7 @@ function MovieDetailsPage() {
                 )}
               </Col>
             </Row>
-            <Row className=" my-3 d-flex flex-column align-items-center d-none d-md-block">
+            <Row className=" my-3  flex-column align-items-center d-none d-md-block">
               {/* Date Buttons */}
               <Col>
                 <ScreeningSelect
@@ -71,7 +71,7 @@ function MovieDetailsPage() {
           </div>
 
           {/* Movie Details and  Movie Description  */}
-          <Row className=" py-3 d-flex flex-column g-3 col-md-5 ">
+          <Row className=" py-3 flex-column g-3 col-md-5 ">
             {/* Movie Description */}
             <TextBox movieData={movieData} />
 
