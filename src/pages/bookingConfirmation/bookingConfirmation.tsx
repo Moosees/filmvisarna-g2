@@ -23,7 +23,7 @@ function BookingConfirmation() {
 
   return (
     <>
-      <Container className="booking-confirmation">
+      <Container className="bg-rosa rounded py-3" style={{ maxWidth: '900px' }}>
         <Row className="flex-column flex-md-row align-items-center">
           <Col md={6}>
             <img
