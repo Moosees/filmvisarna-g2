@@ -17,6 +17,7 @@ import { filterLoader } from './api/filter';
 import ProfilePage from './pages/profilepage/ProfilePage';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
 import { TodaysMoviesLoader } from './api/home';
+import Snacks from './pages/snacks/snacks';
 
 const router = createBrowserRouter([
   {
@@ -89,6 +90,13 @@ const router = createBrowserRouter([
         element: <CancelReservationPage />,
         handle: {
           title: 'Avboka platser',
+        },
+      },
+      {
+        path: '/godis',
+        element: <Snacks />,
+        handle: {
+          title: 'Godis',
         },
       },
     ],
