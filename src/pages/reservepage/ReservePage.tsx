@@ -15,28 +15,62 @@ import TicketSelector from '../../components/hall/TicketSelector';
 import { toast } from 'react-toastify';
 
 function ReservePage() {
-  const [ticketIds, setTicketIds] = useState<number[]>([]);
-  const [seatIds, setSeatIds] = useState<number[]>([]);
   const [email, setEmail] = useState('');
+  const [seatIds, setSeatIds] = useState<number[]>([]);
+  const [ticketIds, setTicketIds] = useState<number[]>([]);
   const submit = useSubmit();
-
-  const {
-    data: { isLoggedIn },
-  } = useSuspenseQuery(getRootDataQuery());
 
   const { screeningId } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof reserveLoader>>
   >;
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
+  const {
+    data: { isLoggedIn },
+  } = useSuspenseQuery(getRootDataQuery());
 
   const error = useActionData() as unknown as string | Response;
   useEffect(() => {
     if (typeof error === 'string') toast.warning(error);
   }, [error]);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
+    // 1. Submit reservation details to create the booking
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
+
+    // 2. Trigger confirmation email with booking details
+    await sendConfirmationEmail(email);
+  };
+
+  const sendConfirmationEmail = async (recipientEmail: string) => {
+    const emailDetails = {
+      to: recipientEmail,
+      subject: 'Tack för din bokning hos Filmvisarna!',
+      text: 'Tack för din bokning hos Filmvisarna! Vi ser fram emot att välkomna dig.',
+      html: `
+        <div style="font-family: Arial; line-height: 1.6;">
+          <h1>Filmvisarna</h1>
+          <h2>Tack för din bokning!</h2>
+          <p>Vi är glada att bekräfta din bokning. Här är en sammanfattning:</p>
+          <!-- Add booking summary here -->
+        </div>
+      `,
+    };
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailDetails),
+      });
+
+      if (response.ok) toast.success('Bekräftelse skickad!');
+      else toast.error('Fel vid e-postskick.');
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+      toast.error('E-postfel');
+    }
   };
 
   return (
@@ -67,9 +101,6 @@ function ReservePage() {
                   required
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                {/* <PrimaryBtn className="align-self-center"> */}
-                {/*   <Link to="/medlem/bli-medlem">Bli medlem</Link> */}
-                {/* </PrimaryBtn> */}
               </Col>
             </Row>
           )}
