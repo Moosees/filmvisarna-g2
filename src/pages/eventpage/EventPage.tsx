@@ -1,15 +1,20 @@
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import BloodImage from '../../assets/images/blood.svg';
 
 const EventPage: React.FC = () => {
   return (
-    <Container>
-      <Row>
-        <Col>
-          <h2>Astrid Lindgren</h2>
+    <Container className="d-flex flex-column align-items-center justify-content-center">
+      <Row className="w-100">
+        <Col
+          xs={12}
+          className="rounded background-image-col d-flex flex-column align-items-center justify-content-center mt-3 p-3"
+        >
+          <h2 className="text-white">Astrid Lindgren</h2>
         </Col>
-        <Col>
-          <h4>Astrid Lindgrens Matinéhelg i November</h4>
-          <p>
+        <Col xs={12} className="rounded bg-rosa mt-3 p-3">
+          <h4 className="text-black">Astrid Lindgrens Matinéhelg i November</h4>
+          <p className="text-black">
             Filmer som visas lördag 16 november: <br /> 1. Alla barnen i
             Bullerbyn <br /> Tid: kl. 13:00 (stora salongen) <br /> 2. Mio min
             Mio <br /> Tid: kl. 15:30 (stora salongen) <br /> söndag 17
@@ -18,27 +23,30 @@ const EventPage: React.FC = () => {
             bokar biljetter till alla tre filmer får 50 % rabatt på popcorn vid
             varje visning. <br /> Familjerabatt: Specialerbjudande för familjer
             som bokar fler än fyra biljetter. <br /> Bokningsinformation:
-            Biljetter kan bokas via hemsidan eller i biljettkassan. <br />{' '}
+            Biljetter kan bokas via hemsidan eller i biljettkassan. <br />
             Popcornrabatten gäller för de som bokar alla tre filmer. <br />
             <br /> En underbar matinéhelg med några av Astrid Lindgrens mest
             älskade berättelser!
           </p>
         </Col>
-        <Col>
-          <h2>Halloween</h2>
+
+        <Col xs={12} className="rounded blood-image-wrapper mt-3">
+          <img src={BloodImage} alt="Blood decoration" className="blood-svg" />
+          <h2 className="text-center mt-3 text-black">Halloween</h2>
         </Col>
-        <Col>
-          <h4>
+
+        <Col xs={12} className="rounded bg-rosa mt-3 p-3">
+          <h4 className="text-black">
             Fira Halloween med några av 80-talets mest ikoniska skräckfilmer
             genom tiderna!
           </h4>
-          <p>
+          <p className="text-black">
             Filmer som visas tisdag 31 oktober: <br /> 1. Nightmare on Elm
-            Street <br /> Tid: kl. 18:00 (stora salongen) <br /> 2. The Shining{' '}
+            Street <br /> Tid: kl. 18:00 (stora salongen) <br /> 2. The Shining
             <br />
             Tid: kl. 20:30 (stora salongen) <br /> 3. Friday the 13th <br />
             Tid: kl. 18:00 (lilla salongen) <br /> 4. Poltergeist <br /> Tid:
-            kl. 20:30(lilla salongen) <br />
+            kl. 20:30 (lilla salongen) <br />
             <br /> Kom utklädd och vi bjuder på en liten popcorn!
             Bokningsinformation: Biljetter kan bokas via hemsidan eller i
             biljettkassan.
