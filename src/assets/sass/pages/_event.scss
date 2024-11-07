@@ -3,8 +3,8 @@
   background-size: cover; /* Gör så att bilden täcker hela området */
   background-position: center; /* Centrera bilden */
   color: white; /* Vit text för bättre läsbarhet */
-  padding: 20px; /* Justera efter behov */
-  min-height: 200px; /* Justera för att ge höjd om kolumnen är tom */
+  padding: 20px;
+  min-height: 200px;
 }
 
 .blood-image-wrapper {
@@ -14,9 +14,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 300px;
+  padding: 0;
 }
 
 .blood-svg {
-  width: 100%; /* Justerar bredden på SVG-bilden */
-  height: auto; /* Bevarar proportionerna */
+  width: 100%;
+  height: auto;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  border-radius: 8px;
 }

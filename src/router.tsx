@@ -93,7 +93,7 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: '/event/',
+        path: '/evenemang',
         element: <EventPage />,
         handle: {
           title: 'Evenemang',

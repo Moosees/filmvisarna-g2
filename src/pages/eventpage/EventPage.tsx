@@ -1,17 +1,13 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import BloodImage from '../../assets/images/blood.svg';
+import HalloweenSection from '../../components/eventcomponents/HalloweenSection';
+import AstridLindgrenSection from '../../components/eventcomponents/AstridLindgrenSection';
 
 const EventPage: React.FC = () => {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
       <Row className="w-100">
-        <Col
-          xs={12}
-          className="rounded background-image-col d-flex flex-column align-items-center justify-content-center mt-3 p-3"
-        >
-          <h2 className="text-white">Astrid Lindgren</h2>
-        </Col>
+        <AstridLindgrenSection />
         <Col xs={12} className="rounded bg-rosa mt-3 p-3">
           <h4 className="text-black">Astrid Lindgrens Matinéhelg i November</h4>
           <p className="text-black">
@@ -30,10 +26,7 @@ const EventPage: React.FC = () => {
           </p>
         </Col>
 
-        <Col xs={12} className="rounded blood-image-wrapper mt-3">
-          <img src={BloodImage} alt="Blood decoration" className="blood-svg" />
-          <h2 className="text-center mt-3 text-black">Halloween</h2>
-        </Col>
+        <HalloweenSection />
 
         <Col xs={12} className="rounded bg-rosa mt-3 p-3">
           <h4 className="text-black">

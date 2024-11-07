@@ -28,7 +28,7 @@ function Header() {
         </Link>
         <NavButton to="/filmer" label="Kalender" />
         <NavButton to="/filmer?alder=7" label="Upptäck" />
-        {/* <NavButton to="/evenemang" label="Evenemang" /> */}
+        <NavButton to="/evenemang" label="Evenemang" />
         <Dropdown>
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
             <img src={User} alt="Medlem meny" className="img-fluid" />
