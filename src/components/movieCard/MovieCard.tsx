@@ -19,6 +19,7 @@ interface MovieCardProps {
   day?: string;
   screeningDate?: string;
   isStatic?: boolean;
+  fullDate?: string;
 }
 
 function MovieCard({
@@ -38,6 +39,7 @@ function MovieCard({
   day,
   screeningDate,
   isStatic = false,
+  fullDate,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
@@ -62,6 +64,23 @@ function MovieCard({
     if (reservationNum) navigate(`/bokning/${reservationNum}`);
   };
 
+  // Function to check if the showtime has started
+  const isShowtime = () => {
+    if (!fullDate) {
+      return false;
+    }
+    const screeningDateTime = new Date(fullDate);
+
+    // Create a new date for 15 minutes before the showtime
+    const showtimeMinus15 = new Date(screeningDateTime);
+    showtimeMinus15.setMinutes(screeningDateTime.getMinutes() - 15);
+
+    const now = new Date();
+    return now > showtimeMinus15;
+  };
+
+  const bookButtonDisabled = isShowtime();
+
   return (
     <Card
       className={`text-center text-white border border-warning shadow movie-card py-2 ${className} ${
@@ -73,7 +92,8 @@ function MovieCard({
         <Card.Img
           variant="top"
           src={posterUrl}
-          className="img-fluid p-2 card-img"
+          alt={title}
+          className="p-2 card-img"
         />
         {!hideAge && (
           <div
@@ -111,7 +131,12 @@ function MovieCard({
           </a>
         ) : (
           showButton && (
-            <PrimaryBtn onClick={handleButtonClick}>Boka</PrimaryBtn>
+            <PrimaryBtn
+              disabled={bookButtonDisabled}
+              onClick={handleButtonClick}
+            >
+              Boka
+            </PrimaryBtn>
           )
         )}
       </Card.Body>
