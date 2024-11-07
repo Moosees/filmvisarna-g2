@@ -79,7 +79,7 @@ function MovieCard({
     return now > showtimeMinus15;
   };
 
-  const showButtonDisabled = isShowtime();
+  const bookButtonDisabled = isShowtime();
 
   return (
     <Card
@@ -132,7 +132,7 @@ function MovieCard({
         ) : (
           showButton && (
             <PrimaryBtn
-              disabled={showButtonDisabled}
+              disabled={bookButtonDisabled}
               onClick={handleButtonClick}
             >
               Boka
