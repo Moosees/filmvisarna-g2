@@ -101,7 +101,7 @@ router.get('/ping', usersController.ping);
 
 router.post('/send-email', (req, res) => {
   const { to, subject, text, html, attachments } = req.body;
-
+  console.log(req.body);
   console.log('Sending email with details:', {
     to,
     subject,

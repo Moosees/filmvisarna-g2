@@ -1,9 +1,28 @@
 import React from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getBookingDataQuery } from '../api/booking';
+import { useLoaderData } from 'react-router-dom';
+import { Seat } from '../api/booking';
 
 const SendEmailButton: React.FC = () => {
+  const { bookingNumber } = useLoaderData() as { bookingNumber: string };
+
+  const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
+
+  function formatSeats(seats: Seat[]): string {
+    const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
+    // One seat
+    if (seats.length === 1) {
+      return `Rad: ${firstSeat.row}, Plats: ${firstSeat.number}`;
+    }
+    // More than one seat
+    return `Rad: ${firstSeat.row}, Plats: ${lastSeat.number}-${firstSeat.number}`;
+  }
+
   const handleSendEmail = async () => {
+    // emily.saletti@gmail.com
     const emailDetails = {
-      to: 'emily.saletti@gmail.com', // Test recipient
+      to: 'johan1hakansson@gmail.com', // Test recipient
       subject: 'Tack för din bokning hos Filmvisarna!',
       text: 'Tack för din bokning hos Filmvisarna! Vi ser fram emot att välkomna dig.', // Plain text for email clients that don’t support HTML
       html: `
@@ -16,9 +35,15 @@ const SendEmailButton: React.FC = () => {
             <p style="color: #3e1e3d;">Hej!</p>
             <p style="color: #3e1e3d;">Vi är glada att bekräfta din bokning. Här är en sammanfattning:</p>
             <ul style="background-color: #ff94e0; padding: 15px; border-radius: 8px; color: #3e1e3d;">
-              <li><strong>Film:</strong> Filmens namn här</li>
-              <li><strong>Datum:</strong> Datum och tid här</li>
-              <li><strong>Plats:</strong> Platsens namn här</li>
+              <li><strong>Boknings-nr:</strong> ${data.reservationNumber}</li>
+              <li><strong>Salong:</strong> ${data.auditoriumName}</li>
+              <li><strong>Plats:</strong> ${formatSeats(data.seats)}</li>
+              <li><strong>Film:</strong> ${data.title}</li>
+              <li><strong>Datum:</strong> ${data.startDate}</li>
+              <li><strong>Tid:</strong> ${data.timeRange}</li>
+              <li><strong>Antal personer:</strong> ${data.ticketDetails}</li>
+              <li><strong>Totalt pris:</strong> ${data.totalPrice}</li>
+
             </ul>
             <p style="margin-top: 20px; color: #3e1e3d;">Vi ser fram emot att välkomna dig! Om du har några frågor, tveka inte att kontakta oss.</p>
             <p style="color: #3e1e3d;">Med vänliga hälsningar,<br />Filmvisarna</p>
