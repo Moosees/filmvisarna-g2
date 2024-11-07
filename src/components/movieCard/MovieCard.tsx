@@ -93,7 +93,7 @@ function MovieCard({
           variant="top"
           src={posterUrl}
           alt={title}
-          className="img-fluid p-2 card-img"
+          className="p-2 card-img"
         />
         {!hideAge && (
           <div
