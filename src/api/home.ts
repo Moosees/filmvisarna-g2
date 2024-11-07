@@ -14,6 +14,7 @@ interface TodaysMoviesData {
   startTime: string;
   screeningId: number;
   dateFormat: DateFormat;
+  fullDate: string;
 }
 
 //-------------todays-movies---------------

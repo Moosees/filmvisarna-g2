@@ -20,6 +20,7 @@ export default function HomePage() {
             startTime={movie.startTime}
             day={movie.dateFormat.dayName}
             screeningDate={movie.dateFormat.screeningDate}
+            fullDate={movie.fullDate}
           />
         ))}
       </CardsWrapper>
