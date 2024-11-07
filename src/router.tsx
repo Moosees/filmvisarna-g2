@@ -17,7 +17,7 @@ import { filterLoader } from './api/filter';
 import ProfilePage from './pages/profilepage/ProfilePage';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
 import { TodaysMoviesLoader } from './api/home';
-import Snacks from './pages/snacks/snacks';
+import Snacks from './pages/snacks/snacksPage';
 
 const router = createBrowserRouter([
   {
