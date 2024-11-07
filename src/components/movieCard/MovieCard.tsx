@@ -90,6 +90,7 @@ function MovieCard({
         <Card.Img
           variant="top"
           src={posterUrl}
+          alt={title}
           className="img-fluid p-2 card-img"
         />
         {!hideAge && (
