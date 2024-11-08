@@ -69,7 +69,7 @@ const ProfilePage: React.FC = () => {
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
-    setErrorMessage(null); // Rensa eventuellt tidigare felmeddelande
+    setErrorMessage(null);
     if (!isEditing && displayMemberInfo) reset(displayMemberInfo);
   };
 
@@ -85,8 +85,7 @@ const ProfilePage: React.FC = () => {
       if (response.status === 200) {
         await loadMemberInfo();
         setIsEditing(false);
-        setErrorMessage(null); // Rensa felmeddelande vid framgång
-        console.log('Data sparat och medlemsinfo uppdaterad');
+        setErrorMessage(null);
       }
     } catch (error: any) {
       if (
@@ -94,7 +93,7 @@ const ProfilePage: React.FC = () => {
         error.response.data &&
         error.response.data.message
       ) {
-        setErrorMessage(error.response.data.message); // Visa felmeddelandet från backend
+        setErrorMessage(error.response.data.message);
       } else {
         console.error('Fel vid uppdatering:', error);
       }
@@ -154,26 +153,46 @@ const ProfilePage: React.FC = () => {
                 <p className="instructions-text p-1 rounded mt-3">
                   Uppdatera den informationen du vill
                 </p>
+
                 <input
                   type="text"
-                  {...register('first_name')}
+                  {...register('first_name', {
+                    required: 'Förnamn är obligatoriskt',
+                  })}
                   placeholder="Förnamn"
-                  className="form-control mt-3 editable-input"
-                  defaultValue={displayMemberInfo.first_name || ''}
+                  className={`form-control mt-3 editable-input ${
+                    errors.first_name ? 'is-invalid' : ''
+                  }`}
                 />
+                {errors.first_name && (
+                  <div className="invalid-feedback">
+                    {errors.first_name.message}
+                  </div>
+                )}
+
                 <input
                   type="text"
-                  {...register('last_name')}
+                  {...register('last_name', {
+                    required: 'Efternamn är obligatoriskt',
+                  })}
                   placeholder="Efternamn"
-                  className="form-control mt-3 editable-input"
-                  defaultValue={displayMemberInfo.last_name || ''}
+                  className={`form-control mt-3 editable-input ${
+                    errors.last_name ? 'is-invalid' : ''
+                  }`}
                 />
+                {errors.last_name && (
+                  <div className="invalid-feedback">
+                    {errors.last_name.message}
+                  </div>
+                )}
+
                 <input
                   type="password"
                   {...register('new_password')}
                   placeholder="Nytt lösenord"
                   className="form-control mt-3 editable-input"
                 />
+
                 <input
                   type="password"
                   {...register('confirm_new_password', {
@@ -183,16 +202,20 @@ const ProfilePage: React.FC = () => {
                       'Lösenorden matchar inte',
                   })}
                   placeholder="Bekräfta nytt lösenord"
-                  className="form-control mt-3 editable-input"
+                  className={`form-control mt-3 editable-input ${
+                    errors.confirm_new_password ? 'is-invalid' : ''
+                  }`}
                 />
                 {errors.confirm_new_password && (
-                  <small className="text-danger">
+                  <div className="invalid-feedback">
                     {errors.confirm_new_password.message}
-                  </small>
+                  </div>
                 )}
+
                 <p className="instructions-text p-1 rounded mt-3">
                   Ange ditt nuvarande lösenord för att spara ändringar
                 </p>
+
                 <input
                   type="password"
                   {...register('current_password', {
@@ -201,18 +224,22 @@ const ProfilePage: React.FC = () => {
                     onChange: () => setErrorMessage(null),
                   })}
                   placeholder="Nuvarande lösenord"
-                  className="form-control mt-3 editable-input"
+                  className={`form-control mt-3 editable-input ${
+                    errors.current_password ? 'is-invalid' : ''
+                  }`}
                 />
                 {errors.current_password && (
-                  <small className="text-danger">
+                  <div className="invalid-feedback">
                     {errors.current_password.message}
-                  </small>
+                  </div>
                 )}
+
                 {errorMessage && (
-                  <small className="text-danger d-block mt-3">
+                  <div className="invalid-feedback d-block mt-3">
                     {errorMessage}
-                  </small>
+                  </div>
                 )}
+
                 <div className="d-flex flex-column align-items-center mt-3">
                   <PrimaryBtn type="submit">Spara</PrimaryBtn>
                   <PrimaryBtn type="button" onClick={toggleEdit}>
@@ -290,12 +317,12 @@ const ProfilePage: React.FC = () => {
                     confirmationButton={false}
                     smallFont={true}
                     hideAge={true}
+                    reservationNum={booking.reservationNum}
                     className="profile-movie-card"
-                    isStatic={true}
                   />
                 ))
               ) : (
-                <div>Inga tidigare bokningar</div>
+                <div>Ingen bokningshistorik</div>
               )}
             </CardsWrapper>
           </div>
