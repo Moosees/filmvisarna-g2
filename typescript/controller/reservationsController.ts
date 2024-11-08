@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
+import sendEmail from '../utils/sendEmail.js';
 
 interface CreateNewReservationRequest extends Request {
   body: {
@@ -79,6 +80,8 @@ const createNewReservation = async (
   res: Response
 ) => {
   const { email, screeningId, ticketIds, seatIds } = req.body;
+  const userEmail = email || req.session.user?.email;
+
   if (
     (!email && !req.session.user?.email) ||
     !screeningId ||
@@ -121,7 +124,19 @@ const createNewReservation = async (
 
     await con.commit();
 
-    res.status(200).json({ message: 'Bokningen lyckades', reservationNum });
+    const html = `<h1>Hello world</h1> <span><p>${reservationNum}</p>
+    <p>${seats}</p>
+    <p>${tickets}</p>`;
+
+    await sendEmail(userEmail, 'Boking lyckades', html);
+    res
+      .status(200)
+      .json({
+        message: 'Vi har skickat en bokning till din mail',
+        reservationNum,
+      });
+
+    console.log('Email sent successfully');
   } catch (error) {
     console.log(error);
     await con?.rollback();
@@ -232,8 +247,8 @@ const changeReservation = async (
 
     const [result] = await con.execute<ReservationIdPacket[]>(
       `
-        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r 
-        INNER JOIN user u ON u.id = r.user_id 
+        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r
+        INNER JOIN user u ON u.id = r.user_id
         WHERE r.reservation_num = :reservationNum AND u.user_email = :email
       `,
       { reservationNum, email }
