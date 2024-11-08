@@ -3,6 +3,7 @@ import { FieldPacket, RowDataPacket } from 'mysql2';
 import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
 import sendEmail from '../utils/sendEmail.js';
+import { Seat } from '../../src/api/booking.js';
 
 interface CreateNewReservationRequest extends Request {
   body: {
@@ -124,17 +125,53 @@ const createNewReservation = async (
 
     await con.commit();
 
-    const html = `<h1>Hello world</h1> <span><p>${reservationNum}</p>
-    <p>${seats}</p>
-    <p>${tickets}</p>`;
+    //-------------------------MAILER-----------------------------
+    // ------------------------------------------------------
+
+    function formatSeats(seats: Seat[]): string {
+      const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
+      // One seat
+      if (seats.length === 1) {
+        return `Rad: ${firstSeat.row}, Plats: ${firstSeat.number}`;
+      }
+      // More than one seat
+      return `Rad: ${firstSeat.row}, Plats: ${firstSeat.number}-${lastSeat.number}`;
+    }
+
+    const [reservationDetails]: [RowDataPacket[], FieldPacket[]] =
+      await db.execute(
+        'SELECT * FROM vy_reservationDetails vrd WHERE reservationNumber = ?',
+        [reservationNum]
+      );
+
+    if (reservationDetails.length === 0) {
+      res.status(500).json({ message: 'Bokningsdetaljer kunde inte hämtas' });
+      return;
+    }
+
+    const bookingDetails = reservationDetails[0];
+
+    const html = `
+      <h1>Bokning lyckades!</h1>
+      <p><strong>Bokningsnummer:</strong> ${
+        bookingDetails.reservationNumber
+      }</p>
+      <p><strong>Salong:</strong> ${bookingDetails.auditoriumName}</p>
+      <p><strong>Filmtitel:</strong> ${bookingDetails.title}</p>
+      <p><strong>Datum:</strong> ${bookingDetails.startDate}</p>
+      <p><strong>Tid:</strong> ${bookingDetails.timeRange}</p>
+      <p><strong>Platser:</strong> ${formatSeats(bookingDetails.seats)}</p>
+      <p><strong>Antal personer:</strong> ${bookingDetails.ticketDetails}</p>
+      <p><strong>Totalt pris:</strong> ${bookingDetails.totalPrice}</p>
+    `;
 
     await sendEmail(userEmail, 'Boking lyckades', html);
-    res
-      .status(200)
-      .json({
-        message: 'Vi har skickat en bokning till din mail',
-        reservationNum,
-      });
+    res.status(200).json({
+      message: 'Vi har skickat en bokning till din mail',
+      reservationNum,
+    });
+
+    console.log(html);
 
     console.log('Email sent successfully');
   } catch (error) {
