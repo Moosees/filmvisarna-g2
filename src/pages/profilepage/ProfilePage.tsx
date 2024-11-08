@@ -36,9 +36,7 @@ interface UpdateUserData {
 
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(
-    null
-  );
+  const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
@@ -88,11 +86,7 @@ const ProfilePage: React.FC = () => {
         setErrorMessage(null);
       }
     } catch (error: any) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
       } else {
         console.error('Fel vid uppdatering:', error);
@@ -102,10 +96,7 @@ const ProfilePage: React.FC = () => {
 
   const newPassword = watch('new_password');
 
-  const { data: bookingHistory, error: bookingError } = useQuery<
-    Booking[],
-    Error
-  >({
+  const { data: bookingHistory, error: bookingError } = useQuery<Booking[], Error>({
     queryKey: ['bookingHistory'],
     queryFn: async () => {
       const { data } = await getAxios().get('/user/booking-history');
@@ -113,10 +104,7 @@ const ProfilePage: React.FC = () => {
     },
   });
 
-  const { data: currentBookings, error: currentBookingsError } = useQuery<
-    Booking[],
-    Error
-  >({
+  const { data: currentBookings, error: currentBookingsError } = useQuery<Booking[], Error>({
     queryKey: ['currentBookings'],
     queryFn: async () => {
       const { data } = await getAxios().get('/user/current-bookings');
@@ -241,8 +229,14 @@ const ProfilePage: React.FC = () => {
                 )}
 
                 <div className="d-flex flex-column align-items-center mt-3">
-                  <PrimaryBtn type="submit">Spara</PrimaryBtn>
-                  <PrimaryBtn type="button" onClick={toggleEdit}>
+                  <PrimaryBtn className="py-2 fs-md-custom" type="submit">
+                    Spara
+                  </PrimaryBtn>
+                  <PrimaryBtn
+                    className="py-2 fs-md-custom"
+                    type="button"
+                    onClick={toggleEdit}
+                  >
                     Avbryt
                   </PrimaryBtn>
                 </div>
@@ -259,7 +253,11 @@ const ProfilePage: React.FC = () => {
                   E-post: {displayMemberInfo.user_email}
                 </h6>
                 <div className="d-flex flex-column align-items-center mt-3">
-                  <PrimaryBtn onClick={toggleEdit} type="button">
+                  <PrimaryBtn
+                    className="py-2 fs-md-custom"
+                    onClick={toggleEdit}
+                    type="button"
+                  >
                     Ändra
                   </PrimaryBtn>
                 </div>

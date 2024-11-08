@@ -74,12 +74,12 @@ const LoginPage: React.FC = () => {
             </Form.Group>
 
             <div className="button-group">
-              <PrimaryBtn>
-                <Link to="/medlem/bli-medlem" className="me-2">
-                  Bli medlem
-                </Link>
+              <PrimaryBtn className="py-2 fs-md-custom">
+                <Link to="/medlem/bli-medlem">Bli medlem</Link>
               </PrimaryBtn>
-              <PrimaryBtn type="submit">Logga in</PrimaryBtn>
+              <PrimaryBtn className="py-2 fs-md-custom"  type="submit">
+                Logga in
+              </PrimaryBtn>
             </div>
           </Form>
 
