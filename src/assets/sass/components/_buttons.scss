@@ -60,3 +60,10 @@
     flex: 1;
   }
 }
+.scale {
+  scale: 0.9;
+  transition: scale 0.3s ease;
+  &:hover {
+    scale: 1;
+  }
+}
