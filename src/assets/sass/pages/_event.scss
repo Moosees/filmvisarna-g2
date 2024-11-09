@@ -1,20 +1,22 @@
 .background-image-col {
-  background-image: url('../../assets/images/image.svg'); /* Sökvägen till din bild */
-  background-size: cover; /* Gör så att bilden täcker hela området */
-  background-position: center; /* Centrera bilden */
-  color: white; /* Vit text för bättre läsbarhet */
+  background-image: url('../../assets/images/image.svg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
   padding: 20px;
-  min-height: 200px;
+  min-height: 400px;
 }
 
 .blood-image-wrapper {
-  background-color: #fdffb7;
+  background-image: url('../../assets/images/halloween.jpg');
+  background-size: cover;
+  background-position: bottom;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
+  min-height: 550px;
   padding: 0;
 }
 
