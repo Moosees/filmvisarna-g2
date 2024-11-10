@@ -100,7 +100,7 @@ router.patch('/user', usersController.updateUserDetails);
 
 router.get('/ping', usersController.ping);
 
-router.get('/event/halloween', eventController.getAllHalloweenMovies);
+router.get('/event/scary-movies', eventController.getAllScaryMovies);
 
 router.post('/send-email', (req, res) => {
   const { to, subject, text, html, attachments } = req.body;

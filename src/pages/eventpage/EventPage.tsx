@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import HalloweenSection from '../../components/eventcomponents/HalloweenSection';
+import ScaryMovieSection from '../../components/eventcomponents/ScaryMovie';
 import AstridLindgrenSection from '../../components/eventcomponents/AstridLindgrenSection';
 
 const EventPage: React.FC = () => {
@@ -26,7 +26,7 @@ const EventPage: React.FC = () => {
           </p>
         </Col>
 
-        <HalloweenSection />
+        <ScaryMovieSection />
 
         <Col xs={12} className="rounded bg-rosa mt-3 p-3">
           <h4 className="text-black">
