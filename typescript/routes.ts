@@ -102,6 +102,11 @@ router.get('/ping', usersController.ping);
 
 router.get('/event/scary-movies', eventController.getAllScaryMovies);
 
+router.get(
+  '/event/astrid-lindgren',
+  eventController.getAllAstridLindgrenMovies
+);
+
 router.post('/send-email', (req, res) => {
   const { to, subject, text, html, attachments } = req.body;
 

@@ -4,36 +4,47 @@ import db from '../config/connectDB.js';
 
 const getAllScaryMovies = async (req: Request, res: Response) => {
   const query = `
-  SELECT *
-  FROM movies
-  WHERE movie_id IN (15, 17, 18, 19)
-`;
+    SELECT 
+      e.id AS eventId,
+      e.title,
+      e.description,
+      m.id AS movieId,
+      m.poster_url AS posterUrl
+    FROM movie m
+    INNER JOIN event_movie em ON em.movie_id = m.id
+    INNER JOIN event e ON e.id = em.event_id
+    WHERE e.id = 2;  
+  `;
 
   try {
-    // Första frågan för att hämta movie_id för event_id = 2
-    const [eventMovies]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      `SELECT movie_id FROM event_movie WHERE event_id = 2`
-    );
-
-    if (eventMovies.length === 0) {
-      return res
-        .status(404)
-        .json({ message: 'Inga filmer hittades för detta event' });
-    }
-
-    // Extrahera movie_id till en lista
-    const movieIds = eventMovies.map((row) => row.movie_id);
-
-    // Andra frågan för att hämta filmdata från movies baserat på movieIds
-    const [movies]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      `SELECT * FROM movies WHERE movie_id IN (${movieIds.join(',')})`
-    );
-
-    res.status(200).json(movies);
+    const [results] = await db.execute(query);
+    res.status(200).json(results);
   } catch (error) {
     console.error('Error fetching scary movies:', error);
     res.status(500).json({ message: 'Något gick fel', error });
   }
 };
 
-export default { getAllScaryMovies };
+const getAllAstridLindgrenMovies = async (req: Request, res: Response) => {
+  const query = `
+    SELECT 
+      e.id AS eventId,
+      e.title,
+      e.description,
+      m.id AS movieId,
+      m.poster_url AS posterUrl
+    FROM movie m
+    INNER JOIN event_movie em ON em.movie_id = m.id
+    INNER JOIN event e ON e.id = em.event_id
+    WHERE e.id = 1;  
+  `;
+
+  try {
+    const [results] = await db.execute(query);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Error fetching scary movies:', error);
+    res.status(500).json({ message: 'Något gick fel', error });
+  }
+};
+export default { getAllScaryMovies, getAllAstridLindgrenMovies };

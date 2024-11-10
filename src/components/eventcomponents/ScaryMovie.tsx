@@ -1,33 +1,42 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { getScaryMovieQuery } from '../../api/event';
-import CardsWrapper from '../movieCard/CardsWrapper';
-import MovieCard from '../movieCard/MovieCard';
 
 const ScaryMovieSection: React.FC = () => {
+  const navigate = useNavigate();
   const { data: movies } = useSuspenseQuery(getScaryMovieQuery());
 
+  const handleCardClick = (movieId: number) => {
+    navigate(`/film/${movieId}`);
+  };
+
   return (
-    <Col className="rounded blood-image-wrapper mt-3 position-relative">
-      <h2 className="text-center mt-3 digital text-danger">
+    <Col
+      xs={12}
+      className="rounded d-flex flex-column align-items-center mt-3 p-3 scary-movie-container"
+    >
+      <h2 className="text-danger text-center mb-4 digital scary-heading">
         En ikonisk skräckfilmskväll hos Filmvisarna!
       </h2>
-      <CardsWrapper>
+
+      <Row className="d-flex justify-content-center w-100">
         {movies.map((movie) => (
-          <MovieCard
-            movieId={movie.movieId}
-            screeningId={movie.screeningId}
-            age={movie.age}
-            posterUrl={movie.posterUrl}
-            title={movie.title}
-            key={movie.screeningId}
-            startTime={movie.startTime}
-            day={movie.dateFormat?.dayName || 'N/A'}
-            screeningDate={movie.dateFormat?.screeningDate || 'N/A'}
-            fullDate={movie.fullDate}
-          />
+          <Col
+            key={movie.movieId}
+            xs={6}
+            md={3}
+            className="mb-3"
+            onClick={() => handleCardClick(movie.movieId)}
+          >
+            <img
+              src={movie.posterUrl}
+              alt={`Poster for movie ${movie.movieId}`}
+              style={{ cursor: 'pointer', width: '100%', height: 'auto' }}
+            />
+          </Col>
         ))}
-      </CardsWrapper>
+      </Row>
     </Col>
   );
 };
