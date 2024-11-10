@@ -1,9 +1,11 @@
 import { Row, Col } from 'react-bootstrap';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { AstridLindgrenMovieQuery } from '../../api/event';
 
 const AstridLindgrenSection: React.FC = () => {
   const navigate = useNavigate();
-  // const { data: movies } = useSuspenseQuery(());
+  const { data: movies } = useSuspenseQuery(AstridLindgrenMovieQuery());
 
   const handleCardClick = (movieId: number) => {
     navigate(`/film/${movieId}`);

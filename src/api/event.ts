@@ -35,3 +35,33 @@ export const ScaryMoviesLoader = (client: QueryClient) => async () => {
 
   return null;
 };
+
+interface AstridLindgrenMoviesData {
+  movieId: number;
+  title: string;
+  posterUrl: string;
+  age: number;
+  startTime: string;
+  screeningId: number;
+  dateFormat: DateFormat;
+  fullDate: string;
+}
+
+async function AstridLindgrenMovies() {
+  const response = await getAxios().get<AstridLindgrenMoviesData[]>(
+    `/event/astrid-lindgren`
+  );
+  return response.data;
+}
+
+export const AstridLindgrenMovieQuery = () =>
+  queryOptions({
+    queryKey: ['astridLindgrenMovies'],
+    queryFn: async () => await AstridLindgrenMovies(),
+  });
+
+export const AstridLindgrenMoviesLoader = (client: QueryClient) => async () => {
+  await client.ensureQueryData(AstridLindgrenMovieQuery());
+
+  return null;
+};
