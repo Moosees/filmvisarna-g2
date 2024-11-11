@@ -316,10 +316,11 @@ const cancelReservation = async (
 
     await con.commit();
     // Ev. byta till 204 istället
-    res.status(200).json({ message: 'Avbokning lyckades' });
-    await sendEmail(email, 'Boking lyckades', html);
+    // res.status(200).json({ message: 'Avbokning lyckades' });
+    await sendEmail(email, 'Avbokningsbekräftelse', html);
     res.status(200).json({
-      message: 'Vi har skickat en bokning till din mail',
+      message:
+        'Avbokning lyckades och vi har skickat en avbokningsbekräftelse till din e-post',
       reservationNum,
     });
   } catch (error) {
