@@ -1,4 +1,6 @@
 import mysql, { PoolOptions } from 'mysql2/promise';
+import { allData } from './dbData.js';
+import { allTables } from './dbTables.js';
 import { allViews } from './dbViews.js';
 
 export const dbOptions: PoolOptions = {
@@ -14,13 +16,35 @@ export const dbOptions: PoolOptions = {
 
 const db = mysql.createPool(dbOptions);
 
+const setup = {
+  createTables: false,
+  createData: false,
+  createViews: false,
+};
+
 // Testa anslutningen
 db.getConnection()
   .then((con) => {
-    // console.log('Setting up database...');
-    // allViews.forEach(async (view) => {
-    //   await con.query(view);
-    // });
+    if (setup.createTables) {
+      console.log('Creating tables...');
+      allTables.forEach(async (table) => {
+        await con.query(table);
+      });
+    }
+
+    if (setup.createData) {
+      console.log('Creating data...');
+      allData.forEach(async (data) => {
+        await con.query(data);
+      });
+    }
+
+    if (setup.createViews) {
+      console.log('Creating views...');
+      allViews.forEach(async (view) => {
+        await con.query(view);
+      });
+    }
 
     console.log(`Connected to MySQL ${process.env.DB_NAME} database!`);
     db.releaseConnection(con);

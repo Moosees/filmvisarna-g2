@@ -18,6 +18,8 @@ interface MovieCardProps {
   allowConfirmationOnly?: boolean;
   day?: string;
   screeningDate?: string;
+  isStatic?: boolean;
+  fullDate?: string;
 }
 
 function MovieCard({
@@ -36,14 +38,18 @@ function MovieCard({
   allowConfirmationOnly = false,
   day,
   screeningDate,
+  isStatic = false,
+  fullDate,
 }: MovieCardProps) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    if (allowConfirmationOnly && reservationNum) {
-      navigate(`/bokning/${reservationNum}`);
-    } else {
-      navigate(`/film/${movieId}`);
+    if (!isStatic) {
+      if (allowConfirmationOnly && reservationNum) {
+        navigate(`/bokning/${reservationNum}`);
+      } else {
+        navigate(`/film/${movieId}`);
+      }
     }
   };
   const handleButtonClick = (e?: React.MouseEvent) => {
@@ -58,16 +64,36 @@ function MovieCard({
     if (reservationNum) navigate(`/bokning/${reservationNum}`);
   };
 
+  // Function to check if the showtime has started
+  const isShowtime = () => {
+    if (!fullDate) {
+      return false;
+    }
+    const screeningDateTime = new Date(fullDate);
+
+    // Create a new date for 15 minutes before the showtime
+    const showtimeMinus15 = new Date(screeningDateTime);
+    showtimeMinus15.setMinutes(screeningDateTime.getMinutes() - 15);
+
+    const now = new Date();
+    return now > showtimeMinus15;
+  };
+
+  const bookButtonDisabled = isShowtime();
+
   return (
     <Card
-      className={`text-center text-white border border-warning shadow movie-card py-2 ${className}`}
-      onClick={handleCardClick}
+      className={`text-center text-white border border-warning shadow movie-card py-2 ${className} ${
+        isStatic ? 'static-card' : ''
+      }`}
+      onClick={isStatic ? undefined : handleCardClick}
     >
       <div className="position-relative">
         <Card.Img
           variant="top"
           src={posterUrl}
-          className="img-fluid p-2 card-img"
+          alt={title}
+          className="p-2 card-img"
         />
         {!hideAge && (
           <div
@@ -105,7 +131,12 @@ function MovieCard({
           </a>
         ) : (
           showButton && (
-            <PrimaryBtn onClick={handleButtonClick}>Boka</PrimaryBtn>
+            <PrimaryBtn
+              disabled={bookButtonDisabled}
+              onClick={handleButtonClick}
+            >
+              Boka
+            </PrimaryBtn>
           )
         )}
       </Card.Body>

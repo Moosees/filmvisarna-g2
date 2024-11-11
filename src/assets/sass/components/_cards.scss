@@ -18,3 +18,13 @@
 .react-datepicker-popper {
   margin-left: 2rem;
 }
+
+.static-card {
+  cursor: default;
+  scale: 0.98;
+  transition: none;
+}
+
+.static-card:hover {
+  scale: 0.98;
+}

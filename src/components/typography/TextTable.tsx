@@ -16,7 +16,7 @@ interface TextTableProps {
 export default function TextTable({ movieData }: TextTableProps) {
   const movieDetails = [
     { label: 'Speltid', value: `${movieData.playTime} Minuter` },
-    { label: 'Genre', value: movieData.genres.join(', ') },
+    { label: 'Genre', value: movieData.genres?.join(', ') || 'okänd' },
     { label: 'Regi', value: movieData.movieInfo?.director || 'okänd' },
     {
       label: 'Skådespelare',
@@ -36,7 +36,7 @@ export default function TextTable({ movieData }: TextTableProps) {
             {movieDetails.map((detail, index) => (
               <ListGroup.Item
                 key={index}
-                className="text-dark p-1 px-0 bg-rosa d-flex align-items-center justify-content-between flex-wrap"
+                className="text-dark bg-rosa p-1 px-0 d-flex align-items-center justify-content-between flex-wrap border border-0"
               >
                 <strong>{detail.label}:</strong> <span>{detail.value}</span>
               </ListGroup.Item>

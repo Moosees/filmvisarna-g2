@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getBookingDataQuery } from '../../api/booking';
@@ -20,69 +20,49 @@ function BookingConfirmation() {
     return `Rad: ${firstSeat.row}, Plats: ${lastSeat.number}-${firstSeat.number}`;
   }
 
+  const confirmationDetails = [
+    { label: 'Bokning-nr', value: data.reservationNumber },
+    { label: 'Salong', value: data.auditoriumName },
+    { label: 'Plats', value: formatSeats(data.seats) },
+    { label: 'Film', value: data.title },
+    { label: 'Datum', value: data.startDate },
+    { label: 'Tid', value: data.timeRange },
+    { label: 'Antal personer', value: data.ticketDetails },
+    { label: 'Totalt pris', value: data.totalPrice },
+  ];
+
   return (
     <>
-      <Container className="booking-confirmation">
-        <Row className="d-flex flex-column flex-md-row booking-row align-items-start">
-          <Col
-            md={6}
-            className="order-md-1 mb-4 mb-md-0 d-flex justify-content-center"
-          >
+      <Container className="bg-rosa rounded py-3" style={{ maxWidth: '900px' }}>
+        <Row className="flex-column flex-md-row align-items-center">
+          <Col md={6}>
             <img
               src={data.posterUrl}
-              alt="Gladiator-movie"
-              className="img-fluid booking-image"
+              alt={data.title}
+              className="img-fluid p-3"
             />
           </Col>
-          <Col md={6} className="order-md-2">
-            {data ? (
-              <ul className="list-group">
-                <li className="list-group-item ">
-                  <strong>Bokings-nr:</strong>
-                  <span>{data.reservationNumber}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Salong:</strong>
-                  <span>{data.auditoriumName}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Plats:</strong>
-                  <span>{formatSeats(data.seats)}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Film:</strong>
-                  <span>{data.title}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Datum:</strong>
-                  <span>{data.startDate}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Tid:</strong>
-                  <span>{data.timeRange}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Antal personer:</strong>
-                  <span>{data.ticketDetails}</span>
-                </li>
-                <li className="list-group-item">
-                  <strong>Totalt pris:</strong>
-                  <span>{data.totalPrice}</span>
-                </li>
-                <Row className="booking-row mt-4">
-                  <Col className="booking-buttons col-auto d-flex">
-                    <PrimaryBtn>
-                      <Link to="/">Stäng</Link>
-                    </PrimaryBtn>
-                    <PrimaryBtn>
-                      <Link to="avboka">Avboka</Link>
-                    </PrimaryBtn>
-                  </Col>
-                </Row>
-              </ul>
-            ) : (
-              <p>Laddar bokningsinformation...</p>
-            )}
+          <Col md={6}>
+            <ListGroup>
+              {confirmationDetails.map((details, index) => (
+                <ListGroup.Item
+                  key={index}
+                  className="bg-rosa border border-0 text-dark d-flex aline-items-center justify-content-between"
+                >
+                  <strong>{details.label}</strong>
+                  <span>{details.value}</span>
+                </ListGroup.Item>
+              ))}
+
+              <Col className="d-flex aline-items-center justify-content-evenly my-2 ">
+                <PrimaryBtn>
+                  <Link to="/">Stäng</Link>
+                </PrimaryBtn>
+                <PrimaryBtn>
+                  <Link to="avboka">Avboka</Link>
+                </PrimaryBtn>
+              </Col>
+            </ListGroup>
           </Col>
         </Row>
       </Container>

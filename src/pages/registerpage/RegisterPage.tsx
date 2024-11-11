@@ -34,7 +34,13 @@ const RegisterPage: React.FC = () => {
       setError(null);
       navigate('/medlem/logga-in');
     } catch (err: any) {
-      setError('Något gick fel, försök igen!');
+      if (err.response && err.response.status === 409) {
+        setError(
+          'E-postadressen finns redan registrerad, var vänlig logga in.'
+        );
+      } else {
+        setError('Något gick fel, försök igen!');
+      }
       setSuccess(null);
       console.error('Något gick fel', err);
     }
