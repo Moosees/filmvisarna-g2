@@ -3,7 +3,6 @@ import { FieldPacket, RowDataPacket } from 'mysql2';
 import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
 import sendEmail from '../utils/sendEmail.js';
-import { Seat } from '../../src/api/booking.js';
 
 interface CreateNewReservationRequest extends Request {
   body: {
@@ -17,6 +16,12 @@ interface CreateNewReservationRequest extends Request {
 interface ReservationData extends RowDataPacket {
   reservationId: number;
   reservationNum: string;
+}
+
+interface Seat {
+  row: number;
+  number: number;
+  seatId: number;
 }
 
 // Helpers
@@ -129,13 +134,9 @@ const createNewReservation = async (
     // ------------------------------------------------------
 
     function formatSeats(seats: Seat[]): string {
-      const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
-      // One seat
-      if (seats.length === 1) {
-        return `Rad: ${firstSeat.row}, Plats: ${firstSeat.number}`;
-      }
-      // More than one seat
-      return `Rad: ${firstSeat.row}, Plats: ${firstSeat.number}-${lastSeat.number}`;
+      return seats
+        .map((seat) => `<p>Rad: ${seat.row}, Plats: ${seat.number}</p>`)
+        .join('<br>');
     }
 
     const [reservationDetails]: [RowDataPacket[], FieldPacket[]] =
@@ -151,6 +152,15 @@ const createNewReservation = async (
 
     const bookingDetails = reservationDetails[0];
 
+    //  <p>
+    //    <strong>Platser:</strong> $
+    //    {bookingDetails.seats.map(
+    //      (seat: Seat[]): string => ` <span>
+    //       Rad: ${seat.row}, Plats: ${seat.number}
+    //     </span>`
+    //    )}
+    //  </p>;
+
     const html = `
       <h1>Bokning lyckades!</h1>
       <p><strong>Bokningsnummer:</strong> ${
@@ -161,8 +171,10 @@ const createNewReservation = async (
       <p><strong>Datum:</strong> ${bookingDetails.startDate}</p>
       <p><strong>Tid:</strong> ${bookingDetails.timeRange}</p>
       <p><strong>Platser:</strong> ${formatSeats(bookingDetails.seats)}</p>
+
       <p><strong>Antal personer:</strong> ${bookingDetails.ticketDetails}</p>
       <p><strong>Totalt pris:</strong> ${bookingDetails.totalPrice}</p>
+
     `;
 
     await sendEmail(userEmail, 'Boking lyckades', html);
