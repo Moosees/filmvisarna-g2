@@ -137,8 +137,12 @@ const RegisterPage: React.FC = () => {
             </Form.Group>
 
             <div className="button-group">
-              <PrimaryBtn onClick={handleGoBack}>Avbryt</PrimaryBtn>
-              <PrimaryBtn type="submit">Bli medlem</PrimaryBtn>
+              <PrimaryBtn className="py-2 fs-md-custom" onClick={handleGoBack}>
+                Avbryt
+              </PrimaryBtn>
+              <PrimaryBtn className="py-2 fs-md-custom" type="submit">
+                Bli medlem
+              </PrimaryBtn>
             </div>
           </Form>
 
