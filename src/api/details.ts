@@ -32,6 +32,8 @@ export interface MovieData {
 
 //-------------Movie-details---------------
 async function getMovieData(movieId: number) {
+  if (movieId === -1) return null;
+
   const response = await getAxios().get<MovieData>(`/movie/${movieId}`);
   return response.data;
 }

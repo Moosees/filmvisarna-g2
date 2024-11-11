@@ -8,8 +8,7 @@ import { loginAction } from './api/login';
 import { reserveAction, reserveLoader } from './api/reserve';
 import { rootLoader } from './api/root';
 import App from './App';
-import AdminMovieEdit from './pages/admin/adminMovieEdit';
-import AdminMovieNew from './pages/admin/adminMovieNew';
+import AdminMovie from './pages/admin/AdminMovie';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
 import FilterPage from './pages/filterPage/FilterPage';
@@ -98,11 +97,12 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'film',
-            element: <AdminMovieNew />,
+            element: <AdminMovie />,
+            loader: () => ({ movieId: -1 }),
           },
           {
             path: 'film/:id',
-            element: <AdminMovieEdit />,
+            element: <AdminMovie />,
             loader: detailsLoader(getQueryClient()),
           },
         ],
