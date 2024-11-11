@@ -85,8 +85,15 @@ const router = createBrowserRouter([
         },
         loader: bookingLoader(getQueryClient()),
       },
+      // {
+      //   path: '/avbokning',
+      //   element: <CancelReservationPage />,
+      //   handle: {
+      //     title: 'Avboka platser',
+      //   },
+      // },
       {
-        path: '/avbokning',
+        path: '/avbokning/:reservationNum',
         element: <CancelReservationPage />,
         handle: {
           title: 'Avboka platser',

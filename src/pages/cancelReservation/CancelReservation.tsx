@@ -21,7 +21,7 @@ const CancelReservationPage: React.FC = () => {
   } = useForm<CancelReservationFormData>();
 
   const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
-    submit(values, { method: 'post', action: '/reservation/cancel' });
+    submit(values, { method: 'post', action: '/avbokning/:reservationNum' });
 
   return (
     <Container className="d-flex justify-content-center">
