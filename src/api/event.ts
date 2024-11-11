@@ -1,24 +1,13 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { getAxios } from './clients';
 
-interface DateFormat {
-  dayName: string;
-  screeningDate: string;
-}
-
-interface ScaryMoviesData {
+interface EventMoviesData {
   movieId: number;
-  title: string;
   posterUrl: string;
-  age: number;
-  startTime: string;
-  screeningId: number;
-  dateFormat: DateFormat;
-  fullDate: string;
 }
 
 async function getScaryMovies() {
-  const response = await getAxios().get<ScaryMoviesData[]>(
+  const response = await getAxios().get<EventMoviesData[]>(
     `/event/scary-movies`
   );
   return response.data;
@@ -30,25 +19,8 @@ export const getScaryMovieQuery = () =>
     queryFn: async () => await getScaryMovies(),
   });
 
-export const ScaryMoviesLoader = (client: QueryClient) => async () => {
-  await client.ensureQueryData(getScaryMovieQuery());
-
-  return null;
-};
-
-interface AstridLindgrenMoviesData {
-  movieId: number;
-  title: string;
-  posterUrl: string;
-  age: number;
-  startTime: string;
-  screeningId: number;
-  dateFormat: DateFormat;
-  fullDate: string;
-}
-
 async function AstridLindgrenMovies() {
-  const response = await getAxios().get<AstridLindgrenMoviesData[]>(
+  const response = await getAxios().get<EventMoviesData[]>(
     `/event/astrid-lindgren`
   );
   return response.data;
@@ -60,7 +32,8 @@ export const AstridLindgrenMovieQuery = () =>
     queryFn: async () => await AstridLindgrenMovies(),
   });
 
-export const AstridLindgrenMoviesLoader = (client: QueryClient) => async () => {
+export const eventMoviesLoader = (client: QueryClient) => async () => {
+  await client.ensureQueryData(getScaryMovieQuery());
   await client.ensureQueryData(AstridLindgrenMovieQuery());
 
   return null;

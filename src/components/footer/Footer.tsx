@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
             <p>
               <a
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href="#"
+                href={'/avbokning'}
               >
                 Avboka
               </a>

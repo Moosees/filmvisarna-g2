@@ -1,26 +1,27 @@
 import React from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useActionData, useSubmit } from 'react-router-dom';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 
-export interface CancelReservationFormData extends FieldValues {
+export interface CancelFormData extends FieldValues {
   email: string;
-  bookingNumber: string;
+  reservationNum: string;
 }
 
 const CancelReservationPage: React.FC = () => {
   const submit = useSubmit();
-  const error = useActionData() as string | null;
+  const actionData = useActionData() as { error?: string };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CancelReservationFormData>();
+  } = useForm<CancelFormData>();
 
-  const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
-    submit(values, { method: 'post', action: '/reservation/cancel' });
+  const onSubmit: SubmitHandler<CancelFormData> = (values) => {
+    submit(values, { method: 'post', action: `/avbokning` });
+  };
 
   return (
     <Container className="d-flex justify-content-center">
@@ -41,7 +42,7 @@ const CancelReservationPage: React.FC = () => {
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
-              controlId="bookingNumber"
+              controlId="reservationNum"
               className="field-container mb-3"
             >
               <Form.Label className="form-label">Bokningsnummer</Form.Label>
@@ -49,27 +50,27 @@ const CancelReservationPage: React.FC = () => {
                 type="text"
                 className="form-control-field"
                 placeholder="Fyll i ditt bokningsnummer"
-                {...register('bookingNumber', {
+                {...register('reservationNum', {
                   required: 'Bokningsnummer krävs',
                 })}
-                isInvalid={!!errors.bookingNumber}
+                isInvalid={!!errors.reservationNum}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.bookingNumber?.message}
+                {errors.reservationNum?.message}
               </Form.Control.Feedback>
             </Form.Group>
 
             <div className="d-flex justify-content-between">
-              <PrimaryBtn type="button" onClick={() => navigate(-1)}>
-                Avbryt
+              <PrimaryBtn type="button">
+                <Link to="/">Avbryt</Link>
               </PrimaryBtn>{' '}
               <PrimaryBtn type="submit">Gå vidare</PrimaryBtn>{' '}
             </div>
           </Form>
 
-          {error && (
+          {actionData?.error && (
             <Alert variant="danger" className="mt-3">
-              {error}
+              {actionData.error}
             </Alert>
           )}
         </Col>
