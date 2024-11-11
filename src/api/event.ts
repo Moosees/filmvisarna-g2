@@ -1,20 +1,9 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { getAxios } from './clients';
 
-interface DateFormat {
-  dayName: string;
-  screeningDate: string;
-}
-
 interface ScaryMoviesData {
   movieId: number;
-  title: string;
   posterUrl: string;
-  age: number;
-  startTime: string;
-  screeningId: number;
-  dateFormat: DateFormat;
-  fullDate: string;
 }
 
 async function getScaryMovies() {
@@ -38,13 +27,7 @@ export const ScaryMoviesLoader = (client: QueryClient) => async () => {
 
 interface AstridLindgrenMoviesData {
   movieId: number;
-  title: string;
   posterUrl: string;
-  age: number;
-  startTime: string;
-  screeningId: number;
-  dateFormat: DateFormat;
-  fullDate: string;
 }
 
 async function AstridLindgrenMovies() {
