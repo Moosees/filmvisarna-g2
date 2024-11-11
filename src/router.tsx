@@ -18,6 +18,7 @@ import ProfilePage from './pages/profilepage/ProfilePage';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
 import { TodaysMoviesLoader } from './api/home';
 import EventPage from './pages/eventpage/EventPage';
+import { eventMoviesLoader } from './api/event';
 
 const router = createBrowserRouter([
   {
@@ -98,6 +99,7 @@ const router = createBrowserRouter([
         handle: {
           title: 'Evenemang',
         },
+        loader: eventMoviesLoader(getQueryClient()),
       },
     ],
   },
