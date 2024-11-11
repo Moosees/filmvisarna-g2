@@ -18,6 +18,7 @@ import ProfilePage from './pages/profilepage/ProfilePage';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
 import { TodaysMoviesLoader } from './api/home';
 import EventPage from './pages/eventpage/EventPage';
+import { cancelAction } from './api/cancel';
 
 const router = createBrowserRouter([
   {
@@ -85,19 +86,20 @@ const router = createBrowserRouter([
         },
         loader: bookingLoader(getQueryClient()),
       },
-      // {
-      //   path: '/avbokning',
-      //   element: <CancelReservationPage />,
-      //   handle: {
-      //     title: 'Avboka platser',
-      //   },
-      // },
+      {
+        path: '/avbokning',
+        element: <CancelReservationPage />,
+        handle: {
+          title: 'Avboka platser',
+        },
+      },
       {
         path: '/avbokning/:reservationNum',
         element: <CancelReservationPage />,
         handle: {
           title: 'Avboka platser',
         },
+        action: cancelAction(getQueryClient()),
       },
       {
         path: '/evenemang',

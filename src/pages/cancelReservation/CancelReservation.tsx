@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useActionData, useNavigate, useSubmit } from 'react-router-dom';
+import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 
@@ -11,8 +11,7 @@ export interface CancelReservationFormData extends FieldValues {
 
 const CancelReservationPage: React.FC = () => {
   const submit = useSubmit();
-  const navigate = useNavigate();
-  const error = useActionData() as string | null;
+  const actionData = useActionData() as { error?: string };
 
   const {
     register,
@@ -20,8 +19,10 @@ const CancelReservationPage: React.FC = () => {
     formState: { errors },
   } = useForm<CancelReservationFormData>();
 
-  const onSubmit: SubmitHandler<CancelReservationFormData> = (values) =>
-    submit(values, { method: 'post', action: '/avbokning/:reservationNum' });
+  const onSubmit: SubmitHandler<CancelReservationFormData> = (values) => {
+    const actionPath = `/avbokning/${values.bookingNumber}`;
+    submit(values, { method: 'post', action: actionPath });
+  };
 
   return (
     <Container className="d-flex justify-content-center">
@@ -61,16 +62,16 @@ const CancelReservationPage: React.FC = () => {
             </Form.Group>
 
             <div className="d-flex justify-content-between">
-              <PrimaryBtn type="button" onClick={() => navigate('/')}>
-                Avbryt
+              <PrimaryBtn type="button">
+                <Link to="/">Avbryt</Link>
               </PrimaryBtn>{' '}
               <PrimaryBtn type="submit">Gå vidare</PrimaryBtn>{' '}
             </div>
           </Form>
 
-          {error && (
+          {actionData?.error && (
             <Alert variant="danger" className="mt-3">
-              {error}
+              {actionData.error}
             </Alert>
           )}
         </Col>
