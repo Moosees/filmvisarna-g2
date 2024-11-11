@@ -5,8 +5,9 @@ import PrimaryBtn from '../buttons/PrimaryBtn';
 interface TextBoxProps {
   movieData: {
     title: string;
-    movieInfo: {
+    movieInfo?: {
       description?: string;
+      original_title?: string;
     };
   };
 }
@@ -23,7 +24,7 @@ export default function TextBox({ movieData }: TextBoxProps) {
     <Col>
       <Card className="p-3 border-0 bg-rosa text-dark fw-bold">
         <Card.Title className="my-3 fw-bold text-decoration-underline">
-          {movieData.title}
+          {movieData.movieInfo?.original_title}
         </Card.Title>
 
         <Card.Text className="d-none d-xl-block custom-letterSpacing">
