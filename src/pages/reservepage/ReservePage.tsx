@@ -38,7 +38,6 @@ function ReservePage() {
     e.preventDefault();
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
-
   return (
     <form onSubmit={handleSubmit} className="row gy-2 align-items-center">
       <Col className="col-12 col-lg-6">
@@ -67,9 +66,9 @@ function ReservePage() {
                   required
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                {/* <PrimaryBtn className="align-self-center"> */}
-                {/*   <Link to="/medlem/bli-medlem">Bli medlem</Link> */}
-                {/* </PrimaryBtn> */}
+                {/* <PrimaryBtn className="align-self-center"> /}
+                {/   <Link to="/medlem/bli-medlem">Bli medlem</Link> /}
+                {/ </PrimaryBtn> */}
               </Col>
             </Row>
           )}

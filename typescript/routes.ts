@@ -6,6 +6,7 @@ import ticketsController from './controller/ticketsController.js';
 import { isAdmin, isAuthenticated } from './middleware/authMiddleware.js';
 // import { isAdmin } from './middleware/authMiddleware.js';
 import usersController from './controller/usersController.js';
+// import Mailer from './helpers/nodemailer.js';
 import Mailer from './helpers/nodemailer.js';
 import eventController from './controller/eventController.js';
 
