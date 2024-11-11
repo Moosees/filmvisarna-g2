@@ -2,18 +2,16 @@ import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { getAxios } from './clients';
-import { CancelReservationFormData } from '../pages/cancelReservation/CancelReservation';
+import { CancelFormData } from '../pages/cancelReservation/CancelReservation';
 
-const cancel = async (data: CancelReservationFormData) =>
-  await getAxios().delete(`reservation/${data.bookingNumber}`);
+const cancel = async (data: CancelFormData) =>
+  await getAxios().delete(`reservation`);
 
 export const cancelAction =
   (client: QueryClient) =>
   async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
-    const data = Object.fromEntries(
-      formData
-    ) as unknown as CancelReservationFormData;
+    const data = Object.fromEntries(formData) as unknown as CancelFormData;
 
     try {
       await cancel(data);

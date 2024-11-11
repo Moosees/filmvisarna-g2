@@ -90,14 +90,7 @@ const router = createBrowserRouter([
         path: '/avbokning',
         element: <CancelReservationPage />,
         handle: {
-          title: 'Avboka platser',
-        },
-      },
-      {
-        path: '/avbokning/:reservationNum',
-        element: <CancelReservationPage />,
-        handle: {
-          title: 'Avboka platser',
+          title: 'Avboka',
         },
         action: cancelAction(getQueryClient()),
       },

@@ -4,7 +4,7 @@ import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 
-export interface CancelReservationFormData extends FieldValues {
+export interface CancelFormData extends FieldValues {
   email: string;
   bookingNumber: string;
 }
@@ -17,11 +17,10 @@ const CancelReservationPage: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CancelReservationFormData>();
+  } = useForm<CancelFormData>();
 
-  const onSubmit: SubmitHandler<CancelReservationFormData> = (values) => {
-    const actionPath = `/avbokning/${values.bookingNumber}`;
-    submit(values, { method: 'post', action: actionPath });
+  const onSubmit: SubmitHandler<CancelFormData> = (values) => {
+    submit(values, { method: 'post', action: `/avbokning` });
   };
 
   return (
