@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useActionData, useSubmit } from 'react-router-dom';
+import { useActionData, useNavigate, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 
@@ -11,6 +11,7 @@ export interface CancelReservationFormData extends FieldValues {
 
 const CancelReservationPage: React.FC = () => {
   const submit = useSubmit();
+  const navigate = useNavigate();
   const error = useActionData() as string | null;
 
   const {
@@ -60,7 +61,7 @@ const CancelReservationPage: React.FC = () => {
             </Form.Group>
 
             <div className="d-flex justify-content-between">
-              <PrimaryBtn type="button" onClick={() => navigate(-1)}>
+              <PrimaryBtn type="button" onClick={() => navigate('/')}>
                 Avbryt
               </PrimaryBtn>{' '}
               <PrimaryBtn type="submit">Gå vidare</PrimaryBtn>{' '}
