@@ -59,7 +59,7 @@ function BookingConfirmation() {
                   <Link to="/">Stäng</Link>
                 </PrimaryBtn>
                 <PrimaryBtn>
-                  <Link to="avboka">Avboka</Link>
+                  <Link to="/avbokning">Avboka</Link>
                 </PrimaryBtn>
               </Col>
             </ListGroup>
