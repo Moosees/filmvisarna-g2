@@ -1,13 +1,18 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useLoaderData } from 'react-router-dom';
+import { Form, useLoaderData } from 'react-router-dom';
 import { getMovieDataQuery } from '../../api/details';
+import EditMovie from '../../components/editMovie/EditMovie';
 
 function AdminMovieEdit() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
   console.log({ movieData });
 
-  return <div>edit movie</div>;
+  return (
+    <Form>
+      <EditMovie movieData={movieData} />
+    </Form>
+  );
 }
 
 export default AdminMovieEdit;

@@ -17,7 +17,7 @@ interface ScreeningDetails {
   screeningDate: string;
 }
 
-interface MovieData {
+export interface MovieData {
   message: string;
   movieId: number;
   title: string;
