@@ -6,9 +6,6 @@ import { CancelFormData } from '../pages/cancelReservation/CancelReservation';
 
 const cancel = async (data: CancelFormData) =>
   await getAxios().delete('reservation', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
     data,
   });
 
