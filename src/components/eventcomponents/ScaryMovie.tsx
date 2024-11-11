@@ -33,6 +33,7 @@ const ScaryMovieSection: React.FC = () => {
               src={movie.posterUrl}
               alt={`Poster for movie ${movie.movieId}`}
               style={{ cursor: 'pointer', width: '100%', height: 'auto' }}
+              className="scale rounded"
             />
           </Col>
         ))}
