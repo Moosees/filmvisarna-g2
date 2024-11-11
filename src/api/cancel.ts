@@ -18,7 +18,7 @@ export const cancelAction =
     try {
       await cancel(data);
       await client.invalidateQueries({ queryKey: ['reservation'] });
-      return redirect('/'); // Redirect to the home page after successful login
+      return redirect('/'); // Redirect to the home page after successful cancel the reservation
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data?.message) {
         return json({ error: error.response.data.message }, { status: 400 });
