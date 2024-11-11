@@ -1,0 +1,24 @@
+.background-image-col {
+  background-image: url('../../assets/images/image.svg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 300px;
+}
+
+.scary-movie-container {
+  background-image: url('../../assets/images/halloween.jpg');
+  background-size: cover;
+  background-position: bottom;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 550px;
+  padding: 0;
+}
+
+.scary-heading {
+  background-color: black;
+}

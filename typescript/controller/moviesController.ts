@@ -86,6 +86,7 @@ const getMovie = async (req: Request, res: Response) => {
 
 const getTodaysMovie = async (req: Request, res: Response) => {
   try {
+    await db.execute('SET lc_time_names = "sv_SE"');
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
       `SELECT
