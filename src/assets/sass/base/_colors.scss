@@ -5,3 +5,20 @@
 .body-bg-dark {
   background-color: $body-bg-dark !important;
 }
+
+
+
+// color for error msg for example in log in page
+:root {
+  --bs-form-invalid-color: #0015ff;
+  .invalid-feedback {
+  background-color: #ffffcf;   
+  border: 1px solid #ff6b6b;
+  color: #b30000;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+
+
+}
