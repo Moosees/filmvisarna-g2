@@ -5,7 +5,7 @@ import { getAxios } from './clients';
 import { CancelFormData } from '../pages/cancelReservation/CancelReservation';
 
 const cancel = async (data: CancelFormData) =>
-  await getAxios().delete(`reservation`);
+  await getAxios().delete(`reservation`, { data });
 
 export const cancelAction =
   (client: QueryClient) =>
