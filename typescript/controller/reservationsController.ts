@@ -264,6 +264,7 @@ const cancelReservation = async (
       .json({ error: 'Bokningen saknar e-post eller bokningsnummer' });
     return;
   }
+  console.log(email, reservationNum);
 
   let con;
 

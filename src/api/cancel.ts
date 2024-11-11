@@ -5,7 +5,12 @@ import { getAxios } from './clients';
 import { CancelFormData } from '../pages/cancelReservation/CancelReservation';
 
 const cancel = async (data: CancelFormData) =>
-  await getAxios().delete(`reservation`, { data });
+  await getAxios().delete('reservation', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data,
+  });
 
 export const cancelAction =
   (client: QueryClient) =>
@@ -14,6 +19,7 @@ export const cancelAction =
     const data = Object.fromEntries(formData) as unknown as CancelFormData;
 
     try {
+      console.log(data);
       await cancel(data);
       await client.invalidateQueries({ queryKey: ['reservation'] });
       return redirect('/'); // Redirect to the home page after successful cancel the reservation

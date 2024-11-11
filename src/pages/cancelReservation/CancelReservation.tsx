@@ -6,7 +6,7 @@ import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 
 export interface CancelFormData extends FieldValues {
   email: string;
-  bookingNumber: string;
+  reservationNum: string;
 }
 
 const CancelReservationPage: React.FC = () => {
@@ -42,7 +42,7 @@ const CancelReservationPage: React.FC = () => {
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group
-              controlId="bookingNumber"
+              controlId="reservationNum"
               className="field-container mb-3"
             >
               <Form.Label className="form-label">Bokningsnummer</Form.Label>
@@ -50,13 +50,13 @@ const CancelReservationPage: React.FC = () => {
                 type="text"
                 className="form-control-field"
                 placeholder="Fyll i ditt bokningsnummer"
-                {...register('bookingNumber', {
+                {...register('reservationNum', {
                   required: 'Bokningsnummer krävs',
                 })}
-                isInvalid={!!errors.bookingNumber}
+                isInvalid={!!errors.reservationNum}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.bookingNumber?.message}
+                {errors.reservationNum?.message}
               </Form.Control.Feedback>
             </Form.Group>
 
