@@ -20,6 +20,7 @@ const CancelReservationPage: React.FC = () => {
   } = useForm<CancelFormData>();
 
   const onSubmit: SubmitHandler<CancelFormData> = (values) => {
+    console.log(values);
     submit(values, { method: 'post', action: `/avbokning` });
   };
 

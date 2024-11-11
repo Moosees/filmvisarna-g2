@@ -39,10 +39,7 @@ router.post('/reservation', reservationsController.createNewReservation);
 router.put('/reservation', reservationsController.changeReservation);
 
 // cancel a reservation
-router.delete(
-  '/reservation/:reservationNum',
-  reservationsController.cancelReservation
-);
+router.delete('/reservation', reservationsController.cancelReservation);
 
 /**-----------------------------------------------
  * @desc    movies routes
