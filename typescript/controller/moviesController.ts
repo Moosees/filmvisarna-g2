@@ -108,10 +108,10 @@ const getTodaysMovie = async (req: Request, res: Response) => {
     );
 
     // Check if the movie was found
-    if (results.length === 0) {
-      res.status(404).json({ message: 'Film hittades inte' });
-      return;
-    }
+    // if (results.length === 0) {
+    // res.status(404).json({ message: 'Film hittades inte' });
+    //   return;
+    // }
 
     // Return the found movie
     res.status(200).json(results);
