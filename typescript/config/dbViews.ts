@@ -8,7 +8,7 @@ const viewAllSeats = `
   FROM seat s
   LEFT JOIN res_seat_screen rss ON (s.id = rss.seat_id AND rss.screening_id = screeningId)
   WHERE s.auditorium_id = s2.auditorium_id) AS seats,
-  (SELECT json_arrayagg(json_object('ticketId', t.id, 'name', t.ticket_name, 'price', t.price))
+  (SELECT json_arrayagg(json_object('ticketId', t.id, 'name', t.name_one, 'price', t.price))
   FROM ticket t) AS tickets
   FROM screening s2
   JOIN movie m ON m.id = s2.movie_id
