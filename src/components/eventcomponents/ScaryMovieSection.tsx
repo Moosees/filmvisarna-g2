@@ -1,9 +1,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Col, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getScaryMovieQuery } from '../../api/event';
+import PrimaryBtn from '../buttons/PrimaryBtn';
 
-const ScaryMovieSection: React.FC = () => {
+interface ScaryMovieSectionProps {
+  showMoreButton?: boolean;
+}
+
+const ScaryMovieSection: React.FC<ScaryMovieSectionProps> = ({
+  showMoreButton = false,
+}) => {
   const navigate = useNavigate();
   const { data: movies } = useSuspenseQuery(getScaryMovieQuery());
 
@@ -16,7 +23,7 @@ const ScaryMovieSection: React.FC = () => {
       xs={12}
       className="rounded d-flex flex-column align-items-center mt-3 p-3 scary-movie-container"
     >
-      <h2 className="text-danger text-center mb-4 digital scary-heading">
+      <h2 className="text-danger text-center mb-4 digital scary-heading rounded p-2">
         En ikonisk skräckfilmskväll hos Filmvisarna!
       </h2>
 
@@ -38,6 +45,11 @@ const ScaryMovieSection: React.FC = () => {
           </Col>
         ))}
       </Row>
+      {showMoreButton && (
+        <PrimaryBtn type="button">
+          <Link to="/evenemang">Visa mer</Link>
+        </PrimaryBtn>
+      )}
     </Col>
   );
 };
