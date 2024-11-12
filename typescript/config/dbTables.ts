@@ -3,7 +3,7 @@ const movie = `
     id int unsigned AUTO_INCREMENT PRIMARY KEY,
     url_param varchar(50) NOT NULL UNIQUE,
     title varchar(100) NOT NULL,
-    alternate_title varchar(100) NOT NULL,
+    alternate_title varchar(100),
     play_time smallint unsigned NOT NULL,
     age smallint unsigned NOT NULL,
     poster_url varchar(255) NOT NULL,
