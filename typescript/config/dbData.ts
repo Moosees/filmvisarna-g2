@@ -14,7 +14,7 @@ const tickets = `
   INSERT INTO ticket (name_one, name_many, price) VALUES
   ('vuxen', 'vuxna', 140),
   ('barn', 'barn', 80),
-  ('senior', 'senierer', 120);
+  ('senior', 'seniorer', 120);
 `;
 
 const auditoriums = `
