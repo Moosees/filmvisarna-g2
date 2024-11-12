@@ -30,6 +30,7 @@ export default session.default({
   secret: process.env.SESSION_SECRET || 'yourFallbackSecret',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   store,
   cookie: {
     secure: process.env.NODE_ENV === 'production',

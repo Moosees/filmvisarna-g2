@@ -15,11 +15,11 @@ const EventPage: React.FC = () => {
               Filmer som visas lördag 14 december:
             </span>{' '}
             <br />
-            <br /> 1. Alla barnen i Bullerbyn <br /> Tid: kl. 13:00 (stora
+            <br /> 1. Alla barnen i Bullerbyn <br /> Tid: kl. 13:30 (stora
             salongen) <br />
             <br /> 2. Mio min Mio <br /> Tid: kl. 15:30 (stora salongen) <br />
             <br /> <span className="fw-bold">söndag 15 december:</span> <br />
-            <br /> 3. Ronja Rövardotter <br /> Tid: kl. 13:00 (stora salongen){' '}
+            <br /> 3. Ronja Rövardotter <br /> Tid: kl. 13:30 (stora salongen){' '}
             <br />
             <br /> <span className="fw-bold">Förmåner: </span> Halva priset på
             popcorn: De som bokar biljetter till alla tre filmer får 50 % rabatt
@@ -46,14 +46,14 @@ const EventPage: React.FC = () => {
               Filmer som visas fredag 20:e December:
             </span>{' '}
             <br />
-            <br /> 1. Nightmare on Elm Street <br /> Tid: kl. 19:30 (stora
+            <br /> 1. Nightmare on Elm Street <br /> Tid: kl. 17:30 (stora
             salongen) <br />
             <br /> 2. The Shining
             <br />
-            Tid: kl. 21:30 (stora salongen) <br />
+            Tid: kl. 20:00 (stora salongen) <br />
             <br /> 3. Friday the 13th <br />
-            Tid: kl. 19:30 (lilla salongen) <br />
-            <br /> 4. Poltergeist <br /> Tid: kl. 21:30 (lilla salongen) <br />
+            Tid: kl. 17:30 (lilla salongen) <br />
+            <br /> 4. Poltergeist <br /> Tid: kl. 20:00 (lilla salongen) <br />
             <br />
             <span className="fw-bold">Förmåner: </span> Kom utklädd och vi
             bjuder på en liten popcorn! <br />
