@@ -16,8 +16,9 @@ interface RegisterRequest extends Request {
 const ping = async (req: Request, res: Response) => {
   const user = req.session.user;
   const isLoggedIn = user && ['admin', 'member'].includes(user.role);
+  const isAdmin = user && user.role === 'admin';
 
-  res.status(200).json({ isLoggedIn });
+  res.status(200).json({ isLoggedIn, isAdmin });
 };
 
 const register = async (req: RegisterRequest, res: Response): Promise<void> => {
