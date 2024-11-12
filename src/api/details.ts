@@ -3,11 +3,13 @@ import { LoaderFunctionArgs } from 'react-router-dom';
 import { getAxios } from './clients';
 
 interface MovieInfo {
-  trailer: string;
+  year_recorded: number;
   director: string;
   actors: string[];
   description: string;
-  year_recorded: number;
+  language: string;
+  subtitles: string;
+  trailer: string;
 }
 
 interface ScreeningDetails {
@@ -20,11 +22,12 @@ interface ScreeningDetails {
 export interface MovieData {
   message: string;
   movieId: number;
-  title: string;
   paramUrl: string;
+  title: string;
+  altTitle: string;
   playTime: number;
-  posterUrl: string;
   age: number;
+  posterUrl: string;
   movieInfo: MovieInfo;
   genres: string[];
   screeningDetails: ScreeningDetails[];
