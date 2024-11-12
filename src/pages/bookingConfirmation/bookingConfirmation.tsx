@@ -9,7 +9,6 @@ function BookingConfirmation() {
   const { bookingNumber } = useLoaderData() as { bookingNumber: string };
 
   const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
-  console.log(data);
 
   function formatSeats(seats: Seat[]): string {
     const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
@@ -60,7 +59,7 @@ function BookingConfirmation() {
                   <Link to="/">Stäng</Link>
                 </PrimaryBtn>
                 <PrimaryBtn>
-                  <Link to="avboka">Avboka</Link>
+                  <Link to="/avbokning">Avboka</Link>
                 </PrimaryBtn>
               </Col>
             </ListGroup>

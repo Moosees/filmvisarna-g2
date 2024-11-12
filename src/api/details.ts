@@ -8,6 +8,9 @@ interface MovieInfo {
   actors: string[];
   description: string;
   year_recorded: number;
+  original_title: string;
+  language: string;
+  subtitle: string;
 }
 
 interface ScreeningDetails {

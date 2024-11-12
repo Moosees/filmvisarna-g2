@@ -2,6 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
 import { getTodaysMoviesQuery } from '../../api/home';
+import ScaryMovieSection from '../../components/eventcomponents/ScaryMovie';
 
 export default function HomePage() {
   const { data: movies } = useSuspenseQuery(getTodaysMoviesQuery());
@@ -20,9 +21,11 @@ export default function HomePage() {
             startTime={movie.startTime}
             day={movie.dateFormat.dayName}
             screeningDate={movie.dateFormat.screeningDate}
+            fullDate={movie.fullDate}
           />
         ))}
       </CardsWrapper>
+      <ScaryMovieSection />
     </>
   );
 }
