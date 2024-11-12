@@ -59,48 +59,48 @@ const seatsLilla = `
   (2, 5, 6), (2, 5, 7), (2, 5, 8), (2, 5, 9), (2, 5, 10),
   (2, 7, 1), (2, 7, 2), (2, 7, 3), (2, 7, 4),
   (2, 7, 5), (2, 7, 6), (2, 7, 7), (2, 7, 8),
-  (2, 7, 9), (2, 7, 10), (2, 7, 11), (2, 7, 12),
+  (2, 7, 9), (2, 7, 10), (2, 7, 11), (2, 7, 12);
 `;
 
-const usersMember = `
-  INSERT INTO user (role, user_email, user_password, first_name, last_name) VALUES
-  ('member', 'yves@maila.se', '123', 'Yves', 'Bananums'),
-  ('member', 'gertrude@gertrude.org', '123', 'Gertrude', 'Bananums'),
-  ('member', 'johan.olsson@exempel.se', '123', 'Johan', 'Olsson'),
-  ('member', 'elin.persson@domän.se', '123', 'Elin', 'Persson'),
-  ('member', 'mats.nilsson@webbpost.se', '123', 'Mats', 'Nilsson'),
-  ('member', 'sara.karlsson@tjänst.net', '123', 'Sara', 'Karlsson'),
-  ('member', 'emil.svensson@minemail.org', '123', 'Emil', 'Svensson'),
-  ('member', 'linda.larsson@domän.org', '123', 'Linda', 'Larsson'),
-  ('member', 'oskar.johansson@snabbmail.se', '123', 'Oskar', 'Johansson'),
-  ('member', 'kristin.andersson@online.se', '123', 'Kristin', 'Andersson'),
-  ('member', 'anton.eriksson@brevlåda.com', '123', 'Anton', 'Eriksson');
-`;
-
-const usersVisitor = `
-  INSERT INTO user (role, user_email) VALUES
-  ('visitor', 'sofie.nilsson@mittdomän.se'),
-  ('visitor', 'viktor.holm@webbmail.net'),
-  ('visitor', 'julia.fredriksson@företag.org'),
-  ('visitor', 'isak.lindgren@affär.net'),
-  ('visitor', 'agnes.söderberg@tjänst.com'),
-  ('visitor', 'linnea.hansson@kontor.com'),
-  ('visitor', 'lucas.berglund@nyemail.org'),
-  ('visitor', 'hanna.nyström@snabbpost.net'),
-  ('visitor', 'mia.fransson@domän.net'),
-  ('visitor', 'gustav.sandberg@företag.com'),
-  ('visitor', 'ida.wikström@minemail.net'),
-  ('visitor', 'henrik.lund@webbtjänst.com'),
-  ('visitor', 'emma.berg@mejla.org'),
-  ('visitor', 'adam.pettersson@domänmail.com'),
-  ('visitor', 'alice.sundström@info.se'),
-  ('visitor', 'leo.ahlgren@företagsmail.org'),
-  ('visitor', 'klara.ström@tjänst.org'),
-  ('visitor', 'max.blom@webbemail.net'),
-  ('visitor', 'vilma.andreasson@internetmail.com'),
-  ('visitor', 'oskar.dahl@affärsmail.net'),
-  ('visitor', 'nora.sjölund@onlinemail.se');
-`;
+// const usersMember = `
+//   INSERT INTO user (role, user_email, user_password, first_name, last_name) VALUES
+//   ('member', 'yves@maila.se', '123', 'Yves', 'Bananums'),
+//   ('member', 'gertrude@gertrude.org', '123', 'Gertrude', 'Bananums'),
+//   ('member', 'johan.olsson@exempel.se', '123', 'Johan', 'Olsson'),
+//   ('member', 'elin.persson@domän.se', '123', 'Elin', 'Persson'),
+//   ('member', 'mats.nilsson@webbpost.se', '123', 'Mats', 'Nilsson'),
+//   ('member', 'sara.karlsson@tjänst.net', '123', 'Sara', 'Karlsson'),
+//   ('member', 'emil.svensson@minemail.org', '123', 'Emil', 'Svensson'),
+//   ('member', 'linda.larsson@domän.org', '123', 'Linda', 'Larsson'),
+//   ('member', 'oskar.johansson@snabbmail.se', '123', 'Oskar', 'Johansson'),
+//   ('member', 'kristin.andersson@online.se', '123', 'Kristin', 'Andersson'),
+//   ('member', 'anton.eriksson@brevlåda.com', '123', 'Anton', 'Eriksson');
+// `;
+//
+// const usersVisitor = `
+//   INSERT INTO user (role, user_email) VALUES
+//   ('visitor', 'sofie.nilsson@mittdomän.se'),
+//   ('visitor', 'viktor.holm@webbmail.net'),
+//   ('visitor', 'julia.fredriksson@företag.org'),
+//   ('visitor', 'isak.lindgren@affär.net'),
+//   ('visitor', 'agnes.söderberg@tjänst.com'),
+//   ('visitor', 'linnea.hansson@kontor.com'),
+//   ('visitor', 'lucas.berglund@nyemail.org'),
+//   ('visitor', 'hanna.nyström@snabbpost.net'),
+//   ('visitor', 'mia.fransson@domän.net'),
+//   ('visitor', 'gustav.sandberg@företag.com'),
+//   ('visitor', 'ida.wikström@minemail.net'),
+//   ('visitor', 'henrik.lund@webbtjänst.com'),
+//   ('visitor', 'emma.berg@mejla.org'),
+//   ('visitor', 'adam.pettersson@domänmail.com'),
+//   ('visitor', 'alice.sundström@info.se'),
+//   ('visitor', 'leo.ahlgren@företagsmail.org'),
+//   ('visitor', 'klara.ström@tjänst.org'),
+//   ('visitor', 'max.blom@webbemail.net'),
+//   ('visitor', 'vilma.andreasson@internetmail.com'),
+//   ('visitor', 'oskar.dahl@affärsmail.net'),
+//   ('visitor', 'nora.sjölund@onlinemail.se');
+// `;
 
 export const allData = [
   genres,
@@ -108,6 +108,6 @@ export const allData = [
   auditoriums,
   seatsStora,
   seatsLilla,
-  usersMember,
-  usersVisitor,
+  // usersMember,
+  // usersVisitor,
 ];

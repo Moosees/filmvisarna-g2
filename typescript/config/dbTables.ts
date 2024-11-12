@@ -8,27 +8,21 @@ const movie = `
     age smallint unsigned NOT NULL,
     poster_url varchar(255) NOT NULL,
     movie_info json,
-    CHECK (
-        JSON_SCHEMA_VALID (
-            '{
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "title": "Movie info",
-                "description": "Various misc info about a movie",
-                "type": "object",
-                "properties": {
-                    "year_recorded": {"type": "integer"},
-                    "director": {"type": "string"},
-                    "actors": {"type": "array", "items": {"type": "string"}},
-                    "description": {"type": "string"},
-                    "language": {"type": "string"},
-                    "subtitles": {"type": "string"},
-                    "trailer": {"type": "string", "description": "A URL to play the movie trailer"},
-                }
-            }',
-            movie_info
-        )
-    )
-  );
+    CHECK ( JSON_SCHEMA_VALID ( '{ 
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "Movie info",
+      "description": "Various misc info about a movie",
+      "type": "object",
+      "properties": {
+        "year_recorded": {"type": "integer"},
+        "director": {"type": "string"},
+        "actors": {"type": "array", "items": {"type": "string"}},
+        "description": {"type": "string"},
+        "language": {"type": "string"},
+        "subtitles": {"type": "string"},
+        "trailer": {"type": "string", "description": "A URL to play the movie trailer"}
+      } 
+    }', movie_info)));
 `;
 
 const genre = `
