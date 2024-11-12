@@ -1,4 +1,4 @@
-// import { Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 
 function CinemaTechnology() {
   const cinemaEqiment = [
@@ -17,16 +17,16 @@ function CinemaTechnology() {
   ];
 
   return (
-    <>
-      <div>
+    <Container>
+      <Row>
         {cinemaEqiment.map((details, index) => (
           <div key={index}>
             <strong>{details.Namn}</strong>
             <span>{details.Beskrivning}</span>
           </div>
         ))}
-      </div>
-    </>
+      </Row>
+    </Container>
   );
 }
 

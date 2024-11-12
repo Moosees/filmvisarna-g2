@@ -5,13 +5,14 @@ import CinemaTechnology from '../../components/cinema-technology/cinemaTechnolog
 
 function SnacksPage() {
   return (
-    <Container className="d-flex">
+    <Container>
       <Row>
         <Col>
           <Snacks />
         </Col>
-
-        <Col id="teknik">
+      </Row>
+      <Row>
+        <Col>
           <ScrollRestoration />
           <CinemaTechnology />
         </Col>
