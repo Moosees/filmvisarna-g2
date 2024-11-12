@@ -20,6 +20,8 @@ import { TodaysMoviesLoader } from './api/home';
 import EventPage from './pages/eventpage/EventPage';
 import { eventMoviesLoader } from './api/event';
 import { cancelAction } from './api/cancel';
+import Snacks from './pages/snacks/snacksPage';
+import CinemaTechnology from './components/cinema-technology/cinemaTechnology';
 
 const router = createBrowserRouter([
   {
@@ -102,6 +104,20 @@ const router = createBrowserRouter([
           title: 'Evenemang',
         },
         loader: eventMoviesLoader(getQueryClient()),
+      },
+      {
+        path: '/godis',
+        element: <Snacks />,
+        handle: {
+          title: 'Godis',
+        },
+      },
+      {
+        path: '/teknik',
+        element: <CinemaTechnology />,
+        handle: {
+          title: 'Teknik',
+        },
       },
     ],
   },
