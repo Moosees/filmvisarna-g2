@@ -4,6 +4,8 @@ import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getRootDataQuery } from '../../api/root';
 
 export interface LoginFormData extends FieldValues {
   email: string;
@@ -14,6 +16,8 @@ const LoginPage: React.FC = () => {
   const submit = useSubmit();
   const actionData = useActionData() as { error?: string };
   const [loginAttempted, setLoginAttempted] = useState(false);
+  const { data, refetch } = useSuspenseQuery(getRootDataQuery());
+  const isLoggedIn = data?.isLoggedIn;
 
   const {
     register,
@@ -27,16 +31,15 @@ const LoginPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (loginAttempted && !actionData?.error) {
-      // Show toast on successful login after submit attempt
+    if (isLoggedIn && loginAttempted) {
       toast.success('Du är nu inloggad', {
         closeOnClick: true,
         autoClose: 3000,
         hideProgressBar: true,
       });
-      setLoginAttempted(false); // Reset the attempt state
+      setLoginAttempted(false);
     }
-  }, [actionData, loginAttempted]);
+  }, [isLoggedIn, loginAttempted]);
 
   return (
     <Container className="d-flex justify-content-center">
@@ -77,7 +80,7 @@ const LoginPage: React.FC = () => {
               <PrimaryBtn className="py-2 fs-md-custom">
                 <Link to="/medlem/bli-medlem">Bli medlem</Link>
               </PrimaryBtn>
-              <PrimaryBtn className="py-2 fs-md-custom"  type="submit">
+              <PrimaryBtn className="py-2 fs-md-custom" type="submit">
                 Logga in
               </PrimaryBtn>
             </div>
