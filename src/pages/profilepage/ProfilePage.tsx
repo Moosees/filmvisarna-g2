@@ -6,19 +6,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import { getAxios } from '../../api/clients';
 import { getRootDataQuery } from '../../api/root';
-import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import CardsWrapper from '../../components/movieCard/CardsWrapper';
 import MovieCard from '../../components/movieCard/MovieCard';
-
-interface Booking {
-  movieId: number;
-  screeningId: number;
-  posterUrl: string;
-  age: number;
-  title: string;
-  startTime: string;
-  reservationNum: string;
-}
+import MemberInfoForm from '../../components/memberinfo/MemberInfoForm';
 
 interface UserData {
   first_name: string;
@@ -31,25 +21,30 @@ interface UpdateUserData {
   last_name: string;
   current_password: string;
   new_password?: string;
-  confirm_new_password?: string;
+}
+
+interface Booking {
+  movieId: number;
+  screeningId: number;
+  posterUrl: string;
+  age: number;
+  title: string;
+  startTime: string;
+  reservationNum: string;
 }
 
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(null);
+  const [displayMemberInfo, setDisplayMemberInfo] = useState<UserData | null>(
+    null
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     data: { isLoggedIn },
   } = useSuspenseQuery(getRootDataQuery());
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm<UpdateUserData>();
+  const { reset } = useForm<UpdateUserData>();
 
   const loadMemberInfo = async () => {
     try {
@@ -86,7 +81,11 @@ const ProfilePage: React.FC = () => {
         setErrorMessage(null);
       }
     } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         setErrorMessage(error.response.data.message);
       } else {
         console.error('Fel vid uppdatering:', error);
@@ -94,9 +93,10 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const newPassword = watch('new_password');
-
-  const { data: bookingHistory, error: bookingError } = useQuery<Booking[], Error>({
+  const { data: bookingHistory, error: bookingError } = useQuery<
+    Booking[],
+    Error
+  >({
     queryKey: ['bookingHistory'],
     queryFn: async () => {
       const { data } = await getAxios().get('/user/booking-history');
@@ -104,7 +104,10 @@ const ProfilePage: React.FC = () => {
     },
   });
 
-  const { data: currentBookings, error: currentBookingsError } = useQuery<Booking[], Error>({
+  const { data: currentBookings, error: currentBookingsError } = useQuery<
+    Booking[],
+    Error
+  >({
     queryKey: ['currentBookings'],
     queryFn: async () => {
       const { data } = await getAxios().get('/user/current-bookings');
@@ -135,135 +138,15 @@ const ProfilePage: React.FC = () => {
             </div>
             Medlemsinfo
           </h5>
-          <form onSubmit={handleSubmit(onSubmit)} className="w-100 text-start">
-            {isEditing ? (
-              <>
-                <p className="instructions-text p-1 rounded mt-3">
-                  Uppdatera den informationen du vill
-                </p>
-
-                <input
-                  type="text"
-                  {...register('first_name', {
-                    required: 'Förnamn är obligatoriskt',
-                  })}
-                  placeholder="Förnamn"
-                  className={`form-control mt-3 editable-input ${
-                    errors.first_name ? 'is-invalid' : ''
-                  }`}
-                />
-                {errors.first_name && (
-                  <div className="invalid-feedback">
-                    {errors.first_name.message}
-                  </div>
-                )}
-
-                <input
-                  type="text"
-                  {...register('last_name', {
-                    required: 'Efternamn är obligatoriskt',
-                  })}
-                  placeholder="Efternamn"
-                  className={`form-control mt-3 editable-input ${
-                    errors.last_name ? 'is-invalid' : ''
-                  }`}
-                />
-                {errors.last_name && (
-                  <div className="invalid-feedback">
-                    {errors.last_name.message}
-                  </div>
-                )}
-
-                <input
-                  type="password"
-                  {...register('new_password')}
-                  placeholder="Nytt lösenord"
-                  className="form-control mt-3 editable-input"
-                />
-
-                <input
-                  type="password"
-                  {...register('confirm_new_password', {
-                    validate: (value) =>
-                      !newPassword ||
-                      value === newPassword ||
-                      'Lösenorden matchar inte',
-                  })}
-                  placeholder="Bekräfta nytt lösenord"
-                  className={`form-control mt-3 editable-input ${
-                    errors.confirm_new_password ? 'is-invalid' : ''
-                  }`}
-                />
-                {errors.confirm_new_password && (
-                  <div className="invalid-feedback">
-                    {errors.confirm_new_password.message}
-                  </div>
-                )}
-
-                <p className="instructions-text p-1 rounded mt-3">
-                  Ange ditt nuvarande lösenord för att spara ändringar
-                </p>
-
-                <input
-                  type="password"
-                  {...register('current_password', {
-                    required:
-                      'Ange ditt nuvarande lösenord för att spara ändringar',
-                    onChange: () => setErrorMessage(null),
-                  })}
-                  placeholder="Nuvarande lösenord"
-                  className={`form-control mt-3 editable-input ${
-                    errors.current_password ? 'is-invalid' : ''
-                  }`}
-                />
-                {errors.current_password && (
-                  <div className="invalid-feedback">
-                    {errors.current_password.message}
-                  </div>
-                )}
-
-                {errorMessage && (
-                  <div className="invalid-feedback d-block mt-3">
-                    {errorMessage}
-                  </div>
-                )}
-
-                <div className="d-flex flex-column align-items-center mt-3">
-                  <PrimaryBtn className="py-2 fs-md-custom" type="submit">
-                    Spara
-                  </PrimaryBtn>
-                  <PrimaryBtn
-                    className="py-2 fs-md-custom"
-                    type="button"
-                    onClick={toggleEdit}
-                  >
-                    Avbryt
-                  </PrimaryBtn>
-                </div>
-              </>
-            ) : (
-              <>
-                <h6 className="profile-text-bg p-1 rounded mt-3">
-                  Förnamn: {displayMemberInfo.first_name}
-                </h6>
-                <h6 className="profile-text-bg p-1 rounded mt-3">
-                  Efternamn: {displayMemberInfo.last_name}
-                </h6>
-                <h6 className="profile-text-bg p-1 rounded mt-3">
-                  E-post: {displayMemberInfo.user_email}
-                </h6>
-                <div className="d-flex flex-column align-items-center mt-3">
-                  <PrimaryBtn
-                    className="py-2 fs-md-custom"
-                    onClick={toggleEdit}
-                    type="button"
-                  >
-                    Ändra
-                  </PrimaryBtn>
-                </div>
-              </>
-            )}
-          </form>
+          <MemberInfoForm
+            displayMemberInfo={displayMemberInfo}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            onSubmit={onSubmit}
+            toggleEdit={toggleEdit}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+          />
         </Col>
 
         <Col lg={7} className="d-flex flex-column align-items-center">

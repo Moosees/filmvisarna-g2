@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import ScaryMovieSection from '../../components/eventcomponents/ScaryMovie';
+import ScaryMovieSection from '../../components/eventcomponents/ScaryMovieSection';
 import AstridLindgrenSection from '../../components/eventcomponents/AstridLindgrenSection';
 
 const EventPage: React.FC = () => {
@@ -9,16 +9,25 @@ const EventPage: React.FC = () => {
       <Row className="w-100">
         <AstridLindgrenSection />
         <Col xs={12} className="rounded bg-rosa mt-3 p-3">
-          <h4 className="text-black">Astrid Lindgrens Matinéhelg i November</h4>
+          <h4 className="text-black">Astrid Lindgrens Matinéhelg i December</h4>
           <p className="text-black">
-            Filmer som visas lördag 16 november: <br /> 1. Alla barnen i
-            Bullerbyn <br /> Tid: kl. 13:00 (stora salongen) <br /> 2. Mio min
-            Mio <br /> Tid: kl. 15:30 (stora salongen) <br /> söndag 17
-            november: <br /> 3. Ronja Rövardotter <br /> Tid: kl. 13:00 (stora
-            salongen) <br /> Förmåner: <br /> Halva priset på popcorn: De som
-            bokar biljetter till alla tre filmer får 50 % rabatt på popcorn vid
-            varje visning. <br /> Familjerabatt: Specialerbjudande för familjer
-            som bokar fler än fyra biljetter. <br /> Bokningsinformation:
+            <span className="fw-bold">
+              Filmer som visas lördag 14 december:
+            </span>{' '}
+            <br />
+            <br /> 1. Alla barnen i Bullerbyn <br /> Tid: kl. 13:30 (stora
+            salongen) <br />
+            <br /> 2. Mio min Mio <br /> Tid: kl. 15:30 (stora salongen) <br />
+            <br /> <span className="fw-bold">söndag 15 december:</span> <br />
+            <br /> 3. Ronja Rövardotter <br /> Tid: kl. 13:30 (stora salongen){' '}
+            <br />
+            <br /> <span className="fw-bold">Förmåner: </span> Halva priset på
+            popcorn: De som bokar biljetter till alla tre filmer får 50 % rabatt
+            på popcorn vid varje visning. <br />
+            <br /> <span className="fw-bold">Familjerabatt:</span>{' '}
+            Specialerbjudande för familjer som bokar fler än fyra biljetter.{' '}
+            <br />
+            <br /> <span className="fw-bold">Bokningsinformation:</span>{' '}
             Biljetter kan bokas via hemsidan eller i biljettkassan. <br />
             Popcornrabatten gäller för de som bokar alla tre filmer. <br />
             <br /> En underbar matinéhelg med några av Astrid Lindgrens mest
@@ -30,19 +39,27 @@ const EventPage: React.FC = () => {
 
         <Col xs={12} className="rounded bg-rosa mt-3 p-3">
           <h4 className="text-black">
-            Fira Halloween med några av 80-talets mest ikoniska skräckfilmer
-            genom tiderna!
+            Upplev en ikonisk skräckfilmskväll hos Filmvisarna!
           </h4>
           <p className="text-black">
-            Filmer som visas tisdag 31 oktober: <br /> 1. Nightmare on Elm
-            Street <br /> Tid: kl. 18:00 (stora salongen) <br /> 2. The Shining
+            <span className="fw-bold">
+              Filmer som visas fredag 20:e December:
+            </span>{' '}
             <br />
-            Tid: kl. 20:30 (stora salongen) <br /> 3. Friday the 13th <br />
-            Tid: kl. 18:00 (lilla salongen) <br /> 4. Poltergeist <br /> Tid:
-            kl. 20:30 (lilla salongen) <br />
-            <br /> Kom utklädd och vi bjuder på en liten popcorn!
-            Bokningsinformation: Biljetter kan bokas via hemsidan eller i
-            biljettkassan.
+            <br /> 1. Nightmare on Elm Street <br /> Tid: kl. 17:30 (stora
+            salongen) <br />
+            <br /> 2. The Shining
+            <br />
+            Tid: kl. 20:00 (stora salongen) <br />
+            <br /> 3. Friday the 13th <br />
+            Tid: kl. 17:30 (lilla salongen) <br />
+            <br /> 4. Poltergeist <br /> Tid: kl. 20:00 (lilla salongen) <br />
+            <br />
+            <span className="fw-bold">Förmåner: </span> Kom utklädd och vi
+            bjuder på en liten popcorn! <br />
+            <br />
+            <span className="fw-bold">Bokningsinformation:</span> Biljetter kan
+            bokas via hemsidan eller i biljettkassan.
           </p>
         </Col>
       </Row>

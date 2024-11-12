@@ -287,7 +287,7 @@ const cancelReservation = async (
                <h1 style="background-color: #ff94e0; color: #3e1e3d; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; margin: 0;">
                 Filmvisarna
              </h1>
-               <h2 style="color: #3e1e3d; margin-top: 20px;">Din Din avbokningsbekräftelse!</h2>
+               <h2 style="color: #3e1e3d; margin-top: 20px;">Din avbokningsbekräftelse!</h2>
                <ul style="background-color: #ff94e0; padding: 15px; border-radius: 8px; color: #3e1e3d;">
                  <li><strong>Boknings-nr:</strong> ${bookingDetails.reservationNumber}</li>
                  <li><strong>Film:</strong> ${bookingDetails.title}</li>
