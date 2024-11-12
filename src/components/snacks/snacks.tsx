@@ -1,8 +1,10 @@
 import { Col, Container, Row } from 'react-bootstrap';
 
 const renderPriceList = (prices: string[], title: string) => (
-  <ul className="list-unstyled p-2">
-    <div>{title}:</div>
+  <ul className="list-unstyled p-3">
+    <div>
+      <strong>{title}:</strong>
+    </div>
     {prices.map((price, index) => (
       <li key={index}>{price}</li>
     ))}
@@ -31,7 +33,7 @@ const food = [
   {
     name: 'Läsk',
     img: 'https://www.bollnasbio.se/files/snacks_lask.jpg',
-    memberPrice: ['10 kr'],
+    memberPrice: ['15 kr'],
     price: ['20 kr'],
   },
 ];
@@ -57,16 +59,16 @@ function SnacksCard() {
             <Col
               key={index}
               md={3}
-              className="d-flex flex-column movie-card p-0 rounded custom-letterSpacing fs-md-custom"
+              className="d-flex flex-column movie-card p-0 rounded custom-letterSpacing fs-md-custom "
               style={{ pointerEvents: 'none' }}
             >
               <img
                 src={value.img}
                 alt={value.name}
-                className="img-fluid rounded-top"
+                className="img-fluid rounded-top mb-3"
               />
-              <span className="p-2">
-                <strong>{value.name}</strong>
+              <span className="d-flex justify-content-center">
+                <h5>{value.name}</h5>
               </span>
               {renderPriceList(value.price, 'Pris')}
               {renderPriceList(value.memberPrice, 'Medlemspris')}
