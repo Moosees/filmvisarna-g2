@@ -189,17 +189,25 @@ const createNewReservation = async (
          `;
 
     await sendEmail(userEmail, 'Boking lyckades', html);
-    res.status(200).json({
+    res.status(201).json({
       message: 'Vi har skickat en bokning till din mail',
       reservationNum,
     });
 
-    console.log(html);
-
-    console.log('Email sent successfully');
-  } catch (error) {
-    console.log(error);
+    // console.log(html);
+    // console.log('Email sent successfully');
+  } catch (error: unknown) {
     await con?.rollback();
+
+    const err = error as { code: string };
+    if (err.code && err.code === 'ER_DUP_ENTRY')
+      return res
+        .status(200)
+        .json({
+          message: 'Platserna är redan bokade, var god försök igen',
+          reservationNum: '',
+        });
+
     res.status(500).json({ message: 'Någonting gick fel' });
   } finally {
     con?.release();

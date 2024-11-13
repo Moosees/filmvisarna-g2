@@ -25,6 +25,11 @@ interface PostReservationData {
   seats: number[];
 }
 
+interface PostReservationResponse {
+  message: string;
+  reservationNum: string;
+}
+
 async function getScreeningData(screeningId: number) {
   const response = await getAxios().get<ScreeningData>(`seats/${screeningId}`);
 
@@ -48,12 +53,12 @@ export const reserveLoader =
   };
 
 async function postReservation(reservationData: PostReservationData) {
-  const response = await getAxios().post<{
-    message: string;
-    reservationNum: string;
-  }>('reservation', reservationData);
+  const response = await getAxios().post<PostReservationResponse>(
+    'reservation',
+    reservationData
+  );
 
-  return response.data;
+  return response;
 }
 
 export const reserveAction = async ({
@@ -69,13 +74,18 @@ export const reserveAction = async ({
   if (!params.screeningId) return 'Bokningen är inte korrekt ifylld';
 
   try {
-    const resData = await postReservation({
+    const response = await postReservation({
       ...data,
       screeningId: +params.screeningId,
     });
 
+    if (response.status === 200) {
+      toast.error(response.data.message);
+      return null;
+    }
+
     toast.success('Vi har skickat en bokningsbekräftelse till din e-post');
-    return redirect(`/bokning/${resData.reservationNum}`);
+    return redirect(`/bokning/${response.data.reservationNum}`);
   } catch (error) {
     if (
       axios.isAxiosError(error) &&
