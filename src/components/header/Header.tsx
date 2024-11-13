@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { useLogOutMutation } from '../../api/logOut';
 import { getRootDataQuery } from '../../api/root';
 import LogoText from '../../assets/images/logoText.svg';
-//import User from '../../assets/images/user.svg';
 import NavButton from '../buttons/NavButton';
 import memberLogo from '../../assets/images/memberLogo.svg';
 
@@ -32,12 +31,7 @@ function Header() {
         {/* <NavButton to="/evenemang" label="Evenemang" /> */}
         <Dropdown>
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
-            <img
-              src={memberLogo}
-              alt="Medlem meny"
-              style={{ width: '4.375rem', height: '4.375rem' }}
-              className="img-fluid"
-            />
+            <img src={memberLogo} alt="Medlem meny" className="img-fluid" />
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu shadow">
             {!isLoggedIn && ( // Render these items only when not logged in
