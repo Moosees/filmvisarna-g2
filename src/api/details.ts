@@ -2,16 +2,6 @@ import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { LoaderFunctionArgs } from 'react-router-dom';
 import { getAxios } from './clients';
 
-interface MovieInfo {
-  year_recorded: number;
-  director: string;
-  actors: string[];
-  description: string;
-  language: string;
-  subtitles: string;
-  trailer: string;
-}
-
 interface ScreeningDetails {
   dayName: string;
   timeRange: string;
@@ -28,7 +18,13 @@ export interface MovieData {
   playTime: number;
   age: number;
   posterUrl: string;
-  movieInfo: MovieInfo;
+  yearRecorded: number;
+  director: string;
+  actors: string[];
+  description: string;
+  language: string;
+  subtitles: string;
+  trailer: string;
   genres: string[];
   screeningDetails: ScreeningDetails[];
 }

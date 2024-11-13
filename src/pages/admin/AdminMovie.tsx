@@ -39,7 +39,7 @@ function AdminMovieEdit() {
               defaultValue={movieData?.title}
               type="text"
               className="form-control-field"
-              placeholder="Primär titel"
+              placeholder="Beetlejuice"
               {...register('title', { required: 'Titeln är obligatorisk' })}
               isInvalid={!!errors.title}
             />
@@ -47,27 +47,29 @@ function AdminMovieEdit() {
               {errors.title?.message}
             </Form.Control.Feedback>
           </Form.Group>
-          {/* <Form.Group controlId="altTitle" className="field-container mb-3"> */}
-          {/*   <Form.Label className="form-label">Alternativ titel</Form.Label> */}
-          {/*   <Form.Control */}
-          {/*     defaultValue={movieData?.altTitle} */}
-          {/*     type="text" */}
-          {/*     className="form-control-field" */}
-          {/*     placeholder="Alternativ/original titel" */}
-          {/* {...register('altTitle', { required: false })} */}
-          {/*     isInvalid={!!errors.altTitle} */}
-          {/*   /> */}
-          {/*   <Form.Control.Feedback type="invalid"> */}
-          {/*     {errors.altTitle?.message} */}
-          {/*   </Form.Control.Feedback> */}
-          {/* </Form.Group> */}
-          <Form.Group controlId="playTime" className="field-container mb-3">
-            <Form.Label className="form-label">Speltid</Form.Label>
+
+          <Form.Group controlId="altTitle" className="field-container mb-3">
+            <Form.Label className="form-label">Alternativ titel</Form.Label>
             <Form.Control
-              defaultValue={movieData?.playTime}
+              defaultValue={movieData?.altTitle}
+              type="text"
+              className="form-control-field"
+              placeholder="Alternativ titel"
+              {...register('altTitle', { required: false })}
+              isInvalid={!!errors.altTitle}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.altTitle?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="playTime" className="field-container mb-3">
+            <Form.Label className="form-label">Speltid i minuter</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.playTime || 92}
               type="number"
               className="form-control-field"
-              placeholder="Tid i minuter"
+              placeholder="92"
               {...register('playTime', {
                 required: 'Speltid är obligatorisk',
                 min: 0,
@@ -79,6 +81,7 @@ function AdminMovieEdit() {
               {errors.playTime?.message}
             </Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group controlId="age" className="field-container mb-3">
             <Form.Label className="form-label">Åldersgräns</Form.Label>
             <Form.Select
@@ -96,6 +99,7 @@ function AdminMovieEdit() {
               {errors.age?.message}
             </Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group controlId="posterUrl" className="field-container mb-3">
             <Form.Label className="form-label">Filmposter</Form.Label>
             <Form.Control
@@ -108,6 +112,116 @@ function AdminMovieEdit() {
             />
             <Form.Control.Feedback type="invalid">
               {errors.posterUrl?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="yearRecorded" className="field-container mb-3">
+            <Form.Label className="form-label">Inspelningsår</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.yearRecorded || 1988}
+              type="number"
+              className="form-control-field"
+              placeholder="1988"
+              {...register('yearRecorded', {
+                required: false,
+                min: 1900,
+                max: 2100,
+              })}
+              isInvalid={!!errors.yearRecorded}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.playTime?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="director" className="field-container mb-3">
+            <Form.Label className="form-label">Regissör</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.director}
+              type="text"
+              className="form-control-field"
+              placeholder="Tim Burton"
+              {...register('director', { required: false })}
+              isInvalid={!!errors.director}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.director?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="actors" className="field-container mb-3">
+            <Form.Label className="form-label">Skådespelare</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.actors}
+              type="text"
+              className="form-control-field"
+              placeholder="Alec Baldwin, Geena Davis"
+              {...register('actors', { required: false })}
+              isInvalid={!!errors.actors}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.actors?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="description" className="field-container mb-3">
+            <Form.Label className="form-label">Beskrivning</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.description}
+              as="textarea"
+              rows={4}
+              className="form-control-field"
+              placeholder="Beetlejuice, beetlejuice, beetlejuice"
+              {...register('description', { required: false })}
+              isInvalid={!!errors.description}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.description?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="language" className="field-container mb-3">
+            <Form.Label className="form-label">Språk</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.language}
+              type="text"
+              className="form-control-field"
+              placeholder="Engelska"
+              {...register('language', { required: false })}
+              isInvalid={!!errors.language}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.language?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="subtitles" className="field-container mb-3">
+            <Form.Label className="form-label">Undetexter</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.subtitles}
+              type="text"
+              className="form-control-field"
+              placeholder="Svenska"
+              {...register('subtitles', { required: false })}
+              isInvalid={!!errors.subtitles}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.subtitles?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="trailer" className="field-container mb-3">
+            <Form.Label className="form-label">Filmtrailer</Form.Label>
+            <Form.Control
+              defaultValue={movieData?.trailer}
+              type="text"
+              className="form-control-field"
+              placeholder="Url till trailer"
+              {...register('trailer', { required: false })}
+              isInvalid={!!errors.trailer}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.trailer?.message}
             </Form.Control.Feedback>
           </Form.Group>
         </div>
