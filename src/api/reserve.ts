@@ -6,6 +6,7 @@ import {
   redirect,
 } from 'react-router-dom';
 import { getAxios } from './clients';
+import { toast } from 'react-toastify';
 
 export interface ScreeningData {
   title: string;
@@ -73,6 +74,7 @@ export const reserveAction = async ({
       screeningId: +params.screeningId,
     });
 
+    toast.success('Vi har skickat en bokningsbekräftelse till din e-post');
     return redirect(`/bokning/${resData.reservationNum}`);
   } catch (error) {
     if (
