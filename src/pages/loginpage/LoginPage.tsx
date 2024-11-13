@@ -14,6 +14,14 @@ const LoginPage: React.FC = () => {
   const actionData = useActionData() as { error?: string };
   // const [loginAttempted, setLoginAttempted] = useState(false);
 
+  // const { data } = useSuspenseQuery({
+  //   ...getRootDataQuery(),
+  //   refetchOnWindowFocus: false,
+  //   staleTime: 0,
+  // });
+
+  // const isLoggedIn = data?.isLoggedIn;
+
   const {
     register,
     handleSubmit,
