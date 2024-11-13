@@ -48,18 +48,21 @@ function AdminMovieEdit() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group controlId="altTitle" className="field-container mb-3">
+          <Form.Group
+            controlId="original_title"
+            className="field-container mb-3"
+          >
             <Form.Label className="form-label">Alternativ titel</Form.Label>
             <Form.Control
-              defaultValue={movieData?.altTitle}
+              defaultValue={movieData?.original_title}
               type="text"
               className="form-control-field"
               placeholder="Alternativ titel"
-              {...register('altTitle', { required: false })}
-              isInvalid={!!errors.altTitle}
+              {...register('original_title', { required: false })}
+              isInvalid={!!errors.original_title}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.altTitle?.message}
+              {errors.original_title?.message}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -115,22 +118,25 @@ function AdminMovieEdit() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group controlId="yearRecorded" className="field-container mb-3">
+          <Form.Group
+            controlId="year_recorded"
+            className="field-container mb-3"
+          >
             <Form.Label className="form-label">Inspelningsår</Form.Label>
             <Form.Control
-              defaultValue={movieData?.yearRecorded || 1988}
+              defaultValue={movieData?.year_recorded || 1988}
               type="number"
               className="form-control-field"
               placeholder="1988"
-              {...register('yearRecorded', {
+              {...register('year_recorded', {
                 required: false,
                 min: 1900,
                 max: 2100,
               })}
-              isInvalid={!!errors.yearRecorded}
+              isInvalid={!!errors.year_recorded}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.playTime?.message}
+              {errors.year_recorded?.message}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -195,18 +201,18 @@ function AdminMovieEdit() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group controlId="subtitles" className="field-container mb-3">
+          <Form.Group controlId="subtitle" className="field-container mb-3">
             <Form.Label className="form-label">Undetexter</Form.Label>
             <Form.Control
-              defaultValue={movieData?.subtitles}
+              defaultValue={movieData?.subtitle}
               type="text"
               className="form-control-field"
               placeholder="Svenska"
-              {...register('subtitles', { required: false })}
-              isInvalid={!!errors.subtitles}
+              {...register('subtitle', { required: false })}
+              isInvalid={!!errors.subtitle}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.subtitles?.message}
+              {errors.subtitle?.message}
             </Form.Control.Feedback>
           </Form.Group>
 
