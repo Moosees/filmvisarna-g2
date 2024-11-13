@@ -34,8 +34,20 @@ function ReservePage() {
     if (typeof error === 'string') toast.warning(error);
   }, [error]);
 
+  useEffect(() => {
+    const reservedByOther = data.seats
+      .flat()
+      .find((seat) => seatIds.includes(seat.seatId) && !seat.free);
+
+    if (reservedByOther)
+      setSeatIds((prev) =>
+        prev.filter((seatId) => seatId !== reservedByOther.seatId)
+      );
+  }, [data, seatIds]);
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
   return (
