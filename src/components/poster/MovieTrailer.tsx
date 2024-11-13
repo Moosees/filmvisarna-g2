@@ -1,12 +1,9 @@
 import { Col } from 'react-bootstrap';
 import { Film } from 'react-bootstrap-icons';
+
 interface MovieTrailerProps {
-  movieData: {
-    movieInfo?: {
-      trailer?: string;
-    };
-    title: string;
-  };
+  trailer?: string;
+  title: string;
 }
 
 const convertToEmbedLink = (trailerUrl: string) => {
@@ -23,14 +20,14 @@ const convertToEmbedLink = (trailerUrl: string) => {
   return trailerUrl;
 };
 
-export default function MovieTrailer({ movieData }: MovieTrailerProps) {
+export default function MovieTrailer({ trailer, title }: MovieTrailerProps) {
   return (
     <Col>
-      {movieData.movieInfo?.trailer ? (
+      {trailer ? (
         <iframe
           style={{ width: '100%', height: '38vh' }}
-          src={convertToEmbedLink(movieData.movieInfo.trailer)}
-          title={`${movieData.title} trailer`}
+          src={convertToEmbedLink(trailer)}
+          title={`${title} trailer`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />

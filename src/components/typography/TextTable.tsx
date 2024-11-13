@@ -5,13 +5,11 @@ interface TextTableProps {
     playTime: number;
     title: string;
     genres: string[];
-    movieInfo?: {
-      director?: string;
-      actors?: string[];
-      year_recorded: number;
-      language: string;
-      subtitle: string;
-    };
+    director?: string;
+    actors?: string[];
+    year_recorded: number;
+    language: string;
+    subtitle: string;
   };
 }
 
@@ -20,16 +18,16 @@ export default function TextTable({ movieData }: TextTableProps) {
     { label: 'Speltid', value: `${movieData.playTime} Minuter` },
     {
       label: 'Språk',
-      value: movieData.movieInfo?.language || 'okänd',
+      value: movieData.language || 'okänd',
     },
-    { label: 'Undertexter', value: movieData.movieInfo?.subtitle || 'okänd' },
+    { label: 'Undertexter', value: movieData.subtitle || 'okänd' },
     { label: 'Genre', value: movieData.genres?.join(', ') || 'okänd' },
-    { label: 'Regi', value: movieData.movieInfo?.director || 'okänd' },
+    { label: 'Regi', value: movieData.director || 'okänd' },
     {
       label: 'Skådespelare',
-      value: movieData.movieInfo?.actors?.join(', ') || 'okänd',
+      value: movieData.actors?.join(', ') || 'okänd',
     },
-    { label: 'Inspelad', value: movieData.movieInfo?.year_recorded || 'okänd' },
+    { label: 'Inspelad', value: movieData.year_recorded || 'okänd' },
   ];
 
   return (

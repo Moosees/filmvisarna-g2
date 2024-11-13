@@ -13,11 +13,11 @@ export interface MovieData {
   movieId: number;
   paramUrl: string;
   title: string;
-  altTitle: string;
+  original_title: string;
   playTime: number;
   age: number;
   posterUrl: string;
-  yearRecorded: number;
+  year_recorded: number;
   director: string;
   actors: string[];
   description: string;

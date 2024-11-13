@@ -14,10 +14,12 @@ import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 function MovieDetailsPage() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
-  const [selectedScreening, setSelectedScreening] = useState<number>(
-    movieData.screeningDetails?.[0]?.screeningId
-  );
+  const [selectedScreening, setSelectedScreening] = useState<
+    number | undefined
+  >(movieData?.screeningDetails?.[0]?.screeningId);
   const [openTrailer, setOpenTrailer] = useState(false);
+
+  if (!movieData) return <Container>Kunde inte hitta filmen</Container>;
 
   return (
     <>
@@ -33,11 +35,14 @@ function MovieDetailsPage() {
               {/* Poster Section */}
               <Col className="text-center">
                 {openTrailer ? (
-                  <MovieTrailer movieData={movieData} />
+                  <MovieTrailer
+                    title={movieData.title}
+                    trailer={movieData.trailer}
+                  />
                 ) : (
                   <MoviePoster movieData={movieData} />
                 )}
-                {movieData.movieInfo?.trailer && (
+                {movieData.trailer && (
                   <PrimaryBtn
                     onClick={(e) => {
                       e?.preventDefault();
@@ -52,11 +57,13 @@ function MovieDetailsPage() {
             <Row className=" my-3  flex-column align-items-center d-none d-md-block">
               {/* Date Buttons */}
               <Col>
-                <ScreeningSelect
-                  selectedScreening={selectedScreening}
-                  setSelectedScreening={setSelectedScreening}
-                  movieData={movieData}
-                />
+                {selectedScreening && (
+                  <ScreeningSelect
+                    selectedScreening={selectedScreening}
+                    setSelectedScreening={setSelectedScreening}
+                    movieData={movieData}
+                  />
+                )}
               </Col>
             </Row>
           </div>
@@ -64,16 +71,21 @@ function MovieDetailsPage() {
           {/* Movie Details and  Movie Description  */}
           <Row className=" py-3 flex-column g-3 col-md-5 ">
             {/* Movie Description */}
-            <TextBox movieData={movieData} />
+            <TextBox
+              description={movieData.description}
+              original_title={movieData.original_title}
+            />
 
             <div className=" my-3 d-flex flex-column align-items-center d-md-none">
               {/* Date Buttons */}
               <Col>
-                <ScreeningSelect
-                  selectedScreening={selectedScreening}
-                  setSelectedScreening={setSelectedScreening}
-                  movieData={movieData}
-                />
+                {selectedScreening && (
+                  <ScreeningSelect
+                    selectedScreening={selectedScreening}
+                    setSelectedScreening={setSelectedScreening}
+                    movieData={movieData}
+                  />
+                )}
               </Col>
             </div>
             {/* Movie Details */}
