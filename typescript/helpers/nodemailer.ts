@@ -35,7 +35,7 @@ class Mailer {
         subject,
         text,
         html,
-        attachments, 
+        attachments,
       },
       (error, info) => {
         if (error) {

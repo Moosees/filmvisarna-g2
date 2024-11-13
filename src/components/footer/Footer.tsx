@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Instagram, PinMap, TwitterX } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -32,20 +33,20 @@ const Footer: React.FC = () => {
           <div className="col-md-3">
             <h5>Övrigt:</h5>
             <p>
-              <a
+              <Link
+                to="/godis"
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href="#"
               >
                 Biogodis
-              </a>
+              </Link>
             </p>
             <p>
-              <a
+              <Link
+                to="/godis#teknik"
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href="#"
               >
                 Teknik
-              </a>
+              </Link>
             </p>
             <p>
               <a
@@ -58,7 +59,7 @@ const Footer: React.FC = () => {
             <p>
               <a
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href="#"
+                href={'/avbokning'}
               >
                 Avboka
               </a>

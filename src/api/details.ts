@@ -22,7 +22,7 @@ export interface MovieData {
   actors: string[];
   description: string;
   language: string;
-  subtitles: string;
+  subtitle: string;
   trailer: string;
   genres: string[];
   screeningDetails: ScreeningDetails[];

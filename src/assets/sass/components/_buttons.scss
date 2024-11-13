@@ -16,12 +16,21 @@
   text-decoration: none;
   color: #000000;
   padding: 0.2em 0.5em;
+  scale: 0.95;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: darken(#1dc9cb, 10%);
+    color: white;
+    scale: 1;
+  }
 
   @include media-breakpoint-up(md) {
     padding: 1em 2em;
     text-decoration: underline;
   }
 }
+
 .react-datepicker-wrapper {
   width: 100%;
 }
@@ -34,9 +43,7 @@
   border: 2px solid #f245c0;
   font-size: 1.2rem;
   border-radius: 4px;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-custom:hover {
@@ -51,5 +58,12 @@
 
   button {
     flex: 1;
+  }
+}
+.scale {
+  scale: 0.97;
+  transition: scale 0.3s ease;
+  &:hover {
+    scale: 1;
   }
 }

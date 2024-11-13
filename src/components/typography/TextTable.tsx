@@ -9,6 +9,8 @@ interface TextTableProps {
       director?: string;
       actors?: string[];
       year_recorded: number;
+      language: string;
+      subtitle: string;
     };
   };
 }
@@ -16,7 +18,12 @@ interface TextTableProps {
 export default function TextTable({ movieData }: TextTableProps) {
   const movieDetails = [
     { label: 'Speltid', value: `${movieData.playTime} Minuter` },
-    { label: 'Genre', value: movieData.genres.join(', ') },
+    {
+      label: 'Språk',
+      value: movieData.movieInfo?.language || 'okänd',
+    },
+    { label: 'Undertexter', value: movieData.movieInfo?.subtitle || 'okänd' },
+    { label: 'Genre', value: movieData.genres?.join(', ') || 'okänd' },
     { label: 'Regi', value: movieData.movieInfo?.director || 'okänd' },
     {
       label: 'Skådespelare',
@@ -29,14 +36,14 @@ export default function TextTable({ movieData }: TextTableProps) {
     <Col>
       <Card className="p-3 text-dark bg-rosa border border-0">
         <Card.Body className="p-0">
-          <Card.Title className="my-2 text-center fw-bold text-decoration-underline">
+          {/* <Card.Title className="my-2 text-center fw-bold text-decoration-underline">
             Detaljer
-          </Card.Title>
+          </Card.Title> */}
           <ListGroup variant="flush">
             {movieDetails.map((detail, index) => (
               <ListGroup.Item
                 key={index}
-                className="text-dark p-1 px-0 bg-rosa d-flex align-items-center justify-content-between flex-wrap"
+                className="text-dark bg-rosa p-1 px-0 d-flex align-items-center justify-content-between flex-wrap border border-0 text-capitalize"
               >
                 <strong>{detail.label}:</strong> <span>{detail.value}</span>
               </ListGroup.Item>

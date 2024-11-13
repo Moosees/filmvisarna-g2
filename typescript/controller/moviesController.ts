@@ -92,6 +92,7 @@ const getMovie = async (req: Request, res: Response) => {
 
 const getTodaysMovie = async (req: Request, res: Response) => {
   try {
+    await db.execute('SET lc_time_names = "sv_SE"');
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
       `SELECT
@@ -99,6 +100,7 @@ const getTodaysMovie = async (req: Request, res: Response) => {
       m.title,
       m.poster_url as posterUrl,
       m.age,
+      s.start_time as fullDate,
       s.id AS screeningId,
       concat(date_format(s.start_time, '%H:%i'), '-', date_format((s.start_time + interval m.play_time minute), '%H:%i')) AS startTime,
       JSON_OBJECT(
@@ -110,7 +112,9 @@ const getTodaysMovie = async (req: Request, res: Response) => {
         ) as dateFormat
       FROM screening s
       INNER JOIN movie m ON s.movie_id = m.id
-      WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()`
+      WHERE DATE_FORMAT(s.start_time, '%Y-%m-%d') = CURRENT_DATE()
+       ORDER BY s.start_time ASC;
+      `
     );
 
     // Check if the movie was found
@@ -215,14 +219,6 @@ const filterMovies = async (req: Request, res: Response) => {
       endDate?: string;
       title?: string;
     };
-
-    // if (!age && !date && !title) {
-    //   res
-    //     .status(400)
-    //     .json({ message: 'Parameter för ålder eller datum krävs' });
-    //   return;
-    // }
-
     await db.execute('SET lc_time_names = "sv_SE"');
 
     let query = `
@@ -250,30 +246,8 @@ FROM
 INNER JOIN
     movie m ON s.movie_id = m.id
     WHERE
-      CAST(s.start_time AS DATE) >= CURRENT_DATE()
+      s.start_time > DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 15 MINUTE)
     `;
-
-    //     let query = `
-    //     select
-    //     m.id AS movieId,
-    //     m.title AS title,
-    //     m.url_param AS paramUrl,
-    //     m.age AS age,
-    //     m.poster_url AS posterUrl,
-    //     json_arrayagg(json_object('screeningId', s.id,'startDate',DATE_FORMAT(s.start_time, '%Y-%m-%d'),'timeRange',concat(
-    //         date_format(s.start_time, '%H:%i'),
-    //         '-',
-    //         date_format((s.start_time + interval m.play_time minute), '%H:%i')
-    //     ), 'dayName',(case when (cast(s.start_time as date) = curdate()) then 'idag' else dayname(s.start_time) end), 'screeningDate', date_format(s.start_time, '%d %b'))) AS screeningDetails
-    //   from
-    //     screening s
-    //     join bondkatt.movie m on
-    //     s.movie_id =m.id
-    //     WHERE
-    //     CAST(s.start_time AS DATE) >= NOW()
-    //      AND CAST(s.start_time AS DATE) <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)
-    // `;
-
     const params: (string | number)[] = [];
 
     if (age) {

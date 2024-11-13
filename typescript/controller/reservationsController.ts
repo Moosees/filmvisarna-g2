@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
+import sendEmail from '../utils/sendEmail.js';
 
 interface CreateNewReservationRequest extends Request {
   body: {
@@ -15,6 +16,12 @@ interface CreateNewReservationRequest extends Request {
 interface ReservationData extends RowDataPacket {
   reservationId: number;
   reservationNum: string;
+}
+
+interface Seat {
+  row: number;
+  number: number;
+  seatId: number;
 }
 
 // Helpers
@@ -79,6 +86,8 @@ const createNewReservation = async (
   res: Response
 ) => {
   const { email, screeningId, ticketIds, seatIds } = req.body;
+  const userEmail = email || req.session.user?.email;
+
   if (
     (!email && !req.session.user?.email) ||
     !screeningId ||
@@ -121,7 +130,73 @@ const createNewReservation = async (
 
     await con.commit();
 
-    res.status(200).json({ message: 'Bokningen lyckades', reservationNum });
+    //Nodemailer for reservation
+    function formatSeats(seats: Seat[]): string {
+      return seats
+        .map((seat) => `Rad: ${seat.row}, Plats: ${seat.number}`)
+        .join('<br>');
+    }
+
+    const [reservationDetails]: [RowDataPacket[], FieldPacket[]] =
+      await db.execute(
+        'SELECT * FROM vy_reservationDetails vrd WHERE reservationNumber = ?',
+        [reservationNum]
+      );
+
+    if (reservationDetails.length === 0) {
+      res.status(500).json({ message: 'Bokningsdetaljer kunde inte hämtas' });
+      return;
+    }
+
+    const bookingDetails = reservationDetails[0];
+
+    const html = `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #3e1e3d; padding: 20px;">
+             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
+               <h1 style="background-color: #ff94e0; color: #3e1e3d; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; margin: 0;">
+                Filmvisarna
+             </h1>
+               <h2 style="color: #3e1e3d; margin-top: 20px;">Tack för din bokning hos Filmvisarna!</h2>
+               <p style="color: #3e1e3d;">Hej!</p>
+               <p style="color: #3e1e3d;">Vi är glada att bekräfta din bokning. Här är en sammanfattning:</p>
+               <ul style="background-color: #ff94e0; padding: 15px; border-radius: 8px; color: #3e1e3d;">
+                 <li><strong>Boknings-nr:</strong> ${
+                   bookingDetails.reservationNumber
+                 }</li>
+                 <li><strong>Salong:</strong> ${
+                   bookingDetails.auditoriumName
+                 }</li>
+                 <li><strong>Plats:</strong> ${formatSeats(
+                   bookingDetails.seats
+                 )}</li>
+                 <li><strong>Film:</strong> ${bookingDetails.title}</li>
+                 <li><strong>Datum:</strong> ${bookingDetails.startDate}</li>
+                 <li><strong>Tid:</strong> ${bookingDetails.timeRange}</li>
+                <li><strong>Antal personer:</strong> ${
+                  bookingDetails.ticketDetails
+                }</li>
+                <li><strong>Totalt pris:</strong> ${
+                  bookingDetails.totalPrice
+                }</li>
+
+               </ul>
+               <p style="margin-top: 20px; color: #3e1e3d;">Vi ser fram emot att välkomna dig! Om du har några frågor, tveka inte att kontakta oss.</p>
+               <p style="color: #3e1e3d;">Med vänliga hälsningar,<br />Filmvisarna</p>
+               <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+               <p style="font-size: 12px; color: #888;">Filmvisarna AB | Adressvägen 123, 111 22 Stockholm</p>
+            </div>
+           </div>
+         `;
+
+    await sendEmail(userEmail, 'Boking lyckades', html);
+    res.status(200).json({
+      message: 'Vi har skickat en bokning till din mail',
+      reservationNum,
+    });
+
+    console.log(html);
+
+    console.log('Email sent successfully');
   } catch (error) {
     console.log(error);
     await con?.rollback();
@@ -172,8 +247,46 @@ const cancelReservation = async (
       .json({ error: 'Bokningen saknar e-post eller bokningsnummer' });
     return;
   }
+  console.log(email, reservationNum);
 
   let con;
+
+  const [reservationDetails]: [RowDataPacket[], FieldPacket[]] =
+    await db.execute(
+      'SELECT * FROM vy_reservationDetails vrd WHERE reservationNumber = ?',
+      [reservationNum]
+    );
+
+  if (reservationDetails.length === 0) {
+    res.status(500).json({ message: 'Bokningsdetaljer kunde inte hämtas' });
+    return;
+  }
+
+  const bookingDetails = reservationDetails[0];
+
+  const html = `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #3e1e3d; padding: 20px;">
+             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
+               <h1 style="background-color: #ff94e0; color: #3e1e3d; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; margin: 0;">
+                Filmvisarna
+             </h1>
+               <h2 style="color: #3e1e3d; margin-top: 20px;">Vi vill härmed bekräfta att din bokning har avbokats</h2>
+               <ul style="background-color: #ff94e0; padding: 15px; border-radius: 8px; color: #3e1e3d;">
+                 <li><strong>Boknings-nr:</strong> ${bookingDetails.reservationNumber}</li>
+                 <li><strong>Film:</strong> ${bookingDetails.title}</li>
+                 <li><strong>Datum:</strong> ${bookingDetails.startDate}</li>
+                <li><strong>Antal personer:</strong> ${bookingDetails.ticketDetails}</li>
+                <li><strong>Totalt pris:</strong> ${bookingDetails.totalPrice}</li>
+               </ul>
+               <p style="margin-top: 20px; color: #3e1e3d;">Det är tråkigt att du behövt avboka, men vi förstår att planer kan förändras. Har du några frågor eller behöver ytterligare hjälp tveka inte på att kontakta oss!
+
+Tack för att du valde oss, och vi hoppas att få välkomna dig tillbaka snart.</p>
+               <p style="color: #3e1e3d;">Med vänliga hälsningar,<br />Filmvisarna</p>
+               <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+               <p style="font-size: 12px; color: #888;">Filmvisarna AB | Adressvägen 123, 111 22 Stockholm</p>
+            </div>
+           </div>
+         `;
 
   try {
     con = await db.getConnection();
@@ -188,7 +301,13 @@ const cancelReservation = async (
 
     await con.commit();
     // Ev. byta till 204 istället
-    res.status(200).json({ message: 'Avbokning lyckades' });
+    // res.status(200).json({ message: 'Avbokning lyckades' });
+    await sendEmail(email, 'Avbokningsbekräftelse', html);
+    res.status(200).json({
+      message:
+        'Avbokning lyckades och vi har skickat en avbokningsbekräftelse till din e-post',
+      reservationNum,
+    });
   } catch (error) {
     await con?.rollback();
     res.status(500).json({ message: 'Någonting gick fel', error });
@@ -232,8 +351,8 @@ const changeReservation = async (
 
     const [result] = await con.execute<ReservationIdPacket[]>(
       `
-        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r 
-        INNER JOIN user u ON u.id = r.user_id 
+        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r
+        INNER JOIN user u ON u.id = r.user_id
         WHERE r.reservation_num = :reservationNum AND u.user_email = :email
       `,
       { reservationNum, email }
