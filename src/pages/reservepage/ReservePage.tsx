@@ -13,6 +13,20 @@ import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
 import { toast } from 'react-toastify';
+import SeatsUpdateComponent from '../../components/seatsupdate/SeatsUpdateComponent';
+
+export interface Seat {
+  seatId: number;
+  free: boolean;
+}
+
+export interface SeatUpdate {
+  screeningId: number;
+  updatedSeat: {
+    seatId: number;
+    free: boolean;
+  };
+}
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
@@ -28,6 +42,17 @@ function ReservePage() {
     ReturnType<ReturnType<typeof reserveLoader>>
   >;
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
+
+  const [seats, setSeats] = useState<Seat[][]>(data.seats);
+
+  const updateSeats = (seatUpdate: SeatUpdate) => {
+    const { seatId, free } = seatUpdate.updatedSeat;
+    setSeats((prevSeats) =>
+      prevSeats.map((row) =>
+        row.map((seat) => (seat.seatId === seatId ? { ...seat, free } : seat))
+      )
+    );
+  };
 
   const error = useActionData() as unknown as string | Response;
   useEffect(() => {
@@ -81,6 +106,11 @@ function ReservePage() {
           numPersons={ticketIds.length}
           seatIds={seatIds}
           setSeatIds={setSeatIds}
+          screeningId={screeningId}
+        />
+        <SeatsUpdateComponent
+          screeningId={screeningId}
+          onSeatUpdate={updateSeats} // Pass the update handler
         />
         <div className="button-group">
           <PrimaryBtn>

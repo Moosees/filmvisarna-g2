@@ -4,11 +4,36 @@ import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { getBookingDataQuery } from '../../api/booking';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Seat } from '../../api/booking';
+import { useState } from 'react';
+import SeatsUpdateComponent from '../../components/seatsupdate/SeatsUpdateComponent';
+
+interface SeatUpdate {
+  screeningId: number;
+  updatedSeat: {
+    seatId: number;
+    free: boolean;
+  };
+}
 
 function BookingConfirmation() {
-  const { bookingNumber } = useLoaderData() as { bookingNumber: string };
+  const { bookingNumber, screeningId } = useLoaderData() as {
+    bookingNumber: string;
+    screeningId: number;
+  };
 
   const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
+
+  const [seats, setSeats] = useState<Seat[]>(data.seats);
+
+  const updateSeats = (seatUpdate: SeatUpdate) => {
+    setSeats((prevSeats) =>
+      prevSeats.map((seat) =>
+        seat.seatId === seatUpdate.updatedSeat.seatId
+          ? { ...seat, free: seatUpdate.updatedSeat.free }
+          : seat
+      )
+    );
+  };
 
   function formatSeats(seats: Seat[]): string {
     const [firstSeat, lastSeat] = [seats[0], seats[seats.length - 1]];
@@ -34,6 +59,10 @@ function BookingConfirmation() {
   return (
     <>
       <Container className="bg-rosa rounded py-3" style={{ maxWidth: '900px' }}>
+        <SeatsUpdateComponent
+          screeningId={screeningId}
+          onSeatUpdate={updateSeats}
+        />
         <Row className="flex-column flex-md-row align-items-center">
           <Col md={6}>
             <img

@@ -1,17 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardImg, Col, Row } from 'react-bootstrap';
 import { getAffectedSeats, type Seat } from './hallHelpers';
+import SeatsUpdateComponent from '../seatsupdate/SeatsUpdateComponent';
 
+interface SeatUpdate {
+  screeningId: number;
+  updatedSeat: {
+    seatId: number;
+    free: boolean;
+  };
+}
 interface HallProps {
   seats: Seat[][];
   poster: string;
   numPersons: number;
   seatIds: number[];
   setSeatIds: React.Dispatch<React.SetStateAction<number[]>>;
+  screeningId: number;
 }
 
-function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
+function Hall({
+  seats: initialSeats,
+  poster,
+  numPersons,
+  seatIds,
+  setSeatIds,
+  screeningId,
+}: HallProps) {
   const [hovered, setHovered] = useState<number[]>([]);
+  const [seats, setSeats] = useState<Seat[][]>(initialSeats);
+
+  const updateSeats = (seatUpdate: SeatUpdate) => {
+    const { seatId, free } = seatUpdate.updatedSeat;
+    setSeats((prevSeats) =>
+      prevSeats.map((row) =>
+        row.map((seat) => (seat.seatId === seatId ? { ...seat, free } : seat))
+      )
+    );
+  };
+
+  useEffect(() => {
+    setSeats(initialSeats);
+  }, [initialSeats]);
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
     setSeatIds(
@@ -41,13 +71,23 @@ function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
                 onClick={() => handleClick(i, row)}
                 onMouseEnter={() => handleMouseEnter(i, row)}
                 className={`border d-flex align-items-center justify-content-center p-2 rounded seat 
-                  ${!free ? 'bg-rosa border-light' : seatIds.includes(seatId) ? 'bg-success' : 'bg-light'} ${hovered.includes(seatId) ? 'seat-hover' : ''}
+                  ${
+                    !free
+                      ? 'bg-rosa border-light'
+                      : seatIds.includes(seatId)
+                      ? 'bg-success'
+                      : 'bg-light'
+                  } ${hovered.includes(seatId) ? 'seat-hover' : ''}
                 `}
               />
             ))}
           </Row>
         );
       })}
+      <SeatsUpdateComponent
+        screeningId={screeningId}
+        onSeatUpdate={updateSeats}
+      />
     </section>
   );
 }
