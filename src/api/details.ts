@@ -10,7 +10,6 @@ interface ScreeningDetails {
 }
 
 export interface MovieData {
-  message: string;
   movieId: number;
   paramUrl: string;
   title: string;

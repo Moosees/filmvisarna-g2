@@ -77,8 +77,14 @@ const getMovie = async (req: Request, res: Response) => {
       return;
     }
 
+    const { movieInfo, ...other } = results[0];
+    const responseData = {
+      ...other,
+      ...movieInfo,
+    };
+
     // Return the found movie
-    res.status(200).json(results[0]);
+    res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ message: 'Något gick fel', error });
   }
