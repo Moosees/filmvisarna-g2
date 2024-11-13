@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getRootDataQuery } from '../../api/root';
 
 export interface LoginFormData extends FieldValues {
   email: string;
@@ -15,15 +12,15 @@ export interface LoginFormData extends FieldValues {
 const LoginPage: React.FC = () => {
   const submit = useSubmit();
   const actionData = useActionData() as { error?: string };
-  const [loginAttempted, setLoginAttempted] = useState(false);
+  // const [loginAttempted, setLoginAttempted] = useState(false);
 
-  const { data } = useSuspenseQuery({
-    ...getRootDataQuery(),
-    refetchOnWindowFocus: false,
-    staleTime: 0,
-  });
+  // const { data } = useSuspenseQuery({
+  //   ...getRootDataQuery(),
+  //   refetchOnWindowFocus: false,
+  //   staleTime: 0,
+  // });
 
-  const isLoggedIn = data?.isLoggedIn;
+  // const isLoggedIn = data?.isLoggedIn;
 
   const {
     register,
@@ -33,19 +30,20 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<LoginFormData> = (values) => {
     submit(values, { method: 'post', action: '/medlem/logga-in' });
-    setLoginAttempted(true);
+    // setLoginAttempted(true);
   };
 
-  useEffect(() => {
-    if (isLoggedIn && loginAttempted) {
-      toast.success('Du är nu inloggad', {
-        closeOnClick: true,
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
-      setLoginAttempted(false);
-    }
-  }, [isLoggedIn, loginAttempted]);
+  // useEffect(() => {
+  //   if (loginAttempted && !actionData?.error) {
+  //     // Show toast on successful login after submit attempt
+  //     toast.success('Du är nu inloggad', {
+  //       closeOnClick: true,
+  //       autoClose: 3000,
+  //       hideProgressBar: true,
+  //     });
+  //     setLoginAttempted(false); // Reset the attempt state
+  //   }
+  // }, [actionData, loginAttempted]);
 
   return (
     <Container className="d-flex justify-content-center">
