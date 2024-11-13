@@ -14,7 +14,7 @@ const movie = `
       "description": "Various misc info about a movie",
       "type": "object",
       "properties": {
-        "year_recorded": {"type": "integer"},
+        "yearRecorded": {"type": "integer"},
         "director": {"type": "string"},
         "actors": {"type": "array", "items": {"type": "string"}},
         "description": {"type": "string"},
