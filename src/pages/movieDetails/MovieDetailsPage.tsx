@@ -1,7 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { getMovieDataQuery } from '../../api/details';
 import MainHeading from '../../components/mainHeading/MainHeading';
 import MovieTrailer from '../../components/poster/MovieTrailer';
@@ -10,10 +10,15 @@ import ScreeningSelect from '../../components/buttons/ScreeningSelect';
 import TextTable from '../../components/typography/TextTable';
 import TextBox from '../../components/typography/TextBox';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
+import { getRootDataQuery } from '../../api/root';
 
 function MovieDetailsPage() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
+  const {
+    data: { isAdmin },
+  } = useSuspenseQuery(getRootDataQuery());
+
   const [selectedScreening, setSelectedScreening] = useState<
     number | undefined
   >(movieData?.screeningDetails?.[0]?.screeningId);
@@ -75,6 +80,16 @@ function MovieDetailsPage() {
               description={movieData.description}
               original_title={movieData.original_title}
             />
+
+            {isAdmin && (
+              <Col className="text-center">
+                <PrimaryBtn>
+                  <Link to={`/admin/film/${movieData.movieId}`}>
+                    Redigera film
+                  </Link>
+                </PrimaryBtn>
+              </Col>
+            )}
 
             <div className=" my-3 d-flex flex-column align-items-center d-md-none">
               {/* Date Buttons */}
