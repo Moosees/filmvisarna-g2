@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useLoaderData, useSubmit } from 'react-router-dom';
 import { getMovieDataQuery, MovieData } from '../../api/details';
+import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 interface EditMovieData extends MovieData, FieldValues {}
@@ -10,6 +11,9 @@ interface EditMovieData extends MovieData, FieldValues {}
 function AdminMovieEdit() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
+  const {
+    data: { isAdmin },
+  } = useSuspenseQuery(getRootDataQuery());
 
   const {
     register,
@@ -19,8 +23,11 @@ function AdminMovieEdit() {
 
   const submit = useSubmit();
   const onSubmit: SubmitHandler<EditMovieData> = (values) => {
+    if (!isAdmin) return;
     submit(values, { method: 'post' });
   };
+
+  if (!isAdmin) return <div>Endast administratörer, var god logga in</div>;
 
   return (
     <Form className="container" onSubmit={handleSubmit(onSubmit)}>

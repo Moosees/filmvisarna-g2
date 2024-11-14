@@ -10,7 +10,7 @@ import NavButton from '../buttons/NavButton';
 
 function Header() {
   const {
-    data: { isLoggedIn },
+    data: { isLoggedIn, isAdmin },
   } = useSuspenseQuery(getRootDataQuery());
 
   const { mutate: logOut } = useLogOutMutation();
@@ -53,6 +53,13 @@ function Header() {
                   <a href="#" onClick={handleLogOut}>
                     Logga ut
                   </a>
+                </Dropdown.Item>
+              </>
+            )}
+            {isAdmin && (
+              <>
+                <Dropdown.Item as="button">
+                  <Link to="/admin/film">Lägg till film</Link>
                 </Dropdown.Item>
               </>
             )}

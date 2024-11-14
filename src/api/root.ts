@@ -3,6 +3,7 @@ import { getAxios } from './clients';
 
 interface RootData {
   isLoggedIn: boolean;
+  isAdmin: boolean;
 }
 
 async function getRootData() {
