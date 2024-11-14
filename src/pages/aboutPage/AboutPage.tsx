@@ -1,9 +1,10 @@
-import React from 'react';
-import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { ScrollRestoration } from 'react-router-dom';
 
 function AboutPage() {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
+      <ScrollRestoration />
       <Row className="w-100 mb-5">
         <Col
           xs={12}
@@ -29,7 +30,10 @@ function AboutPage() {
         </Col>
       </Row>
       <div className="row justify-content-center">
-        <h1 className="bg-rosa text-dark fs-5 fw-bold text-decoration-underline py-2 px-5 custom-rounded col-auto">
+        <h1
+          id="kontakt"
+          className="bg-rosa text-dark fs-5 fw-bold text-decoration-underline py-2 px-5 custom-rounded col-auto"
+        >
           Kontakta oss
         </h1>
       </div>
