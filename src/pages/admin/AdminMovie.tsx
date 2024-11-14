@@ -10,7 +10,6 @@ interface EditMovieData extends MovieData, FieldValues {}
 function AdminMovieEdit() {
   const { movieId } = useLoaderData() as { movieId: number };
   const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
-  console.log({ movieData });
 
   const {
     register,
@@ -20,7 +19,7 @@ function AdminMovieEdit() {
 
   const submit = useSubmit();
   const onSubmit: SubmitHandler<EditMovieData> = (values) => {
-    submit(values, { method: 'post', action: '/admin/film' });
+    submit(values, { method: 'post' });
   };
 
   return (

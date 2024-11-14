@@ -32,7 +32,6 @@ const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
     res.status(400).json({ message: 'Obligatoriska fält saknas' });
     return;
   }
-  console.log(req.body);
 
   const urlParam = req.body.title.replace(' ', '_').toLowerCase();
 
@@ -65,14 +64,12 @@ const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
       trailer,
     }),
   };
-  console.log(movieData);
 
   try {
     const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
       'REPLACE INTO movie (id, url_param, title, play_time, age, movie_info, poster_url) VALUES (:movieId, :urlParam, :title, :playTime, :age, :movieInfo, :posterUrl);',
       movieData
     );
-    console.log(results);
 
     // Send a success response with details of the newly added movie
     res.status(201).json({

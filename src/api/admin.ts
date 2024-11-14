@@ -7,7 +7,6 @@ import { MovieData } from './details';
 type PostMovieData = Omit<MovieData, 'genres' | 'screeningDetails'>;
 
 async function postMovie(reservationData: PostMovieData) {
-  console.log('postMovieData', reservationData);
   const response = await getAxios().post('movie', reservationData);
 
   return response;
@@ -23,15 +22,13 @@ export const adminMovieAction = async ({
     'movieId'
   >;
 
-  const movieId = params.movieId ? +params.movieId : 0;
+  const movieId = params.id ? +params.id : 0;
 
   try {
-    const response = await postMovie({
+    await postMovie({
       ...data,
       movieId,
     });
-
-    console.log({ response });
 
     toast.success('Filmdatabasen uppdaterad');
     return null;
