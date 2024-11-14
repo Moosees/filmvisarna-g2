@@ -18,6 +18,7 @@ function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const submit = useSubmit();
 
   const {
@@ -32,10 +33,32 @@ function ReservePage() {
   const error = useActionData() as unknown as string | Response;
   useEffect(() => {
     if (typeof error === 'string') toast.warning(error);
+    setIsSubmitting(false);
   }, [error]);
+
+  useEffect(() => {
+    const reservedByOther = data.seats
+      .flat()
+      .filter((seat) => seatIds.includes(seat.seatId) && !seat.free)
+      .map((seat) => seat.seatId);
+
+    if (reservedByOther.length) {
+      setSeatIds((prev) =>
+        prev.filter((seatId) => !reservedByOther.includes(seatId))
+      );
+
+      // NOTE: hax to prevent toast from your own reservation
+      if (!isSubmitting)
+        toast.warning(
+          'Någon hann boka en eller flera av dina valda platser före dig'
+        );
+    }
+  }, [data, seatIds, isSubmitting]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
   return (
@@ -76,8 +99,6 @@ function ReservePage() {
       </Col>
       <Col className="d-flex flex-column gap-3 col-12 col-lg-6">
         <Hall
-          seats={data.seats}
-          poster={data.poster}
           numPersons={ticketIds.length}
           seatIds={seatIds}
           setSeatIds={setSeatIds}

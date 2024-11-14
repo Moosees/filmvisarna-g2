@@ -57,12 +57,12 @@ const Footer: React.FC = () => {
               </a>
             </p>
             <p>
-              <a
+              <Link
+                to="/avbokning"
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href={'/avbokning'}
               >
                 Avboka
-              </a>
+              </Link>
             </p>
             <p>
               <a

@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { adminMovieAction } from './api/admin';
 import { bookingLoader } from './api/booking';
 import { cancelAction } from './api/cancel';
 import { getQueryClient } from './api/clients';
@@ -11,6 +12,7 @@ import { reserveAction, reserveLoader } from './api/reserve';
 import { rootLoader } from './api/root';
 import App from './App';
 import CinemaTechnology from './components/cinema-technology/cinemaTechnology';
+import AboutPage from './pages/aboutPage/AboutPage';
 import AdminMovie from './pages/admin/AdminMovie';
 import BookingConfirmation from './pages/bookingConfirmation/bookingConfirmation';
 import CancelReservationPage from './pages/cancelReservation/CancelReservation';
@@ -23,7 +25,6 @@ import ProfilePage from './pages/profilepage/ProfilePage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import Snacks from './pages/snacks/snacksPage';
-import { adminMovieAction } from './api/admin';
 
 const router = createBrowserRouter([
   {
@@ -119,6 +120,13 @@ const router = createBrowserRouter([
         element: <CinemaTechnology />,
         handle: {
           title: 'Teknik',
+        },
+      },
+      {
+        path: '/om-oss',
+        element: <AboutPage />,
+        handle: {
+          title: 'Om oss',
         },
       },
       {
