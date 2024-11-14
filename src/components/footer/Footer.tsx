@@ -49,12 +49,12 @@ const Footer: React.FC = () => {
               </Link>
             </p>
             <p>
-              <a
+              <Link
+                to="/om-oss"
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href="#"
               >
                 Om oss
-              </a>
+              </Link>
             </p>
             <p>
               <Link
@@ -65,12 +65,12 @@ const Footer: React.FC = () => {
               </Link>
             </p>
             <p>
-              <a
+              <Link
+                to="/om-oss#kontakt"
                 className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                href="#"
               >
                 Kontakt
-              </a>
+              </Link>
             </p>
           </div>
         </div>
