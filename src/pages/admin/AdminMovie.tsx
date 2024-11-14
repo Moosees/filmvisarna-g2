@@ -2,8 +2,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Form } from 'react-bootstrap';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useLoaderData, useSubmit } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { getMovieDataQuery, MovieData } from '../../api/details';
+import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 interface EditMovieData extends MovieData, FieldValues {}
 
@@ -21,12 +21,6 @@ function AdminMovieEdit() {
   const submit = useSubmit();
   const onSubmit: SubmitHandler<EditMovieData> = (values) => {
     submit(values, { method: 'post', action: '/admin/film' });
-
-    toast.success('Filmen är sparad', {
-      closeOnClick: true,
-      autoClose: 3000,
-      hideProgressBar: true,
-    });
   };
 
   return (
@@ -230,6 +224,7 @@ function AdminMovieEdit() {
               {errors.trailer?.message}
             </Form.Control.Feedback>
           </Form.Group>
+          <PrimaryBtn type="submit">Spara</PrimaryBtn>
         </div>
       </div>
     </Form>

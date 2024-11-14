@@ -61,6 +61,7 @@ const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
       trailer,
     }),
   };
+  console.log(movieData);
 
   try {
     const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(

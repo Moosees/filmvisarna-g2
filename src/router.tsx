@@ -23,6 +23,7 @@ import ProfilePage from './pages/profilepage/ProfilePage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import Snacks from './pages/snacks/snacksPage';
+import { adminMovieAction } from './api/admin';
 
 const router = createBrowserRouter([
   {
@@ -127,11 +128,13 @@ const router = createBrowserRouter([
             path: 'film',
             element: <AdminMovie />,
             loader: () => ({ movieId: -1 }),
+            action: adminMovieAction,
           },
           {
             path: 'film/:id',
             element: <AdminMovie />,
             loader: detailsLoader(getQueryClient()),
+            action: adminMovieAction,
           },
         ],
       },
