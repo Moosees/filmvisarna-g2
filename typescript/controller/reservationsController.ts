@@ -193,20 +193,17 @@ const createNewReservation = async (
       message: 'Vi har skickat en bokning till din mail',
       reservationNum,
     });
-
-    // console.log(html);
-    // console.log('Email sent successfully');
   } catch (error: unknown) {
     await con?.rollback();
 
     const err = error as { code: string };
-    if (err.code && err.code === 'ER_DUP_ENTRY')
-      return res
-        .status(200)
-        .json({
-          message: 'Platserna är redan bokade, var god försök igen',
-          reservationNum: '',
-        });
+    if (err.code && err.code === 'ER_DUP_ENTRY') {
+      res.status(200).json({
+        message: 'Platserna är redan bokade, var god försök igen',
+        reservationNum: '',
+      });
+      return;
+    }
 
     res.status(500).json({ message: 'Någonting gick fel' });
   } finally {
@@ -255,7 +252,6 @@ const cancelReservation = async (
       .json({ error: 'Bokningen saknar e-post eller bokningsnummer' });
     return;
   }
-  console.log(email, reservationNum);
 
   let con;
 
@@ -300,7 +296,7 @@ Tack för att du valde oss, och vi hoppas att få välkomna dig tillbaka snart.<
     con = await db.getConnection();
     await con.beginTransaction();
 
-    deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
+    await deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
 
     await con.execute(
       'delete from reservation r where r.reservation_num = :reservationNum;',
@@ -388,7 +384,7 @@ const changeReservation = async (
   } catch (error) {
     await con?.rollback();
     console.log(error);
-    res.send(500).json({ message: 'Kunde inte slutföra ombokningen' });
+    res.status(500).json({ message: 'Kunde inte slutföra ombokningen' });
   } finally {
     con?.release();
   }
