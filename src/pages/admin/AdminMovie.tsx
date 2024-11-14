@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Form } from 'react-bootstrap';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useLoaderData, useSubmit } from 'react-router-dom';
+import { Link, useLoaderData, useSubmit } from 'react-router-dom';
 import { getMovieDataQuery, MovieData } from '../../api/details';
 import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
@@ -231,6 +231,9 @@ function AdminMovieEdit() {
             </Form.Control.Feedback>
           </Form.Group>
           <PrimaryBtn type="submit">Spara</PrimaryBtn>
+          <PrimaryBtn>
+            <Link to={`/film/${movieId}`}>Avbryt</Link>
+          </PrimaryBtn>
         </div>
       </div>
     </Form>
