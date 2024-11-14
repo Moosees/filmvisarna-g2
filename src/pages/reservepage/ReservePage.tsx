@@ -18,6 +18,7 @@ function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const submit = useSubmit();
 
   const {
@@ -32,21 +33,31 @@ function ReservePage() {
   const error = useActionData() as unknown as string | Response;
   useEffect(() => {
     if (typeof error === 'string') toast.warning(error);
+    setIsSubmitting(false);
   }, [error]);
 
   useEffect(() => {
     const reservedByOther = data.seats
       .flat()
-      .find((seat) => seatIds.includes(seat.seatId) && !seat.free);
+      .filter((seat) => seatIds.includes(seat.seatId) && !seat.free)
+      .map((seat) => seat.seatId);
 
-    if (reservedByOther)
+    if (reservedByOther.length) {
       setSeatIds((prev) =>
-        prev.filter((seatId) => seatId !== reservedByOther.seatId)
+        prev.filter((seatId) => !reservedByOther.includes(seatId))
       );
-  }, [data, seatIds]);
+
+      // NOTE: hax to prevent toast from your own reservation
+      if (!isSubmitting)
+        toast.warning(
+          'Någon hann boka en eller flera av dina valda platser före dig'
+        );
+    }
+  }, [data, seatIds, isSubmitting]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
