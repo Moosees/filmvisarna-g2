@@ -2,45 +2,79 @@ import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
 
-const addMovie = async (req: Request, res: Response): Promise<void> => {
-  const { title, play_time, url_param, age, movie_info, poster_url } = req.body;
+interface AddMovieRequest extends Request {
+  body: {
+    movieId: number;
+    title: string;
+    original_title: string;
+    playTime: number;
+    age: number;
+    posterUrl: string;
+    year_recorded: number;
+    director: string;
+    actors: string[];
+    description: string;
+    language: string;
+    subtitle: string;
+    trailer: string;
+    // genres: string[];
+  };
+}
 
-  // Validate input fields
+const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
   if (
-    !title ||
-    !play_time ||
-    !url_param ||
-    !age ||
-    !movie_info ||
-    !poster_url
+    isNaN(req.body.movieId) ||
+    !req.body.title ||
+    isNaN(req.body.playTime) ||
+    req.body.playTime < 1 ||
+    isNaN(req.body.age) ||
+    !req.body.posterUrl
   ) {
-    res.status(400).json({ message: 'Alla fält är obligatoriska' });
+    res.status(400).json({ message: 'Obligatoriska fält saknas' });
     return;
   }
 
-  if (typeof play_time !== 'number' || play_time <= 0) {
-    res.status(400).json({ message: 'Speltiden måste vara ett positivt tal' });
-    return;
-  }
+  const urlParam = req.body.title.replace(' ', '_');
+
+  const {
+    original_title,
+    year_recorded,
+    director,
+    actors,
+    description,
+    language,
+    subtitle,
+    trailer,
+    ...other
+  } = req.body;
+  const movieData = {
+    ...other,
+    urlParam,
+    movie_info: JSON.stringify({
+      original_title,
+      year_recorded,
+      director,
+      actors,
+      description,
+      language,
+      subtitle,
+      trailer,
+    }),
+  };
 
   try {
     const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      'INSERT INTO movie (title, play_time, url_param, age, movie_info,poster_url) VALUES (?, ?, ?, ?, ?,?)',
-      [title, play_time, url_param, age, JSON.stringify(movie_info), poster_url]
+      'REPLACE INTO movie (id, url_param, title, playTime, age, movie_info, poster_url) VALUES (:id, :paramUrl, :title, :playTime, :age, :posterUrl, :movieInfo)',
+      movieData
     );
 
     // Send a success response with details of the newly added movie
     res.status(201).json({
-      id: results.insertId,
-      title,
-      play_time,
-      url_param,
-      age,
-      movie_info,
-      poster_url,
+      movieId: results.insertId,
     });
   } catch (error) {
-    res.status(500).json({ message: 'Något gick fel', error });
+    console.log(error);
+    res.status(500).json({ message: 'Något gick fel' });
   }
 };
 
