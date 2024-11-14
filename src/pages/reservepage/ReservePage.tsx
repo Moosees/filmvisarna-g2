@@ -99,8 +99,6 @@ function ReservePage() {
       </Col>
       <Col className="d-flex flex-column gap-3 col-12 col-lg-6">
         <Hall
-          seats={data.seats}
-          poster={data.poster}
           numPersons={ticketIds.length}
           seatIds={seatIds}
           setSeatIds={setSeatIds}

@@ -1,17 +1,23 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { CardImg, Col, Row } from 'react-bootstrap';
+import { useLoaderData } from 'react-router-dom';
+import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import { getAffectedSeats, type Seat } from './hallHelpers';
 
 interface HallProps {
-  seats: Seat[][];
-  poster: string;
   numPersons: number;
   seatIds: number[];
   setSeatIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
+function Hall({ numPersons, seatIds, setSeatIds }: HallProps) {
   const [hovered, setHovered] = useState<number[]>([]);
+
+  const { screeningId } = useLoaderData() as Awaited<
+    ReturnType<ReturnType<typeof reserveLoader>>
+  >;
+  const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
     setSeatIds(
@@ -27,8 +33,8 @@ function Hall({ seats, poster, numPersons, seatIds, setSeatIds }: HallProps) {
 
   return (
     <section className="bg-rosa rounded d-flex flex-column py-2 align-items-center gap-1 container-fluid">
-      <CardImg src={poster} className="rounded w-50" />
-      {seats.map((row, rowIndex) => {
+      <CardImg src={data.poster} className="rounded w-50" />
+      {data.seats.map((row, rowIndex) => {
         return (
           <Row
             key={rowIndex}
