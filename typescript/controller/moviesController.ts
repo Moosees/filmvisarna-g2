@@ -7,12 +7,12 @@ interface AddMovieRequest extends Request {
     movieId: number;
     title: string;
     original_title: string;
-    playTime: number;
-    age: number;
+    playTime: string;
+    age: string;
     posterUrl: string;
-    year_recorded: number;
+    year_recorded: string;
     director: string;
-    actors: string[];
+    actors: string;
     description: string;
     language: string;
     subtitle: string;
@@ -25,16 +25,16 @@ const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
   if (
     isNaN(req.body.movieId) ||
     !req.body.title ||
-    isNaN(req.body.playTime) ||
-    req.body.playTime < 1 ||
-    isNaN(req.body.age) ||
+    !req.body.playTime ||
+    !req.body.age ||
     !req.body.posterUrl
   ) {
     res.status(400).json({ message: 'Obligatoriska fält saknas' });
     return;
   }
+  console.log(req.body);
 
-  const urlParam = req.body.title.replace(' ', '_');
+  const urlParam = req.body.title.replace(' ', '_').toLowerCase();
 
   const {
     original_title,
@@ -45,16 +45,20 @@ const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
     language,
     subtitle,
     trailer,
+    age,
+    playTime,
     ...other
   } = req.body;
   const movieData = {
     ...other,
+    age: +age,
+    playTime: +playTime,
     urlParam,
-    movie_info: JSON.stringify({
+    movieInfo: JSON.stringify({
       original_title,
-      year_recorded,
+      year_recorded: year_recorded ? +year_recorded : null,
       director,
-      actors,
+      actors: actors ? actors.split(',') : [],
       description,
       language,
       subtitle,
@@ -65,9 +69,10 @@ const addMovie = async (req: AddMovieRequest, res: Response): Promise<void> => {
 
   try {
     const [results]: [ResultSetHeader, FieldPacket[]] = await db.execute(
-      'REPLACE INTO movie (id, url_param, title, playTime, age, movie_info, poster_url) VALUES (:id, :paramUrl, :title, :playTime, :age, :posterUrl, :movieInfo)',
+      'REPLACE INTO movie (id, url_param, title, play_time, age, movie_info, poster_url) VALUES (:movieId, :urlParam, :title, :playTime, :age, :movieInfo, :posterUrl);',
       movieData
     );
+    console.log(results);
 
     // Send a success response with details of the newly added movie
     res.status(201).json({
