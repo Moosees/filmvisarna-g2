@@ -12,8 +12,8 @@ import TextBox from '../../components/typography/TextBox';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
 function MovieDetailsPage() {
-  const { movieId } = useLoaderData() as { movieId: number };
-  const { data: movieData } = useSuspenseQuery(getMovieDataQuery(movieId));
+  const { paramUrl } = useLoaderData() as { paramUrl: string };
+  const { data: movieData } = useSuspenseQuery(getMovieDataQuery(paramUrl));
   const [selectedScreening, setSelectedScreening] = useState<number>(
     movieData.screeningDetails?.[0]?.screeningId
   );

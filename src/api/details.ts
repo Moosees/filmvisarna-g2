@@ -34,26 +34,26 @@ interface MovieData {
 }
 
 //-------------Movie-details---------------
-async function getMovieData(movieId: number) {
-  const response = await getAxios().get<MovieData>(`/movie/${movieId}`);
+async function getMovieData(paramUrl: string) {
+  const response = await getAxios().get<MovieData>(`/movie/${paramUrl}`);
   return response.data;
 }
 
-export const getMovieDataQuery = (movieId: number) =>
+export const getMovieDataQuery = (paramUrl: string) =>
   queryOptions({
-    queryKey: ['movieId', movieId],
-    queryFn: async () => await getMovieData(movieId),
+    queryKey: ['paramUrl', paramUrl],
+    queryFn: async () => await getMovieData(paramUrl),
   });
 
 export const detailsLoader =
   (client: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
-    const movieId = Number(params.id);
-    if (isNaN(movieId)) {
+    const paramUrl = params.paramUrl;
+    if (!paramUrl) {
       throw new Error('Ogiltigt filmId');
     }
 
-    await client.ensureQueryData(getMovieDataQuery(movieId));
+    await client.ensureQueryData(getMovieDataQuery(paramUrl));
 
-    return { movieId };
+    return { paramUrl };
   };

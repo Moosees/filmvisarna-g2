@@ -53,7 +53,7 @@ router.get('/movie', moviesController.filterMovies);
 // Get movies to be shown today
 router.get('/todaysMovies', moviesController.getTodaysMovie);
 // Show movie details and screening times
-router.get('/movie/:id', moviesController.getMovie);
+router.get('/movie/:paramUrl', moviesController.getMovie);
 
 //---------------- Admin routes
 router.post('/movie', isAdmin, moviesController.addMovie);

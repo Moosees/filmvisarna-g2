@@ -13,6 +13,7 @@ export default function HomePage() {
         {movies.map((movie) => (
           <MovieCard
             movieId={movie.movieId}
+            paramUrl={movie.paramUrl}
             screeningId={movie.screeningId}
             age={movie.age}
             posterUrl={movie.posterUrl}

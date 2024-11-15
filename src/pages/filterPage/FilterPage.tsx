@@ -108,6 +108,7 @@ export default function FilterPage() {
               <MovieCard
                 key={movie.screeningId}
                 movieId={movie.movieId}
+                paramUrl={movie.paramUrl}
                 screeningId={movie.screeningId}
                 age={movie.age}
                 posterUrl={movie.posterUrl}
