@@ -1,23 +1,23 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 import {
   Link,
   useActionData,
   useLoaderData,
   useSubmit,
 } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
-import { toast } from 'react-toastify';
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
-  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submit = useSubmit();
 
@@ -29,6 +29,13 @@ function ReservePage() {
     ReturnType<ReturnType<typeof reserveLoader>>
   >;
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
+
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors: formErrors },
+  } = useForm<{ email: string }>({ mode: 'onChange' });
 
   const error = useActionData() as unknown as string | Response;
   useEffect(() => {
@@ -55,14 +62,20 @@ function ReservePage() {
     }
   }, [data, seatIds, isSubmitting]);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
+    if (formErrors.email) return;
     setIsSubmitting(true);
 
+    const email = getValues('email');
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
+
   return (
-    <form onSubmit={handleSubmit} className="row gy-2 align-items-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="row gy-2 align-items-center"
+      noValidate
+    >
       <Col className="col-12 col-lg-6">
         <Container
           fluid
@@ -75,24 +88,26 @@ function ReservePage() {
           <TicketSelector tickets={data.tickets} setTicketIds={setTicketIds} />
           {!isLoggedIn && (
             <Row>
-              <Col className="field-container">
-                <label htmlFor="email" className="form-label">
-                  E-post
-                </label>
-                <input
+              <Form.Group controlId="email" className="field-container">
+                <Form.Label className="form-label">E-post</Form.Label>
+                <Form.Control
                   type="email"
-                  id="email"
-                  name="email"
-                  className="form-control form-control-field"
-                  placeholder="Ange din e-postadress"
-                  value={email}
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
+                  className="form-control-field"
+                  placeholder="Ange din e-post"
+                  defaultValue=""
+                  {...register('email', {
+                    required: 'E-post krävs',
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                      message: 'Var god skriv in en giltig e-postadress',
+                    },
+                  })}
+                  isInvalid={!!formErrors.email}
                 />
-                {/* <PrimaryBtn className="align-self-center"> /}
-                {/   <Link to="/medlem/bli-medlem">Bli medlem</Link> /}
-                {/ </PrimaryBtn> */}
-              </Col>
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.email?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
             </Row>
           )}
         </Container>
@@ -110,7 +125,9 @@ function ReservePage() {
           <PrimaryBtn
             type="submit"
             disabled={
-              ticketIds.length === 0 || ticketIds.length !== seatIds.length
+              ticketIds.length === 0 ||
+              ticketIds.length !== seatIds.length ||
+              !!formErrors.email
             }
           >
             Boka
