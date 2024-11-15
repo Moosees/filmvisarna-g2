@@ -4,6 +4,8 @@ import { getAxios } from './clients';
 interface EventMoviesData {
   movieId: number;
   posterUrl: string;
+  paramUrl: string;
+  movieTitle: string;
 }
 
 async function getScaryMovies() {
