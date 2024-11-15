@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         loader: filterLoader(getQueryClient()),
       },
       {
-        path: '/film/:id',
+        path: '/film/:paramUrl',
         element: <MovieDetailsPage />,
         loader: detailsLoader(getQueryClient()),
       },
