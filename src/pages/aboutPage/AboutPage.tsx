@@ -5,27 +5,22 @@ function AboutPage() {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
       <ScrollRestoration />
-      <Row className="w-100 mb-5">
+      <Row className="w-75 mb-5">
         <Col
           xs={12}
-          className="rounded bg-rosa mt-3 p-3 justify-content-center"
+          className="rounded bg-rosa mt-3 p-3 d-flex flex-column align-items-center justify-content-center"
         >
           <h4 className="text-black">
-            Filmvisarna – Där 80-talet lever vidare, en film i taget!
+            Filmvisarna – Där 80-talet lever vidare!
           </h4>
-          <p className="text-black">
-            <br />
+          <p className="text-black technology-text">
             Filmvisarna är en nyöppnad biograf med två moderna och bekväma
-            salonger. <br />
-            Vi strävar efter att skapa en nostalgisk filmupplevelse med
-            inspiration från ikoniska filmer från 80-talet. <br />
-            Atmosfären präglas av neonljus, färgstarka affischer och autentiska
-            detaljer från 80-talets stora filmverk.
-            <br /> Filmvisarna är en perfekt plats för att återuppleva
-            actionfilmer, romantiska komedier och kultklassiker från science
-            fiction-genren. <br />
-            <br />
-            Välkomna tillbaka till 80-talet!
+            salonger. Vi strävar efter att skapa en nostalgisk filmupplevelse
+            med inspiration från ikoniska filmer från 80-talet. Atmosfären
+            präglas av neonljus, färgstarka affischer och autentiska detaljer
+            från 80-talets stora filmverk. Filmvisarna är en perfekt plats för
+            att återuppleva actionfilmer, romantiska komedier och kultklassiker
+            från science fiction-genren. Välkomna tillbaka till 80-talet!
           </p>
         </Col>
       </Row>
@@ -37,13 +32,13 @@ function AboutPage() {
           Kontakta oss
         </h1>
       </div>
-      <Row className="w-100 mt-4">
+      <Row className="w-75 mt-4 d-flex justify-content-center align-items-center">
         <Col
           xs={12}
-          className="rounded bg-rosa mt-3 p-3 justify-content-center"
+          className="rounded bg-rosa mt-3 p-3 d-flex flex-column align-items-center justify-content-center"
         >
-          <h4 className="text-black">Kontakta oss:</h4>
-          <p className="text-black">
+          <h4 className="text-black text-center">Kontakta oss:</h4>
+          <p className="text-black text-center">
             <br />
             Telefon: 073 - XXX XX XX
             <br />

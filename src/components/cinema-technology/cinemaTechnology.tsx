@@ -18,9 +18,9 @@ function CinemaTechnology() {
 
   return (
     <Container className="mt-4">
-      <Row className="bg-rosa custom-letterSpacing fs-md-custom text-black">
+      <Row className="bg-rosa rounded custom-letterSpacing fs-md-custom text-black d-flex justify-content-center">
         {cinemaEqiment.map((details, index) => (
-          <div key={index} className="p-4">
+          <div key={index} className="p-4 technology-text">
             <strong>{details.Namn}</strong>
             <span>{details.Beskrivning}</span>
           </div>

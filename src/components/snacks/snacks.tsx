@@ -40,7 +40,7 @@ const food = [
 
 function Snacks() {
   return (
-    <Container className="d-flex p-5 bg-rosa">
+    <Container className="d-flex p-5 bg-rosa rounded">
       <Row className="d-flex flex-column">
         <Col className="d-flex">
           <SnacksCard />
