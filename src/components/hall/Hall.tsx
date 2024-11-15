@@ -21,6 +21,8 @@ function Hall({ numPersons, seatIds, setSeatIds }: HallProps) {
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
+    if (!row[seatIndex].free) return;
+
     setSeatIds(
       getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
     );
