@@ -7,8 +7,8 @@ const AstridLindgrenSection: React.FC = () => {
   const navigate = useNavigate();
   const { data: movies } = useSuspenseQuery(AstridLindgrenMovieQuery());
 
-  const handleCardClick = (movieId: number) => {
-    navigate(`/film/${movieId}`);
+  const handleCardClick = (paramUrl: string) => {
+    navigate(`/film/${paramUrl}`);
   };
   return (
     <Col
@@ -24,11 +24,11 @@ const AstridLindgrenSection: React.FC = () => {
             xs={6}
             md={3}
             className="mb-3"
-            onClick={() => handleCardClick(movie.movieId)}
+            onClick={() => handleCardClick(movie.paramUrl)}
           >
             <img
               src={movie.posterUrl}
-              alt={`Poster for movie ${movie.movieId}`}
+              alt={`Poster for movie ${movie.movieTitle}`}
               style={{ cursor: 'pointer', width: '100%', height: '100%' }}
               className="scale rounded"
             />
