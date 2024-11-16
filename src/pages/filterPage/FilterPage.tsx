@@ -13,30 +13,33 @@ import { addDays, format, subDays } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
 import { sv } from 'date-fns/locale/sv';
+import { useEffect, useState } from 'react';
 
 export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInput, setSearchInput] = useState('');
   const { filters } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof filterLoader>>
   >;
   const { data, isLoading } = useSuspenseQuery(getFilterQuery(filters));
   registerLocale('sv', sv);
 
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setSearchParams((params) => {
+        params.set('titel', searchInput);
+        return params;
+      });
+    }, 500);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [searchInput, setSearchParams]);
+
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setSearchParams((params) => {
       params.set('startDatum', start ? format(start, 'yyyy-MM-dd') : '');
       params.set('slutDatum', end ? format(end, 'yyyy-MM-dd') : '');
-      return params;
-    });
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setSearchParams((params) => {
-      params.set(name, value);
       return params;
     });
   };
@@ -54,8 +57,8 @@ export default function FilterPage() {
               type="text"
               name="titel"
               placeholder="Sök"
-              value={searchParams.get('titel') || ''}
-              onChange={handleInputChange}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2 "
             />
           </Col>
@@ -89,7 +92,12 @@ export default function FilterPage() {
             <Form.Select
               className="bg-light text-dark my-1 my-lg-2 placeholder-gray"
               name="alder"
-              onChange={handleInputChange}
+              onChange={(e) =>
+                setSearchParams((params) => {
+                  params.set(e.target.name, e.target.value);
+                  return params;
+                })
+              }
               value={searchParams.get('alder') || ''}
             >
               <option value="">Ålder</option>
