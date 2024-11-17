@@ -83,22 +83,23 @@ function ReservePage() {
       <Col className="col-12 col-lg-6">
         <Container
           fluid
-          className="bg-rosa rounded d-flex flex-column gap-4 text-dark p-3"
+          className="bg-rosa rounded d-flex flex-column gap-3 text-dark p-3"
         >
-          <h2 className="text-decoration-underline">{data.title}</h2>
-          <h4 className="cap-first">
+          <h2 className="text-decoration-underline fs-4">{data.title}</h2>
+          <h3 className="cap-first fs-5">
             {data.date} {data.time}
-          </h4>
+          </h3>
           <TicketSelector tickets={data.tickets} setTicketIds={setTicketIds} />
           <Row
+            style={{ cursor: 'pointer' }}
             className="field-container"
             onClick={() => setSplitSeats((checked) => !checked)}
           >
             <Form.Check
+              className="custom-switch"
               type="switch"
-              label="Skilda platser"
+              label={`Skilda platser ${splitSeats ? '(på)' : '(av)'}`}
               checked={splitSeats}
-              onChange={() => setSplitSeats((checked) => !checked)}
             />
           </Row>
           {!isLoggedIn && (
