@@ -123,13 +123,9 @@ const streamSeatsUpdates = (req: Request, res: Response) => {
   res.setHeader('X-Accel-Buffering', 'no');
   res.flushHeaders();
 
-  req.on('close', () => {
-    console.log('Användaren kopplade ifrån');
-    res.end();
-  });
-
   const sendSeatUpdate = (updateId: number) => {
     try {
+      console.log('Skickar seatUpdate', { updateId });
       res.write(`data: ${JSON.stringify(updateId)}\n\n`);
     } catch (error) {
       console.error('Error:', error);
@@ -137,9 +133,13 @@ const streamSeatsUpdates = (req: Request, res: Response) => {
     }
   };
 
-  reservationEmitter.on('added', (updateId) => {
-    sendSeatUpdate(updateId);
+  req.on('close', () => {
+    console.log('Användaren kopplade ifrån');
+    reservationEmitter.off('added', sendSeatUpdate);
+    res.end();
   });
+
+  reservationEmitter.on('added', sendSeatUpdate);
 
   console.log('Användaren kopplade in');
 };
