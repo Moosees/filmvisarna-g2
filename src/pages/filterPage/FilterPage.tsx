@@ -1,19 +1,12 @@
-import CardsWrapper from '../../components/movieCard/CardsWrapper';
-import MovieCard from '../../components/movieCard/MovieCard';
-import {
-  Form as RouterForm,
-  useLoaderData,
-  useSearchParams,
-} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { filterLoader, getFilterQuery } from '../../api/filter';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import DatePicker from 'react-datepicker';
-import { addDays, format, subDays } from 'date-fns';
-import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker';
-import { sv } from 'date-fns/locale/sv';
-import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import DatePickerSweden from '../../components/datePicker/DatePickerSwededn';
+import CardsWrapper from '../../components/movieCard/CardsWrapper';
+import MovieCard from '../../components/movieCard/MovieCard';
 
 export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,7 +15,6 @@ export default function FilterPage() {
     ReturnType<ReturnType<typeof filterLoader>>
   >;
   const { data, isLoading } = useSuspenseQuery(getFilterQuery(filters));
-  registerLocale('sv', sv);
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
@@ -50,7 +42,7 @@ export default function FilterPage() {
 
   return (
     <div className="container my-4 ">
-      <RouterForm>
+      <Form>
         <Row className=" mx-md-auto py-1 bg-rosa col-md-8 rounded">
           <Col lg={4}>
             <input
@@ -64,27 +56,9 @@ export default function FilterPage() {
           </Col>
 
           <Col lg={4} className="col-6 px-1 px-md-2">
-            <DatePicker
-              locale="sv"
-              selectsRange={true}
-              startDate={
-                searchParams.get('startDatum')
-                  ? new Date(searchParams.get('startDatum') as string)
-                  : undefined
-              }
-              endDate={
-                searchParams.get('slutDatum')
-                  ? new Date(searchParams.get('slutDatum') as string)
-                  : undefined
-              }
-              onChange={handleDateChange}
-              includeDateIntervals={[
-                { start: subDays(new Date(), 1), end: addDays(new Date(), 14) },
-              ]}
-              dateFormat="dd MMM"
-              placeholderText="Välj Datum"
-              isClearable={true}
-              className="form-control bg-light text-dark placeholder-gray fs-md-custom p-2 my-1 my-lg-2 "
+            <DatePickerSweden
+              handleDateChange={handleDateChange}
+              searchParams={searchParams}
             />
           </Col>
 
@@ -107,7 +81,7 @@ export default function FilterPage() {
             </Form.Select>
           </Col>
         </Row>
-      </RouterForm>
+      </Form>
 
       <Row>
         <CardsWrapper>
