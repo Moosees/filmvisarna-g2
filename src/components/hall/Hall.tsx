@@ -7,12 +7,13 @@ import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import { getAffectedSeats, type Seat } from './hallHelpers';
 
 interface HallProps {
+  splitSeats: boolean;
   numPersons: number;
   seatIds: number[];
   setSeatIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-function Hall({ numPersons, seatIds, setSeatIds }: HallProps) {
+function Hall({ splitSeats, numPersons, seatIds, setSeatIds }: HallProps) {
   const [hovered, setHovered] = useState<number[]>([]);
 
   const { screeningId } = useLoaderData() as Awaited<
@@ -21,17 +22,31 @@ function Hall({ numPersons, seatIds, setSeatIds }: HallProps) {
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
 
   const handleClick = (seatIndex: number, row: Seat[]) => {
-    if (!row[seatIndex].free) return;
+    const { free, seatId } = row[seatIndex];
+    if (!free) return;
 
-    setSeatIds(
-      getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
-    );
+    if (!splitSeats) {
+      setSeatIds(
+        getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
+      );
+      return;
+    }
+
+    if (seatIds.includes(seatId)) {
+      setSeatIds((ids) => ids.filter((id) => id !== seatId));
+    } else {
+      setSeatIds((ids) => [...ids, seatId]);
+    }
   };
 
   const handleMouseEnter = (seatIndex: number, row: Seat[]) => {
-    setHovered(
-      getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
-    );
+    if (!splitSeats) {
+      setHovered(
+        getAffectedSeats(row, seatIndex, numPersons).map((seat) => seat.seatId)
+      );
+    } else {
+      setHovered(row[seatIndex].free ? [row[seatIndex].seatId] : []);
+    }
   };
 
   return (
