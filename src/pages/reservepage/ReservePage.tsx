@@ -15,6 +15,7 @@ import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
 import useSeatUpdate from '../../hooks/useSeatUpdate';
+import InputWrapper from '../../components/form/InputWrapper';
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
@@ -90,8 +91,11 @@ function ReservePage() {
           <TicketSelector tickets={data.tickets} setTicketIds={setTicketIds} />
           {!isLoggedIn && (
             <Row>
-              <Form.Group controlId="email" className="field-container">
-                <Form.Label className="form-label">E-post</Form.Label>
+              <InputWrapper
+                controlId="email"
+                label="E-post"
+                errorMsg={formErrors.email?.message}
+              >
                 <Form.Control
                   type="email"
                   className="form-control-field"
@@ -101,15 +105,12 @@ function ReservePage() {
                     required: 'E-post krävs',
                     pattern: {
                       value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                      message: 'Var god skriv in en giltig e-postadress',
+                      message: 'Var god fyll i en giltig e-postadress',
                     },
                   })}
                   isInvalid={!!formErrors.email}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {formErrors.email?.message}
-                </Form.Control.Feedback>
-              </Form.Group>
+              </InputWrapper>
             </Row>
           )}
         </Container>
