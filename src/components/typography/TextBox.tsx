@@ -14,11 +14,14 @@ interface TextBoxProps {
 export default function TextBox({ movieData }: TextBoxProps) {
   const [openCollapse, setOpenCollapse] = useState(false);
 
-  const fullText =
+  const description =
     movieData.movieInfo?.description ?? 'Ingen information tillgänglig';
   const shortText =
-    fullText.length > 150 ? fullText.substring(0, 150) + '...' : fullText;
-  const showButton = fullText.length > 150;
+    description.length > 100
+      ? description.substring(0, 100) + '...'
+      : description;
+
+  const showButton = description.length > 100;
 
   return (
     <Col>
@@ -28,11 +31,11 @@ export default function TextBox({ movieData }: TextBoxProps) {
         </Card.Title>
 
         <Card.Text className="d-none d-xl-block custom-letterSpacing">
-          {fullText}
+          {description}
         </Card.Text>
 
         <Card.Text className="d-block d-xl-none custom-letterSpacing ">
-          {openCollapse ? fullText : shortText}{' '}
+          {openCollapse ? description : shortText}{' '}
         </Card.Text>
         <div
           style={{ width: '100%' }}
