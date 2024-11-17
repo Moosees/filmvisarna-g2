@@ -1,6 +1,7 @@
 import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
+import { reservationEmitter } from './reservationsController.js';
 
 const getReservedSeats = async (req: Request, res: Response) => {
   try {
@@ -65,7 +66,7 @@ interface AllSeats extends RowDataPacket {
       number: number;
       seatId: number;
       free: 1 | 0;
-    }
+    },
   ];
 }
 
@@ -115,69 +116,32 @@ const getAllSeats = async (req: Request, res: Response) => {
   }
 };
 
-interface SeatUpdateData {
-  screeningId: number;
-  updatedSeat: {
-    seatId: number;
-    free: boolean;
-  };
-}
-
 const streamSeatsUpdates = (req: Request, res: Response) => {
-  try {
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.flushHeaders();
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
 
-    const sendSeatUpdate = (seatData: SeatUpdateData) => {
-      res.write(`data: ${JSON.stringify(seatData)}\n\n`);
-    };
+  req.on('close', () => {
+    console.log('Användaren kopplade ifrån');
+    res.end();
+  });
 
-    const interval = setInterval(async () => {
-      try {
-        const { screening_id } = req.params;
+  const sendSeatUpdate = (updateId: number) => {
+    try {
+      res.write(`data: ${JSON.stringify(updateId)}\n\n`);
+    } catch (error) {
+      console.error('Error:', error);
+      res.write(`data: ${JSON.stringify({ error: 'Något gick fel' })}\n\n`);
+    }
+  };
 
-        // Execute query and cast the results to RowDataPacket[] for compatibility
-        const [rows] = await db.execute<RowDataPacket[]>(
-          `
-          SELECT s.id AS seatId,
-                 CASE WHEN rss.seat_id IS NULL THEN TRUE ELSE FALSE END AS free
-          FROM seat s
-          LEFT JOIN res_seat_screen rss
-          ON s.id = rss.seat_id AND rss.screening_id = ?
-          `,
-          [screening_id]
-        );
+  reservationEmitter.on('added', (updateId) => {
+    sendSeatUpdate(updateId);
+  });
 
-        // Map the rows to SeatUpdateData format
-        const seatUpdates = rows.map((row) => ({
-          screeningId: parseInt(screening_id, 10),
-          updatedSeat: {
-            seatId: row.seatId as number,
-            free: Boolean(row.free),
-          },
-        })) as SeatUpdateData[];
-
-        // Send each seat update to the client
-        seatUpdates.forEach(sendSeatUpdate);
-      } catch (error) {
-        console.error('Error:', error);
-        res.write(`data: ${JSON.stringify({ error: 'Något gick fel' })}\n\n`);
-      }
-    }, 5000);
-
-    req.on('close', () => {
-      clearInterval(interval);
-      console.log('Användaren kopplade ifrån');
-    });
-  } catch (error) {
-    console.error('Error SSE connection:', error);
-    res.status(500).json({
-      message: 'Något gick fel vid anslutning till seat updates',
-      error,
-    });
-  }
+  console.log('Användaren kopplade in');
 };
 
 export default {

@@ -14,12 +14,14 @@ import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
+import useSeatUpdate from '../../hooks/useSeatUpdate';
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submit = useSubmit();
+  useSeatUpdate();
 
   const {
     data: { isLoggedIn },

@@ -35,7 +35,6 @@ export const getScreeningDataQuery = (screeningId: number) =>
   queryOptions({
     queryKey: ['screening', screeningId],
     queryFn: async () => await getScreeningData(screeningId),
-    refetchInterval: 3000,
   });
 
 export const reserveLoader =

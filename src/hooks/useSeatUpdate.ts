@@ -1,23 +1,26 @@
 import { useEffect } from 'react';
+import { getQueryClient } from '../api/clients';
 
-const useSeatUpdate = (screeningId: number) => {
+const useSeatUpdate = () => {
   useEffect(() => {
-    const eventSource = new EventSource(`/api/seats/updates/${screeningId}`);
+    const eventSource = new EventSource(`/api/seatsupdates`);
 
     eventSource.onmessage = (event) => {
-      const updateId: number = JSON.parse(event.data);
-      console.log('Received seat update:', { updateId });
+      const screeningId: number = JSON.parse(event.data);
+
+      getQueryClient().invalidateQueries({
+        queryKey: ['screening', screeningId],
+      });
     };
 
     eventSource.onerror = () => {
-      console.error('Error receiving seat updates');
       eventSource.close();
     };
 
     return () => {
       eventSource.close();
     };
-  }, [screeningId]);
+  }, []);
 };
 
 export default useSeatUpdate;
