@@ -21,6 +21,7 @@ function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [splitSeats, setSplitSeats] = useState(false);
   const submit = useSubmit();
   useSeatUpdate();
 
@@ -89,6 +90,17 @@ function ReservePage() {
             {data.date} {data.time}
           </h4>
           <TicketSelector tickets={data.tickets} setTicketIds={setTicketIds} />
+          <Row
+            className="field-container"
+            onClick={() => setSplitSeats((checked) => !checked)}
+          >
+            <Form.Check
+              type="switch"
+              label="Skilda platser"
+              checked={splitSeats}
+              onChange={() => setSplitSeats((checked) => !checked)}
+            />
+          </Row>
           {!isLoggedIn && (
             <Row>
               <InputWrapper
