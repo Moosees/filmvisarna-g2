@@ -3,7 +3,9 @@ import { getQueryClient } from '../api/clients';
 
 const useSeatUpdate = () => {
   useEffect(() => {
-    const eventSource = new EventSource(`/api/seatsupdates`);
+    const eventSource = new EventSource(`/api/seatsupdates`, {
+      withCredentials: false,
+    });
 
     eventSource.onmessage = (event) => {
       const screeningId: number = JSON.parse(event.data);

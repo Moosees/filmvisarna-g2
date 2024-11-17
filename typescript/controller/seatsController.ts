@@ -123,25 +123,34 @@ const streamSeatsUpdates = (req: Request, res: Response) => {
   res.setHeader('X-Accel-Buffering', 'no');
   res.flushHeaders();
 
+  const keepAliveFn = () => {
+    res.write('event: keep-alive\n\n');
+  };
+  const keepAliveMs = 5000;
+  let keepAliveTimer = setInterval(keepAliveFn, keepAliveMs);
+
+  const endSeatUpdates = () => {
+    reservationEmitter.off('added', sendSeatUpdate);
+    clearInterval(keepAliveTimer);
+    res.end();
+  };
+
   const sendSeatUpdate = (updateId: number) => {
     try {
-      console.log('Skickar seatUpdate', { updateId });
-      res.write(`data: ${JSON.stringify(updateId)}\n\n`);
+      clearInterval(keepAliveTimer);
+      res.write(`data: ${updateId}\n\n`);
+      keepAliveTimer = setInterval(keepAliveFn, keepAliveMs);
     } catch (error) {
-      console.error('Error:', error);
-      res.write(`data: ${JSON.stringify({ error: 'Något gick fel' })}\n\n`);
+      console.error('seatUpdates error:', error);
+      endSeatUpdates();
     }
   };
 
   req.on('close', () => {
-    console.log('Användaren kopplade ifrån');
-    reservationEmitter.off('added', sendSeatUpdate);
-    res.end();
+    endSeatUpdates();
   });
 
   reservationEmitter.on('added', sendSeatUpdate);
-
-  console.log('Användaren kopplade in');
 };
 
 export default {
