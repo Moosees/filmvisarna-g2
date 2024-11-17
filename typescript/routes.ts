@@ -23,6 +23,9 @@ router.get(
 // get what seats are free or reserved by other people
 router.get('/seats/:screening_id', seatsController.getAllSeats);
 
+// Server-Sent Events (SSE) route for real-time seat updates
+router.get('/seats/updates/:screening_id', seatsController.streamSeatsUpdates);
+
 // get info for a specific reservation
 router.get(
   '/reservation/:reservationNum',
