@@ -32,7 +32,7 @@ const RegisterPage: React.FC = () => {
       {}
     );
 
-    submit(jsonObject, { method: 'post', action: '/user/register' });
+    submit(jsonObject, { method: 'post', action: '/medlem/bli-medlem' });
   };
 
   const handleGoBack = () => {
@@ -47,11 +47,16 @@ const RegisterPage: React.FC = () => {
             <Form.Group controlId="user_email" className="field-container mb-3">
               <Form.Label className="form-label">E-post</Form.Label>
               <Form.Control
-                type="email"
                 className="form-control-field"
                 placeholder="Ange din e-post"
-                required
-                {...register('user_email', { required: 'E-post krävs' })}
+                defaultValue=""
+                {...register('user_email', {
+                  required: 'E-post krävs',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                    message: 'Var god skriv in en giltig e-postadress',
+                  },
+                })}
                 isInvalid={!!errors.user_email}
               />
               <Form.Control.Feedback type="invalid">
@@ -68,8 +73,13 @@ const RegisterPage: React.FC = () => {
                 type="password"
                 className="form-control-field"
                 placeholder="Ange ditt lösenord"
-                required
-                {...register('user_password', { required: 'Lösenord krävs' })}
+                {...register('user_password', {
+                  required: 'Lösenord är obligatoriskt',
+                  minLength: {
+                    value: 6,
+                    message: 'Lösenordet måste vara minst 6 tecken långt',
+                  },
+                })}
                 isInvalid={!!errors.user_password}
               />
               <Form.Control.Feedback type="invalid">
@@ -86,7 +96,6 @@ const RegisterPage: React.FC = () => {
                 type="password"
                 className="form-control-field"
                 placeholder="Upprepa ditt lösenord"
-                required
                 {...register('confirm_password', {
                   validate: (value) =>
                     value === watch('user_password') ||
@@ -105,8 +114,9 @@ const RegisterPage: React.FC = () => {
                 type="text"
                 className="form-control-field"
                 placeholder="Ange ditt förnamn"
-                required
-                {...register('first_name', { required: 'Förnamn krävs' })}
+                {...register('first_name', {
+                  required: 'Förnamn är obligatoriskt',
+                })}
                 isInvalid={!!errors.first_name}
               />
               <Form.Control.Feedback type="invalid">
@@ -120,8 +130,9 @@ const RegisterPage: React.FC = () => {
                 type="text"
                 className="form-control-field"
                 placeholder="Ange ditt efternamn"
-                required
-                {...register('last_name', { required: 'Efternamn krävs' })}
+                {...register('last_name', {
+                  required: 'Efternamn är obligatoriskt',
+                })}
                 isInvalid={!!errors.last_name}
               />
               <Form.Control.Feedback type="invalid">
