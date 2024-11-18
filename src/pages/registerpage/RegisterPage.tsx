@@ -79,6 +79,10 @@ const RegisterPage: React.FC = () => {
                     value: 6,
                     message: 'Lösenordet måste vara minst 6 tecken långt',
                   },
+                  maxLength: {
+                    value: 128,
+                    message: 'Lösenordet får inte vara längre än 128 tecken',
+                  },
                 })}
                 isInvalid={!!errors.user_password}
               />
