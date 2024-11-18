@@ -1,7 +1,8 @@
 # Filmvisarna AB - Webbsajt för Biografbokning
 
 Filmvisarna AB är en biografkedja i Småstad som erbjuder en modern och interaktiv webbsajt för att förbättra användarupplevelsen vid bokning av biobiljetter. Projektet är byggt med **React**, **Bootstrap**, och **TypeScript** för att säkerställa snabb utveckling och underhållbar kod.
-![Filmvisarna home](/src/assets/images/Filmvisarna%20home.png)
+![Filmvisarna home](/src/assets/images/Filmvisarna%20home.png).
+
 _Bild: Startsidan för Filmvisarna-webbplatsen._
 
 ## Funktioner
