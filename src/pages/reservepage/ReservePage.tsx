@@ -70,7 +70,7 @@ function ReservePage() {
     if (formErrors.email) return;
     setIsSubmitting(true);
 
-    const email = getValues('email');
+    const email = getValues('email') || '';
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
 
