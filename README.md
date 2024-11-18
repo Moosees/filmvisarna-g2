@@ -1,50 +1,94 @@
-# React + TypeScript + Vite
+# Filmvisarna AB - Webbsajt för Biografbokning
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Filmvisarna AB är en biografkedja i Småstad som erbjuder en modern och interaktiv webbsajt för att förbättra användarupplevelsen vid bokning av biobiljetter. Projektet är byggt med **React**, **Bootstrap**, och **TypeScript** för att säkerställa snabb utveckling och underhållbar kod.
+![Filmvisarna home](/src/assets/images/Filmvisarna%20home.png)
+_Bild: Startsidan för Filmvisarna-webbplatsen._
 
-Currently, two official plugins are available:
+## Funktioner
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Information om Filmer**
 
-## Expanding the ESLint configuration
+   - Detaljsidor för filmer med trailers, beskrivningar och annan relevant information.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+2. **Bokning av Biobiljetter**
 
-- Configure the top-level `parserOptions` property like this:
+   - Grafisk visning av salonger och stolar.
+   - Dynamisk markering av bästa tillgängliga stolar.
+   - Stöd för olika biljettpriser:
+     - Vuxen: 140 kr
+     - Pensionär: 120 kr
+     - Barn: 80 kr
+   - Direktuppdatering av totalpris och valda stolar.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+3. **Bokningsbekräftelse**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   - Generering av unikt bokningsnummer.
+   - E-postbekräftelse skickas automatiskt.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+4. **Filtrering och Sortering**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   - Filtrera filmer efter titel, datum och åldersgräns.
+
+5. **Användarkonton**
+
+   - Registrering, inloggning och hantering av bokningshistorik.
+
+6. **Responsiv Design**
+   - Optimerad för mobiler, surfplattor och datorer med hjälp av **Bootstrap**.
+
+## Teknologier
+
+### Frontend
+
+- **React**: För att skapa en dynamisk och interaktiv användarupplevelse.
+- **Bootstrap**: För att bygga en responsiv och användarvänlig layout.
+- **Sass**: För mer avancerad och modulär CSS-hantering.
+- **TypeScript**: För att förbättra kodens robusthet och typkontroll.
+- **React Router**: För att hantera applikationens navigering och routes.
+- **TanStack Query**: För effektiv hantering av datahämtning och caching.
+- **Axios**: För att skicka och hämta data från API:er på ett enkelt sätt.
+
+### Backend
+
+- **Node.js**: För att bygga och köra servern.
+- **Express.js**: Ett flexibelt ramverk för att skapa API:er och hantera serverlogik.
+- **mysql2**: För att ansluta och kommunicera med MySQL-databasen.
+- **MySQL**: Databas för att lagra och hantera boknings- och användardata.
+- **Nodemailer**: För att skicka e-postbekräftelser till användare efter bokningar.
+
+## Installation och Körning
+
+Följ stegen nedan för att köra projektet lokalt:
+
+1. **Klona repository**
+
+   ```bash
+   git clone https://github.com/Moosees/filmvisarna-g2.git
+   cd filmvisarna
+
+   ```
+
+2. **Installera Beroenden:**
+
+   ```bash
+   npm install
+   ```
+
+   3. **Starta Webbplatsen:**
+
+   ```bash
+   npm start
+   ```
+
+   Webbplatsen startar på [http://localhost:5173/](http://localhost:5173/) som standard.
+
+## Utvecklare
+
+Detta projekt utvecklades av:
+
+- **Linus Almgren**
+- **Motasem Abushareefih**
+- **Johan Håkansson**
+- **Sara Johnsson**
+- **Emily Wåhlin**
+- **Emilia Sundin**
