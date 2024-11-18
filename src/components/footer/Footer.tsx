@@ -13,7 +13,7 @@ const links = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="row custom-footer  text-center ">
+    <footer className="custom-footer text-center ">
       <section className="col d-flex justify-content-around fs-md-custom  py-3 ">
         <article className="d-none d-md-block">
           <h5 className="mb-3">Sociala medier:</h5>
@@ -21,20 +21,24 @@ const Footer: React.FC = () => {
           <TwitterX size={35} className="icon-scale mx-2" />
           <Facebook size={35} className="icon-scale mx-2" />
         </article>
+        <div className="d-flex flex-column w-50  flex-md-row justify-content-around">
+          <article className="fs-md-custom mb-3">
+            <h5>Vi öppnar:</h5>
+            <p className="m-1 my-md-3">Mån - fre 17:00</p>
+            <p className="m-1 my-md-3">Lör - sön 13:00</p>
+          </article>
 
-        <article>
-          <h5>Vi öppnar:</h5>
-          <p>Mån - fre 17:00</p>
-          <p>Lör - sön 13:00</p>
-        </article>
-
-        <article className="fs-md-custom">
-          <h5>Adress:</h5>
-          <p>Stockholmsvägen 11</p>
-          <p>193XX Norrtälje</p>
-          <PinMap size={30} />
-        </article>
-
+          <article className="fs-md-custom">
+            <h5>Adress:</h5>
+            <p className="my-1 my-md-3">Stockholmsvägen 11</p>
+            <p className="m-1 my-md-3 d-flex justify-content-center align-items-end">
+              <span>
+                <PinMap size={25} className="me-2 " />
+              </span>
+              193XX Norrtälje
+            </p>
+          </article>
+        </div>
         <article>
           <h5>Övrigt:</h5>
           <ListGroup variant="flush">
@@ -50,11 +54,11 @@ const Footer: React.FC = () => {
           </ListGroup>
         </article>
       </section>
-      <article className=" d-md-none pb-4">
+      <article className=" d-md-none p-0 pb-4">
         <h5 className="mb-3">Sociala medier:</h5>
-        <Instagram size={35} className="icon-scale mx-2" />
-        <TwitterX size={35} className="icon-scale mx-2" />
-        <Facebook size={35} className="icon-scale mx-2" />
+        <Instagram size={35} className="icon-scale me-2" />
+        <TwitterX size={35} className="icon-scale me-2" />
+        <Facebook size={35} className="icon-scale me-2" />
       </article>
     </footer>
   );
