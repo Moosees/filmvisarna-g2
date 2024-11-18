@@ -3,7 +3,6 @@ import axios from 'axios';
 import { ActionFunctionArgs, json, redirect } from 'react-router-dom';
 import { LoginFormData } from '../pages/loginpage/LoginPage';
 import { getAxios } from './clients';
-import { toast } from 'react-toastify';
 
 const login = async (data: LoginFormData) =>
   await getAxios().post('user', data);
@@ -17,7 +16,6 @@ export const loginAction =
     try {
       await login(data);
       await client.invalidateQueries({ queryKey: ['user'] });
-      toast.success('Du är nu inloggad');
       return redirect('/'); // Redirect to the home page after successful login
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data?.message) {

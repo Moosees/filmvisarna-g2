@@ -1,7 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useLogOutMutation } from '../../api/logOut';
 import { getRootDataQuery } from '../../api/root';
 import LogoText from '../../assets/images/logoText.svg';
@@ -19,6 +20,10 @@ function Header() {
     event.preventDefault();
     logOut();
   };
+
+  useEffect(() => {
+    if (isLoggedIn) toast.success('Du är nu inloggad, välkommen!');
+  }, [isLoggedIn]);
 
   return (
     <header className="navbar">
