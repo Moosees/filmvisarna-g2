@@ -13,19 +13,13 @@ const links = [
 
 const Footer: React.FC = () => {
   return (
-    <footer className="row custom-footer  text-center">
-      <section className="col">
-        <article>
-          <h5>Sociala medier:</h5>
-          <i className="bi bi-alarm me-3">
-            <Instagram size={35} />
-          </i>
-          <i className="bi bi-alarm me-3">
-            <TwitterX size={35} />
-          </i>
-          <i className="bi bi-alarm me-3">
-            <Facebook size={35} />
-          </i>
+    <footer className="row custom-footer  text-center ">
+      <section className="col d-flex justify-content-around fs-md-custom  py-3 ">
+        <article className="d-none d-md-block">
+          <h5 className="mb-3">Sociala medier:</h5>
+          <Instagram size={35} className="icon-scale mx-2" />
+          <TwitterX size={35} className="icon-scale mx-2" />
+          <Facebook size={35} className="icon-scale mx-2" />
         </article>
 
         <article>
@@ -33,14 +27,12 @@ const Footer: React.FC = () => {
           <p>Mån - fre 17:00</p>
           <p>Lör - sön 13:00</p>
         </article>
-      </section>
 
-      <section className="col">
-        <article>
+        <article className="fs-md-custom">
           <h5>Adress:</h5>
           <p>Stockholmsvägen 11</p>
           <p>193XX Norrtälje</p>
-          <PinMap size={40} />
+          <PinMap size={30} />
         </article>
 
         <article>
@@ -50,7 +42,7 @@ const Footer: React.FC = () => {
               <Link
                 key={index}
                 to={link.to}
-                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mb-2"
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mb-2 mb-md-3 "
               >
                 {link.label}
               </Link>
@@ -58,6 +50,12 @@ const Footer: React.FC = () => {
           </ListGroup>
         </article>
       </section>
+      <article className=" d-md-none pb-4">
+        <h5 className="mb-3">Sociala medier:</h5>
+        <Instagram size={35} className="icon-scale mx-2" />
+        <TwitterX size={35} className="icon-scale mx-2" />
+        <Facebook size={35} className="icon-scale mx-2" />
+      </article>
     </footer>
   );
 };

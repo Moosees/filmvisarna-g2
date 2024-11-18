@@ -67,3 +67,11 @@
     scale: 1;
   }
 }
+.icon-scale {
+  scale: 0.85;
+  cursor: pointer;
+  transition: scale 0.3s ease;
+  &:hover {
+    scale: 1;
+  }
+}
