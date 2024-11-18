@@ -1,4 +1,5 @@
 import { Card, Col, ListGroup } from 'react-bootstrap';
+import { formatMinutes } from '../../utils/formatMinutes.js';
 
 interface TextTableProps {
   movieData: {
@@ -17,7 +18,7 @@ interface TextTableProps {
 
 export default function TextTable({ movieData }: TextTableProps) {
   const movieDetails = [
-    { label: 'Speltid', value: `${movieData.playTime} Minuter` },
+    { label: 'Speltid', value: formatMinutes(movieData.playTime) },
     {
       label: 'Språk',
       value: movieData.movieInfo?.language || 'okänd',
@@ -43,7 +44,7 @@ export default function TextTable({ movieData }: TextTableProps) {
             {movieDetails.map((detail, index) => (
               <ListGroup.Item
                 key={index}
-                className="text-dark bg-rosa p-1 px-0 d-flex align-items-center justify-content-between flex-wrap border border-0 text-capitalize"
+                className="text-dark bg-rosa p-1 px-0 d-flex align-items-center justify-content-between flex-wrap border border-0"
               >
                 <strong>{detail.label}:</strong> <span>{detail.value}</span>
               </ListGroup.Item>
