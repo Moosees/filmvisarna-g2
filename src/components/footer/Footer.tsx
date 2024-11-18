@@ -14,15 +14,15 @@ const links = [
 const Footer: React.FC = () => {
   return (
     <footer className="custom-footer text-center ">
-      <section className="col d-flex justify-content-around fs-md-custom  py-3 ">
+      <section className="col d-flex justify-content-around fs-md-custom py-3 ">
         <article className="d-none d-md-block">
           <h5 className="mb-3">Sociala medier:</h5>
-          <Instagram size={35} className="icon-scale mx-2" />
-          <TwitterX size={35} className="icon-scale mx-2" />
-          <Facebook size={35} className="icon-scale mx-2" />
+          <Instagram size={35} className="icon-scale me-3" />
+          <TwitterX size={35} className="icon-scale me-3" />
+          <Facebook size={35} className="icon-scale me-3" />
         </article>
         <div className="d-flex flex-column w-50  flex-md-row justify-content-around">
-          <article className="fs-md-custom mb-3">
+          <article className="  mb-3 ">
             <h5>Vi öppnar:</h5>
             <p className="m-1 my-md-3">Mån - fre 17:00</p>
             <p className="m-1 my-md-3">Lör - sön 13:00</p>
@@ -56,9 +56,9 @@ const Footer: React.FC = () => {
       </section>
       <article className=" d-md-none p-0 pb-4">
         <h5 className="mb-3">Sociala medier:</h5>
-        <Instagram size={35} className="icon-scale me-2" />
-        <TwitterX size={35} className="icon-scale me-2" />
-        <Facebook size={35} className="icon-scale me-2" />
+        <Instagram size={30} className="me-3" />
+        <TwitterX size={30} className="me-3" />
+        <Facebook size={30} className="me-3" />
       </article>
     </footer>
   );
