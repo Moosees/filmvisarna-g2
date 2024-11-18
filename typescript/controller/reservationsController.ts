@@ -91,12 +91,7 @@ const createNewReservation = async (
   const { email, screeningId, ticketIds, seatIds } = req.body;
   const userEmail = email || req.session.user?.email;
 
-  if (
-    (!email && !req.session.user?.email) ||
-    !screeningId ||
-    !ticketIds ||
-    !seatIds
-  ) {
+  if (!userEmail || !screeningId || !ticketIds || !seatIds) {
     res.status(400).json({ error: 'Bokningen är inte korrekt ifylld' });
     return;
   }
@@ -119,7 +114,7 @@ const createNewReservation = async (
 
     const [result] = await con.execute<ReservationData[]>(
       'CALL create_reservation(:email, :screeningId);',
-      { email: email || req.session.user?.email, screeningId }
+      { email: userEmail, screeningId }
     );
     const { reservationId, reservationNum } = result[0][0];
 
