@@ -74,7 +74,7 @@ Följ stegen nedan för att köra projektet lokalt:
    npm install
    ```
 
-   3. **Starta Webbplatsen:**
+3. **Starta Webbplatsen:**
 
    ```bash
    npm start
