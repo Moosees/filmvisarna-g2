@@ -15,6 +15,7 @@ export const getRootDataQuery = () =>
   queryOptions({
     queryKey: ['user'],
     queryFn: getRootData,
+    staleTime: 60 * 1000,
   });
 
 export const rootLoader = (client: QueryClient) => async () => {
