@@ -13,8 +13,8 @@ _Bild: Startsidan för Filmvisarna-webbplatsen._
 2. **Bokning av Biobiljetter**
 
    - Grafisk visning av salonger och stolar.
-   - Stöd för olika biljettpriser.   
    - Realtidsuppdatering av tillgängliga stolar.
+   - Stöd för olika biljettpriser.  
    - Direktuppdatering av totalpris och valda stolar.
 
 3. **Bokningsbekräftelse**
