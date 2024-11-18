@@ -13,11 +13,8 @@ _Bild: Startsidan för Filmvisarna-webbplatsen._
 2. **Bokning av Biobiljetter**
 
    - Grafisk visning av salonger och stolar.
-   - Dynamisk markering av bästa tillgängliga stolar.
-   - Stöd för olika biljettpriser:
-     - Vuxen: 140 kr
-     - Pensionär: 120 kr
-     - Barn: 80 kr
+   - Stöd för olika biljettpriser.   
+   - Realtidsuppdatering av tillgängliga stolar.
    - Direktuppdatering av totalpris och valda stolar.
 
 3. **Bokningsbekräftelse**
@@ -32,6 +29,7 @@ _Bild: Startsidan för Filmvisarna-webbplatsen._
 5. **Användarkonton**
 
    - Registrering, inloggning och hantering av bokningshistorik.
+   - Användarhantering är session-baserat för ökad säkerhet och enkel användning.
 
 6. **Responsiv Design**
    - Optimerad för mobiler, surfplattor och datorer med hjälp av **Bootstrap**.
@@ -56,31 +54,6 @@ _Bild: Startsidan för Filmvisarna-webbplatsen._
 - **MySQL**: Databas för att lagra och hantera boknings- och användardata.
 - **Nodemailer**: För att skicka e-postbekräftelser till användare efter bokningar.
 
-## Installation och Körning
-
-Följ stegen nedan för att köra projektet lokalt:
-
-1. **Klona repository**
-
-   ```bash
-   git clone https://github.com/Moosees/filmvisarna-g2.git
-   cd filmvisarna-g2
-
-   ```
-
-2. **Installera Beroenden:**
-
-   ```bash
-   npm install
-   ```
-
-3. **Starta Webbplatsen:**
-
-   ```bash
-   npm start
-   ```
-
-   Webbplatsen startar på [http://localhost:5173/](http://localhost:5173/) som standard.
 
 ## Utvecklare
 
