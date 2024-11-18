@@ -3,6 +3,7 @@ import { FieldPacket, RowDataPacket } from 'mysql2';
 import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
 import sendEmail from '../utils/sendEmail.js';
+import EventEmitter from 'node:events';
 
 interface CreateNewReservationRequest extends Request {
   body: {
@@ -79,6 +80,8 @@ const deleteSeatsAndTicketsFromReservation = async (
       WHERE r.reservation_num = :reservationNum AND u.user_email = :email;`;
   await con.execute(query, { reservationNum, email });
 };
+
+export const reservationEmitter = new EventEmitter();
 
 // Route Controllers
 const createNewReservation = async (
@@ -189,14 +192,13 @@ const createNewReservation = async (
          `;
 
     await sendEmail(userEmail, 'Boking lyckades', html);
+
+    reservationEmitter.emit('added', screeningId);
+
     res.status(200).json({
       message: 'Vi har skickat en bokning till din mail',
       reservationNum,
     });
-
-    console.log(html);
-
-    console.log('Email sent successfully');
   } catch (error) {
     console.log(error);
     await con?.rollback();

@@ -1,6 +1,7 @@
 import db from '../config/connectDB.js';
 import { Request, Response } from 'express';
 import { FieldPacket, RowDataPacket } from 'mysql2';
+import { reservationEmitter } from './reservationsController.js';
 
 const getReservedSeats = async (req: Request, res: Response) => {
   try {
@@ -115,4 +116,46 @@ const getAllSeats = async (req: Request, res: Response) => {
   }
 };
 
-export default { getReservedSeats, getOreservedSeats, getAllSeats };
+const streamSeatsUpdates = (req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
+
+  const keepAliveFn = () => {
+    res.write('event: keep-alive\n\n');
+  };
+  const keepAliveMs = 5000;
+  let keepAliveTimer = setInterval(keepAliveFn, keepAliveMs);
+
+  const endSeatUpdates = () => {
+    reservationEmitter.off('added', sendSeatUpdate);
+    clearInterval(keepAliveTimer);
+    res.end();
+  };
+
+  const sendSeatUpdate = (updateId: number) => {
+    try {
+      clearInterval(keepAliveTimer);
+      res.write(`data: ${updateId}\n\n`);
+      keepAliveTimer = setInterval(keepAliveFn, keepAliveMs);
+    } catch (error) {
+      console.error('seatUpdates error:', error);
+      endSeatUpdates();
+    }
+  };
+
+  req.on('close', () => {
+    endSeatUpdates();
+  });
+
+  reservationEmitter.on('added', sendSeatUpdate);
+};
+
+export default {
+  getReservedSeats,
+  getOreservedSeats,
+  getAllSeats,
+  streamSeatsUpdates,
+};

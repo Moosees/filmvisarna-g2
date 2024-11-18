@@ -1,25 +1,29 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 import {
   Link,
   useActionData,
   useLoaderData,
   useSubmit,
 } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { getScreeningDataQuery, reserveLoader } from '../../api/reserve';
 import { getRootDataQuery } from '../../api/root';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import Hall from '../../components/hall/Hall';
 import TicketSelector from '../../components/hall/TicketSelector';
-import { toast } from 'react-toastify';
+import useSeatUpdate from '../../hooks/useSeatUpdate';
+import InputWrapper from '../../components/form/InputWrapper';
 
 function ReservePage() {
   const [ticketIds, setTicketIds] = useState<number[]>([]);
   const [seatIds, setSeatIds] = useState<number[]>([]);
-  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [splitSeats, setSplitSeats] = useState(false);
   const submit = useSubmit();
+  useSeatUpdate();
 
   const {
     data: { isLoggedIn },
@@ -29,6 +33,13 @@ function ReservePage() {
     ReturnType<ReturnType<typeof reserveLoader>>
   >;
   const { data } = useSuspenseQuery(getScreeningDataQuery(screeningId));
+
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors: formErrors },
+  } = useForm<{ email: string }>({ mode: 'onChange' });
 
   const error = useActionData() as unknown as string | Response;
   useEffect(() => {
@@ -55,62 +66,85 @@ function ReservePage() {
     }
   }, [data, seatIds, isSubmitting]);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
+    if (formErrors.email) return;
     setIsSubmitting(true);
 
+    const email = getValues('email');
     submit({ seatIds, ticketIds, email }, { method: 'POST' });
   };
+
   return (
-    <form onSubmit={handleSubmit} className="row gy-2 align-items-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="row gy-2 align-items-center"
+      noValidate
+    >
       <Col className="col-12 col-lg-6">
         <Container
           fluid
-          className="bg-rosa rounded d-flex flex-column gap-4 text-dark p-3"
+          className="bg-rosa rounded d-flex flex-column gap-3 text-dark p-3"
         >
-          <h2 className="text-decoration-underline">{data.title}</h2>
-          <h4 className="cap-first">
+          <h2 className="text-decoration-underline fs-4">{data.title}</h2>
+          <h3 className="cap-first fs-5">
             {data.date} {data.time}
-          </h4>
+          </h3>
           <TicketSelector tickets={data.tickets} setTicketIds={setTicketIds} />
+          <Row
+            style={{ cursor: 'pointer' }}
+            className="field-container"
+            onClick={() => setSplitSeats((checked) => !checked)}
+          >
+            <Form.Check
+              className="custom-switch"
+              type="switch"
+              label={`Skilda platser ${splitSeats ? '(på)' : '(av)'}`}
+              checked={splitSeats}
+            />
+          </Row>
           {!isLoggedIn && (
             <Row>
-              <Col className="field-container">
-                <label htmlFor="email" className="form-label">
-                  E-post
-                </label>
-                <input
+              <InputWrapper
+                controlId="email"
+                label="E-post"
+                errorMsg={formErrors.email?.message}
+              >
+                <Form.Control
                   type="email"
-                  id="email"
-                  name="email"
-                  className="form-control form-control-field"
-                  placeholder="Ange din e-postadress"
-                  value={email}
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
+                  className="form-control-field"
+                  placeholder="Ange din e-post"
+                  defaultValue=""
+                  {...register('email', {
+                    required: 'E-post krävs',
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                      message: 'Var god fyll i en giltig e-postadress',
+                    },
+                  })}
+                  isInvalid={!!formErrors.email}
                 />
-                {/* <PrimaryBtn className="align-self-center"> /}
-                {/   <Link to="/medlem/bli-medlem">Bli medlem</Link> /}
-                {/ </PrimaryBtn> */}
-              </Col>
+              </InputWrapper>
             </Row>
           )}
         </Container>
       </Col>
       <Col className="d-flex flex-column gap-3 col-12 col-lg-6">
         <Hall
+          splitSeats={splitSeats}
           numPersons={ticketIds.length}
           seatIds={seatIds}
           setSeatIds={setSeatIds}
         />
         <div className="button-group">
           <PrimaryBtn>
-            <Link to="/">Ångra</Link>
+            <Link to={`/film/${data.paramUrl}`}>Ångra</Link>
           </PrimaryBtn>
           <PrimaryBtn
             type="submit"
             disabled={
-              ticketIds.length === 0 || ticketIds.length !== seatIds.length
+              ticketIds.length === 0 ||
+              ticketIds.length !== seatIds.length ||
+              !!formErrors.email
             }
           >
             Boka
