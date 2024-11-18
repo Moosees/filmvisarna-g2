@@ -14,6 +14,7 @@ export interface ScreeningData {
   time: string;
   screeningId: number;
   poster: string;
+  paramUrl: string;
   tickets: { ticketId: number; name: string; price: number }[];
   seats: { seatId: number; free: boolean }[][];
 }

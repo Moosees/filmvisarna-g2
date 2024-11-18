@@ -137,7 +137,7 @@ function ReservePage() {
         />
         <div className="button-group">
           <PrimaryBtn>
-            <Link to="/">Ångra</Link>
+            <Link to={`/film/${data.paramUrl}`}>Ångra</Link>
           </PrimaryBtn>
           <PrimaryBtn
             type="submit"
