@@ -10,7 +10,9 @@ import MovieCard from '../../components/movieCard/MovieCard';
 
 export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get('titel') || ''
+  );
   const { filters } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof filterLoader>>
   >;
