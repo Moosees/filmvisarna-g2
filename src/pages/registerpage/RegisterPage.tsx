@@ -1,7 +1,5 @@
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import axios from 'axios';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useActionData, useNavigate, useSubmit } from 'react-router-dom';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 
@@ -14,6 +12,10 @@ interface RegisterFormValues {
 }
 
 const RegisterPage: React.FC = () => {
+  const submit = useSubmit();
+  const navigate = useNavigate();
+  const actionData = useActionData() as { error?: string };
+
   const {
     register,
     handleSubmit,
@@ -21,36 +23,21 @@ const RegisterPage: React.FC = () => {
     formState: { errors },
   } = useForm<RegisterFormValues>();
 
-  const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+    const jsonObject = Object.entries(data).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        acc[key] = String(value);
+        return acc;
+      },
+      {}
+    );
 
-  const onSubmit = async (data: RegisterFormValues) => {
-    try {
-      const response = await axios.post('/api/user/register', data);
-      setSuccess(
-        `Användare registrerad med rollen "member", ID: ${response.data.id}`
-      );
-      setError(null);
-      navigate('/medlem/logga-in');
-    } catch (err: any) {
-      if (err.response && err.response.status === 409) {
-        setError(
-          'E-postadressen finns redan registrerad, var vänlig logga in.'
-        );
-      } else {
-        setError('Något gick fel, försök igen!');
-      }
-      setSuccess(null);
-      console.error('Något gick fel', err);
-    }
+    submit(jsonObject, { method: 'post', action: '/medlem/bli-medlem' });
   };
 
   const handleGoBack = () => {
     navigate('/');
   };
-
-  const password = watch('user_password');
 
   return (
     <Container className="d-flex justify-content-center">
@@ -60,10 +47,16 @@ const RegisterPage: React.FC = () => {
             <Form.Group controlId="user_email" className="field-container mb-3">
               <Form.Label className="form-label">E-post</Form.Label>
               <Form.Control
-                type="email"
                 className="form-control-field"
                 placeholder="Ange din e-post"
-                {...register('user_email', { required: 'E-post krävs' })}
+                defaultValue=""
+                {...register('user_email', {
+                  required: 'E-post krävs',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                    message: 'Var god skriv in en giltig e-postadress',
+                  },
+                })}
                 isInvalid={!!errors.user_email}
               />
               <Form.Control.Feedback type="invalid">
@@ -80,7 +73,13 @@ const RegisterPage: React.FC = () => {
                 type="password"
                 className="form-control-field"
                 placeholder="Ange ditt lösenord"
-                {...register('user_password', { required: 'Lösenord krävs' })}
+                {...register('user_password', {
+                  required: 'Lösenord är obligatoriskt',
+                  minLength: {
+                    value: 6,
+                    message: 'Lösenordet måste vara minst 6 tecken långt',
+                  },
+                })}
                 isInvalid={!!errors.user_password}
               />
               <Form.Control.Feedback type="invalid">
@@ -99,7 +98,8 @@ const RegisterPage: React.FC = () => {
                 placeholder="Upprepa ditt lösenord"
                 {...register('confirm_password', {
                   validate: (value) =>
-                    value === password || 'Lösenorden matchar inte',
+                    value === watch('user_password') ||
+                    'Lösenorden matchar inte',
                 })}
                 isInvalid={!!errors.confirm_password}
               />
@@ -114,7 +114,9 @@ const RegisterPage: React.FC = () => {
                 type="text"
                 className="form-control-field"
                 placeholder="Ange ditt förnamn"
-                {...register('first_name', { required: 'Förnamn krävs' })}
+                {...register('first_name', {
+                  required: 'Förnamn är obligatoriskt',
+                })}
                 isInvalid={!!errors.first_name}
               />
               <Form.Control.Feedback type="invalid">
@@ -128,7 +130,9 @@ const RegisterPage: React.FC = () => {
                 type="text"
                 className="form-control-field"
                 placeholder="Ange ditt efternamn"
-                {...register('last_name', { required: 'Efternamn krävs' })}
+                {...register('last_name', {
+                  required: 'Efternamn är obligatoriskt',
+                })}
                 isInvalid={!!errors.last_name}
               />
               <Form.Control.Feedback type="invalid">
@@ -146,14 +150,9 @@ const RegisterPage: React.FC = () => {
             </div>
           </Form>
 
-          {error && (
+          {actionData?.error && (
             <Alert variant="danger" className="mt-3">
-              {error}
-            </Alert>
-          )}
-          {success && (
-            <Alert variant="success" className="mt-3">
-              {success}
+              {actionData.error}
             </Alert>
           )}
         </Col>
