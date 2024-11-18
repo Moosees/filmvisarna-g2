@@ -64,7 +64,7 @@ Följ stegen nedan för att köra projektet lokalt:
 
    ```bash
    git clone https://github.com/Moosees/filmvisarna-g2.git
-   cd filmvisarna
+   cd filmvisarna-g2
 
    ```
 
