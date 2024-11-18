@@ -36,7 +36,11 @@ function Header() {
         <NavButton to="/evenemang" label="Evenemang" />
         <Dropdown>
           <Dropdown.Toggle bsPrefix="custom-toggle" id="medlem">
-            <img src={MemberLogo} alt="Medlem meny" className="img-fluid" />
+            <img
+              src={MemberLogo}
+              alt="Medlem meny"
+              className="img-fluid icon-scale"
+            />
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu shadow">
             {!isLoggedIn && ( // Render these items only when not logged in
