@@ -1,6 +1,6 @@
 const viewAllSeats = `
   CREATE OR REPLACE VIEW view_all_seats AS
-  SELECT m.title, s2.id AS screeningId, m.poster_url AS poster, 
+  SELECT m.title, s2.id AS screeningId, m.poster_url AS poster, m.url_param AS paramUrl, 
   concat((case when (cast(s2.start_time as date) = curdate()) then 'idag' else dayname(s2.start_time) end), 
     ' ', date_format(s2.start_time, '%d %b')) AS date,
   concat(date_format(s2.start_time, '%H:%i'), ' - ', date_format((s2.start_time + interval m.play_time minute), '%H:%i')) AS time,
