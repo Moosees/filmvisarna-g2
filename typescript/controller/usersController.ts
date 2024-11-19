@@ -156,7 +156,8 @@ const logout = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const getAllUsers = async (req: Request, res: Response) => {
+// NOTE: delete maybe
+const getAllUsers = async (_req: Request, res: Response) => {
   try {
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(

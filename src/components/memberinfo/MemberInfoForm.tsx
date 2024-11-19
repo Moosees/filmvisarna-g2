@@ -18,7 +18,6 @@ interface UpdateUserData {
 interface MemberInfoFormProps {
   displayMemberInfo: UserData;
   isEditing: boolean;
-  setIsEditing: (value: boolean) => void;
   onSubmit: SubmitHandler<UpdateUserData>;
   toggleEdit: () => void;
   errorMessage: string | null;
@@ -28,7 +27,6 @@ interface MemberInfoFormProps {
 const MemberInfoForm: React.FC<MemberInfoFormProps> = ({
   displayMemberInfo,
   isEditing,
-  setIsEditing,
   onSubmit,
   toggleEdit,
   errorMessage,
