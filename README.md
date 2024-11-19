@@ -1,50 +1,71 @@
-# React + TypeScript + Vite
+# Filmvisarna AB - Webbsajt för Biografbokning
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Filmvisarna AB är en biografkedja i Småstad som erbjuder en modern och interaktiv webbsajt för att förbättra användarupplevelsen vid bokning av biobiljetter. Projektet är byggt med **React**, **Bootstrap**, och **TypeScript** för att säkerställa snabb utveckling och underhållbar kod. Med inspiration från 80-talets klassiska biografstilar och neonfärger har Filmvisarna skapat en webbsida som både speglar en nostalgisk känsla och erbjuder en modern, interaktiv upplevelse för filmälskare.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+![Filmvisarna home](/src/assets/images/Filmvisarna%20home.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+_Bild: Startsidan för Filmvisarna-webbplatsen._
 
-- Configure the top-level `parserOptions` property like this:
+## Funktioner
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. **Information om Filmer**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   - Detaljsidor för filmer med trailers, beskrivningar och annan relevant information.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+2. **Bokning av Biobiljetter**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   - Grafisk visning av salonger och stolar.
+   - Realtidsuppdatering av tillgängliga stolar.
+   - Stöd för olika biljettpriser.  
+   - Direktuppdatering av totalpris och valda stolar.
+
+3. **Bokningsbekräftelse**
+
+   - Generering av unikt bokningsnummer.
+   - E-postbekräftelse skickas automatiskt.
+
+4. **Filtrering och Sortering**
+
+   - Filtrera filmer efter titel, datum och åldersgräns.
+
+5. **Användarkonton**
+
+   - Registrering, inloggning och hantering av bokningshistorik.
+   - Användarhantering är session-baserat för ökad säkerhet och enkel användning.
+
+6. **Responsiv Design**
+   - Optimerad för mobiler, surfplattor och datorer med hjälp av **Bootstrap**.
+
+## Teknologier
+
+### Frontend
+
+- **React**: För att skapa en dynamisk och interaktiv användarupplevelse.
+- **Bootstrap**: För att bygga en responsiv och användarvänlig layout.
+- **Sass**: För mer avancerad och modulär CSS-hantering.
+- **TypeScript**: För att förbättra kodens robusthet och typkontroll.
+- **React Router**: För att hantera applikationens navigering och routes.
+- **TanStack Query**: För effektiv hantering av datahämtning och caching.
+- **Axios**: För att skicka och hämta data från API:er på ett enkelt sätt.
+
+### Backend
+
+- **Node.js**: För att bygga och köra servern.
+- **Express.js**: Ett flexibelt ramverk för att skapa API:er och hantera serverlogik.
+- **mysql2**: För att ansluta och kommunicera med MySQL-databasen.
+- **MySQL**: Databas för att lagra och hantera boknings- och användardata.
+- **Nodemailer**: För att skicka e-postbekräftelser till användare efter bokningar.
+
+
+## Utvecklare
+
+Detta projekt utvecklades av:
+
+- **Linus Almgren**
+- **Motasem Abushareefih**
+- **Johan Håkansson**
+- **Sara Johnsson**
+- **Emily Wåhlin**
+- **Emilia Sundin**
