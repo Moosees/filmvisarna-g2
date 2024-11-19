@@ -6,7 +6,7 @@ function AboutPage() {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
       <ScrollRestoration />
-      <Row className="w-50 mb-5">
+      <Row className=" mb-5">
         <Col className="rounded bg-rosa mt-3 p-4 d-flex flex-column align-items-center justify-content-center">
           <h4 className="text-black">
             Filmvisarna – Där 80-talet lever vidare!
@@ -30,7 +30,7 @@ function AboutPage() {
           Kontakta oss
         </h1>
       </div>
-      <Row className="rounded bg-rosa  w-50 mt-4 justify-content-evenly align-items-center">
+      <Row className="rounded bg-rosa mt-4 justify-content-evenly align-items-center col-md-6">
         <Col className=" d-flex flex-column align-items-center justify-content-center">
           <Link to="/">
             <img
