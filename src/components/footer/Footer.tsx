@@ -1,80 +1,65 @@
 import React from 'react';
+import { ListGroup } from 'react-bootstrap';
 import { Facebook, Instagram, PinMap, TwitterX } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 
+const links = [
+  { label: 'Biogodis', to: '/godis' },
+  { label: ' Teknik', to: '/godis#teknik' },
+  { label: 'Om oss', to: '/om-oss' },
+  { label: 'Avboka', to: '/avbokning' },
+  { label: ' Kontakt', to: '/om-oss#kontakt' },
+];
+
 const Footer: React.FC = () => {
   return (
-    <footer className="custom-footer text-center">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-3">
-            <h5>Sociala medier:</h5>
-            <i className="bi bi-alarm me-3">
-              <Instagram size={35} />
-            </i>
-            <i className="bi bi-alarm me-3">
-              <TwitterX size={35} />
-            </i>
-            <i className="bi bi-alarm me-3">
-              <Facebook size={35} />
-            </i>
-          </div>
-          <div className="col-md-3">
+    <footer className="custom-footer text-center ">
+      <section className="col d-flex justify-content-around fs-md-custom py-3 ">
+        <article className="d-none d-md-block">
+          <h5 className="mb-3">Sociala medier:</h5>
+          <Instagram size={35} className="icon-scale me-3" />
+          <TwitterX size={35} className="icon-scale me-3" />
+          <Facebook size={35} className="icon-scale me-3" />
+        </article>
+        <div className="d-flex flex-column w-50  flex-md-row justify-content-around">
+          <article className="  mb-3 ">
             <h5>Vi öppnar:</h5>
-            <p>Mån - fre 17:00</p>
-            <p>Lör - sön 13:00</p>
-          </div>
-          <div className="col-md-3">
+            <p className="m-1 my-md-3">Mån - fre 17:00</p>
+            <p className="m-1 my-md-3">Lör - sön 13:00</p>
+          </article>
+
+          <article className="fs-md-custom">
             <h5>Adress:</h5>
-            <p>Stockholmsvägen 11</p>
-            <p>193XX Norrtälje</p>
-            <PinMap size={40} />
-          </div>
-          <div className="col-md-3">
-            <h5>Övrigt:</h5>
-            <p>
-              <Link
-                to="/godis"
-                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              >
-                Biogodis
-              </Link>
+            <p className="my-1 my-md-3">Stockholmsvägen 11</p>
+            <p className="m-1 my-md-3 d-flex justify-content-center align-items-end">
+              <span>
+                <PinMap size={25} className="me-2 " />
+              </span>
+              193XX Norrtälje
             </p>
-            <p>
-              <Link
-                to="/godis#teknik"
-                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              >
-                Teknik
-              </Link>
-            </p>
-            <p>
-              <Link
-                to="/om-oss"
-                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              >
-                Om oss
-              </Link>
-            </p>
-            <p>
-              <Link
-                to="/avbokning"
-                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              >
-                Avboka
-              </Link>
-            </p>
-            <p>
-              <Link
-                to="/om-oss#kontakt"
-                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              >
-                Kontakt
-              </Link>
-            </p>
-          </div>
+          </article>
         </div>
-      </div>
+        <article>
+          <h5>Övrigt:</h5>
+          <ListGroup variant="flush">
+            {links.map((link, index) => (
+              <Link
+                key={index}
+                to={link.to}
+                className="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mb-2 mb-md-3 "
+              >
+                {link.label}
+              </Link>
+            ))}
+          </ListGroup>
+        </article>
+      </section>
+      <article className=" d-md-none p-0 pb-4">
+        <h5 className="mb-3">Sociala medier:</h5>
+        <Instagram size={30} className="me-3" />
+        <TwitterX size={30} className="me-3" />
+        <Facebook size={30} className="me-3" />
+      </article>
     </footer>
   );
 };
