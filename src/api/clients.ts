@@ -1,12 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 import axios, { AxiosInstance } from 'axios';
 
-const BASE_URL = 'http://localhost:5173/api';
-
 let axiosInstance: AxiosInstance | null = null;
 
 export function getAxios() {
-  if (!axiosInstance) axiosInstance = axios.create({ baseURL: BASE_URL });
+  if (!axiosInstance) axiosInstance = axios.create({ baseURL: '/api' });
 
   return axiosInstance;
 }
