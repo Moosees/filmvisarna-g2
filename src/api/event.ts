@@ -6,6 +6,7 @@ interface EventMoviesData {
   posterUrl: string;
   paramUrl: string;
   movieTitle: string;
+  description: string;
 }
 
 async function getScaryMovies() {

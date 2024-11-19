@@ -127,8 +127,11 @@ const ProfilePage: React.FC = () => {
   if (!isLoggedIn) return <Navigate to="/" replace />;
 
   return (
-    <Container fluid className="rounded bg-rosa shadow-sm p-5">
-      <Row>
+    <Container
+      fluid
+      className="rounded bg-rosa shadow-sm p-1 d-flex flex-column align-items-center justify-content-center w-100"
+    >
+      <Row className="w-100 mx-auto gap-5 d-flex justify-content-center align-items-center">
         <Col
           lg={4}
           className="d-flex flex-column align-items-center justify-content-center mb-3 ms-2"
@@ -150,7 +153,7 @@ const ProfilePage: React.FC = () => {
         </Col>
 
         <Col lg={7} className="d-flex flex-column align-items-center">
-          <h5 className="profile-page-heading d-flex align-items-center profile-text-bg p-1 rounded">
+          <h5 className="profile-page-heading d-flex p-1 align-items-center profile-text-bg rounded">
             Aktuella bokningar
           </h5>
           <div className="cards-wrapper-scroll">
