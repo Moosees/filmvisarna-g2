@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build-more": "cd typescript && tsc --outDir ../backend/",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "conc vite npm:backend-*",
