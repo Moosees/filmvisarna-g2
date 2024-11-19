@@ -68,6 +68,21 @@ const ProfilePage: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
+    if (data.new_password && data.new_password.length < 8) {
+      setErrorMessage('Nytt lösenord måste vara minst 8 tecken långt.');
+      return;
+    }
+
+    if (!/^[a-zA-Z\s'-]+$/.test(data.first_name)) {
+      setErrorMessage('Förnamnet innehåller ogiltiga tecken.');
+      return;
+    }
+
+    if (!/^[a-zA-Z\s'-]+$/.test(data.last_name)) {
+      setErrorMessage('Efternamnet innehåller ogiltiga tecken.');
+      return;
+    }
+
     try {
       const response = await getAxios().patch('/user', {
         first_name: data.first_name,
@@ -80,6 +95,8 @@ const ProfilePage: React.FC = () => {
         await loadMemberInfo();
         setIsEditing(false);
         setErrorMessage(null);
+      } else {
+        setErrorMessage('Ett fel uppstod. Försök igen senare.');
       }
     } catch (error: any) {
       if (
@@ -89,6 +106,7 @@ const ProfilePage: React.FC = () => {
       ) {
         setErrorMessage(error.response.data.message);
       } else {
+        setErrorMessage('Ett oväntat fel uppstod. Försök igen.');
         console.error('Fel vid uppdatering:', error);
       }
     }
@@ -121,7 +139,12 @@ const ProfilePage: React.FC = () => {
   }
 
   if (bookingError || currentBookingsError) {
-    return <div>Ett fel uppstod vid inläsning av bokningsdata.</div>;
+    return (
+      <div>
+        Ett fel uppstod vid inläsning av bokningsdata. Vänligen försök igen
+        senare.
+      </div>
+    );
   }
 
   if (!isLoggedIn) return <Navigate to="/" replace />;
@@ -156,25 +179,33 @@ const ProfilePage: React.FC = () => {
           <div className="cards-wrapper-scroll">
             <CardsWrapper>
               {currentBookings && currentBookings.length > 0 ? (
-                currentBookings.map((booking) => (
-                  <MovieCard
-                    paramUrl={booking.paramUrl}
-                    key={booking.reservationNum}
-                    movieId={booking.movieId}
-                    screeningId={booking.screeningId}
-                    posterUrl={booking.posterUrl}
-                    age={booking.age}
-                    title={booking.title}
-                    startTime={booking.startTime.slice(0, -3)}
-                    showButton={false}
-                    confirmationButton={true}
-                    smallFont={true}
-                    hideAge={true}
-                    reservationNum={booking.reservationNum}
-                    allowConfirmationOnly={true}
-                    className="profile-movie-card"
-                  />
-                ))
+                currentBookings.map((booking) => {
+                  if (!/^[A-Za-z0-9]+$/.test(booking.reservationNum)) {
+                    console.error(
+                      `Ogiltigt bokningsnummer: ${booking.reservationNum}`
+                    );
+                    return null;
+                  }
+                  return (
+                    <MovieCard
+                      paramUrl={booking.paramUrl}
+                      key={booking.reservationNum}
+                      movieId={booking.movieId}
+                      screeningId={booking.screeningId}
+                      posterUrl={booking.posterUrl}
+                      age={booking.age}
+                      title={booking.title}
+                      startTime={booking.startTime.slice(0, -3)}
+                      showButton={false}
+                      confirmationButton={true}
+                      smallFont={true}
+                      hideAge={true}
+                      reservationNum={booking.reservationNum}
+                      allowConfirmationOnly={true}
+                      className="profile-movie-card"
+                    />
+                  );
+                })
               ) : (
                 <div>Inga aktuella bokningar</div>
               )}
