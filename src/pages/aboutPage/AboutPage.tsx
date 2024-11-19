@@ -1,5 +1,6 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { ScrollRestoration } from 'react-router-dom';
+import { Link, ScrollRestoration } from 'react-router-dom';
+import LogoText from '../../assets/images/logoText.svg';
 
 function AboutPage() {
   return (
@@ -32,11 +33,18 @@ function AboutPage() {
           Kontakta oss
         </h1>
       </div>
-      <Row className="w-75 mt-4 d-flex justify-content-center align-items-center">
-        <Col
-          xs={12}
-          className="rounded bg-rosa mt-3 p-3 d-flex flex-column align-items-center justify-content-center"
-        >
+      <Row className="rounded bg-rosa  w-75 mt-4 justify-content-evenly align-items-center">
+        <Col className=" d-flex flex-column align-items-center justify-content-center">
+          <Link to="/">
+            <img
+              src={LogoText}
+              alt="Filmvisarna logo"
+              className="img-fluid pt-3 pt-md-0 scale"
+              style={{ width: '8em', cursor: 'pointer' }}
+            />
+          </Link>
+        </Col>
+        <Col className="mt-3 p-3 d-flex flex-column align-items-center justify-content-center">
           <h4 className="text-black text-center">Kontakta oss:</h4>
           <p className="text-black text-center">
             <br />
