@@ -6,11 +6,8 @@ function AboutPage() {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
       <ScrollRestoration />
-      <Row className="w-75 mb-5">
-        <Col
-          xs={12}
-          className="rounded bg-rosa mt-3 p-3 d-flex flex-column align-items-center justify-content-center"
-        >
+      <Row className="w-50 mb-5">
+        <Col className="rounded bg-rosa mt-3 p-4 d-flex flex-column align-items-center justify-content-center">
           <h4 className="text-black">
             Filmvisarna – Där 80-talet lever vidare!
           </h4>
@@ -33,7 +30,7 @@ function AboutPage() {
           Kontakta oss
         </h1>
       </div>
-      <Row className="rounded bg-rosa  w-75 mt-4 justify-content-evenly align-items-center">
+      <Row className="rounded bg-rosa  w-50 mt-4 justify-content-evenly align-items-center">
         <Col className=" d-flex flex-column align-items-center justify-content-center">
           <Link to="/">
             <img
@@ -45,18 +42,17 @@ function AboutPage() {
           </Link>
         </Col>
         <Col className="mt-3 p-3 d-flex flex-column align-items-center justify-content-center">
-          <h4 className="text-black text-center">Kontakta oss:</h4>
-          <p className="text-black text-center">
-            <br />
-            Telefon: 073 - XXX XX XX
-            <br />
-            E-post: filmvisarna@gmail.com
-            <br />
-            <br />
-            Vi öppnar: <br />
-            Mån - fre: 17:00 <br />
-            Lör - sön: 13:00 <br />
-          </p>
+          <div className="text-black text-center">
+            <p className="text-black d-flex flex-column align-items-center">
+              Telefon: <span className="fs-md-custom">073 - XXX XX XX</span>
+            </p>
+            <p className="text-black d-flex flex-column align-items-center">
+              E-post:{' '}
+              <a href="mailto:filmvisarna@gmail.com" className="text-dark">
+                filmvisarna@gmail.com
+              </a>
+            </p>
+          </div>
         </Col>
       </Row>
     </Container>
