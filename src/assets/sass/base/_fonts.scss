@@ -45,3 +45,13 @@ body {
 .cap-first:first-letter {
   text-transform: uppercase;
 }
+
+.technology-text {
+  max-width: 45ch;
+  line-height: 1.5rem;
+  @include media-breakpoint-down(sm) {
+    max-width: none;
+    word-wrap: normal;
+    line-height: 1.5rem;
+  }
+}
