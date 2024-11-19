@@ -7,6 +7,7 @@ interface MovieCardProps {
   screeningId: number;
   posterUrl: string;
   age: number;
+  paramUrl: string;
   title: string;
   startTime: string;
   showButton?: boolean;
@@ -27,7 +28,7 @@ function MovieCard({
   age,
   title,
   startTime,
-  movieId,
+  paramUrl,
   screeningId,
   showButton = true,
   className,
@@ -48,7 +49,7 @@ function MovieCard({
       if (allowConfirmationOnly && reservationNum) {
         navigate(`/bokning/${reservationNum}`);
       } else {
-        navigate(`/film/${movieId}`);
+        navigate(`/film/${paramUrl}`);
       }
     }
   };

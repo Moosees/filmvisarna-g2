@@ -61,14 +61,14 @@ const getAllMovies = async (req: Request, res: Response) => {
 
 const getMovie = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { paramUrl } = req.params;
 
     await db.execute('SET lc_time_names = "sv_SE"');
 
     // Execute the SQL query
     const [results]: [RowDataPacket[], FieldPacket[]] = await db.execute(
-      ` SELECT * FROM vy_filmdetaljer vf WHERE vf.movieId = ?`,
-      [id]
+      ` SELECT * FROM vy_filmdetaljer vf WHERE vf.paramUrl = ?`,
+      [paramUrl]
     );
 
     // Check if the movie was found
@@ -92,6 +92,7 @@ const getTodaysMovie = async (req: Request, res: Response) => {
       `SELECT
       m.id as movieId,
       m.title,
+      m.url_param AS paramUrl,
       m.poster_url as posterUrl,
       m.age,
       s.start_time as fullDate,
@@ -219,6 +220,7 @@ const filterMovies = async (req: Request, res: Response) => {
     SELECT
     m.id AS movieId,
     m.title,
+    m.url_param AS paramUrl,
     m.poster_url AS posterUrl,
     m.age as age,
     s.id as screeningId,

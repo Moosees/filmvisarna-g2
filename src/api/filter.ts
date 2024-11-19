@@ -18,6 +18,7 @@ interface Movie {
   movieId: number;
   title: string;
   posterUrl: string;
+  paramUrl: string;
   age: number;
   screeningId: number;
   startDate: string;

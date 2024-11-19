@@ -3,6 +3,7 @@ import { FieldPacket, RowDataPacket } from 'mysql2';
 import { PoolConnection } from 'mysql2/promise.js';
 import db from '../config/connectDB.js';
 import sendEmail from '../utils/sendEmail.js';
+import EventEmitter from 'node:events';
 
 interface CreateNewReservationRequest extends Request {
   body: {
@@ -80,6 +81,8 @@ const deleteSeatsAndTicketsFromReservation = async (
   await con.execute(query, { reservationNum, email });
 };
 
+export const reservationEmitter = new EventEmitter();
+
 // Route Controllers
 const createNewReservation = async (
   req: CreateNewReservationRequest,
@@ -88,12 +91,7 @@ const createNewReservation = async (
   const { email, screeningId, ticketIds, seatIds } = req.body;
   const userEmail = email || req.session.user?.email;
 
-  if (
-    (!email && !req.session.user?.email) ||
-    !screeningId ||
-    !ticketIds ||
-    !seatIds
-  ) {
+  if (!userEmail || !screeningId || !ticketIds || !seatIds) {
     res.status(400).json({ error: 'Bokningen är inte korrekt ifylld' });
     return;
   }
@@ -116,7 +114,7 @@ const createNewReservation = async (
 
     const [result] = await con.execute<ReservationData[]>(
       'CALL create_reservation(:email, :screeningId);',
-      { email: email || req.session.user?.email, screeningId }
+      { email: userEmail, screeningId }
     );
     const { reservationId, reservationNum } = result[0][0];
 
@@ -189,14 +187,13 @@ const createNewReservation = async (
          `;
 
     await sendEmail(userEmail, 'Boking lyckades', html);
+
+    reservationEmitter.emit('added', screeningId);
+
     res.status(200).json({
       message: 'Vi har skickat en bokning till din mail',
       reservationNum,
     });
-
-    console.log(html);
-
-    console.log('Email sent successfully');
   } catch (error) {
     console.log(error);
     await con?.rollback();

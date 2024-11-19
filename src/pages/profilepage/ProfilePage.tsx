@@ -24,6 +24,7 @@ interface UpdateUserData {
 }
 
 interface Booking {
+  paramUrl: string;
   movieId: number;
   screeningId: number;
   posterUrl: string;
@@ -141,7 +142,6 @@ const ProfilePage: React.FC = () => {
           <MemberInfoForm
             displayMemberInfo={displayMemberInfo}
             isEditing={isEditing}
-            setIsEditing={setIsEditing}
             onSubmit={onSubmit}
             toggleEdit={toggleEdit}
             errorMessage={errorMessage}
@@ -158,6 +158,7 @@ const ProfilePage: React.FC = () => {
               {currentBookings && currentBookings.length > 0 ? (
                 currentBookings.map((booking) => (
                   <MovieCard
+                    paramUrl={booking.paramUrl}
                     key={booking.reservationNum}
                     movieId={booking.movieId}
                     screeningId={booking.screeningId}
@@ -187,6 +188,7 @@ const ProfilePage: React.FC = () => {
               {bookingHistory && bookingHistory.length > 0 ? (
                 bookingHistory.map((booking) => (
                   <MovieCard
+                    paramUrl={booking.paramUrl}
                     key={booking.reservationNum}
                     movieId={booking.movieId}
                     screeningId={booking.screeningId}

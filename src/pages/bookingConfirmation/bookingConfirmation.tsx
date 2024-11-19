@@ -1,12 +1,14 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
+import { getBookingDataQuery, Seat } from '../../api/booking';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
-import { getBookingDataQuery } from '../../api/booking';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { Seat } from '../../api/booking';
 
 function BookingConfirmation() {
-  const { bookingNumber } = useLoaderData() as { bookingNumber: string };
+  const { bookingNumber } = useLoaderData() as {
+    bookingNumber: string;
+    screeningId: number;
+  };
 
   const { data } = useSuspenseQuery(getBookingDataQuery(bookingNumber));
 
@@ -32,41 +34,39 @@ function BookingConfirmation() {
   ];
 
   return (
-    <>
-      <Container className="bg-rosa rounded py-3" style={{ maxWidth: '900px' }}>
-        <Row className="flex-column flex-md-row align-items-center">
-          <Col md={6}>
-            <img
-              src={data.posterUrl}
-              alt={data.title}
-              className="img-fluid p-3"
-            />
-          </Col>
-          <Col md={6}>
-            <ListGroup>
-              {confirmationDetails.map((details, index) => (
-                <ListGroup.Item
-                  key={index}
-                  className="bg-rosa border border-0 text-dark d-flex aline-items-center justify-content-between"
-                >
-                  <strong>{details.label}</strong>
-                  <span>{details.value}</span>
-                </ListGroup.Item>
-              ))}
+    <Container className="bg-rosa rounded py-3" style={{ maxWidth: '900px' }}>
+      <Row className="flex-column flex-md-row align-items-center">
+        <Col md={6}>
+          <img
+            src={data.posterUrl}
+            alt={data.title}
+            className="img-fluid p-3"
+          />
+        </Col>
+        <Col md={6}>
+          <ListGroup>
+            {confirmationDetails.map((details, index) => (
+              <ListGroup.Item
+                key={index}
+                className="bg-rosa border border-0 text-dark d-flex aline-items-center justify-content-between"
+              >
+                <strong>{details.label}</strong>
+                <span>{details.value}</span>
+              </ListGroup.Item>
+            ))}
 
-              <Col className="d-flex aline-items-center justify-content-evenly my-2 ">
-                <PrimaryBtn>
-                  <Link to="/">Stäng</Link>
-                </PrimaryBtn>
-                <PrimaryBtn>
-                  <Link to="/avbokning">Avboka</Link>
-                </PrimaryBtn>
-              </Col>
-            </ListGroup>
-          </Col>
-        </Row>
-      </Container>
-    </>
+            <Col className="d-flex aline-items-center justify-content-evenly my-2 ">
+              <PrimaryBtn>
+                <Link to="/">Stäng</Link>
+              </PrimaryBtn>
+              <PrimaryBtn>
+                <Link to="/avbokning">Avboka</Link>
+              </PrimaryBtn>
+            </Col>
+          </ListGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

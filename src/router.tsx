@@ -23,6 +23,7 @@ import ProfilePage from './pages/profilepage/ProfilePage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import ReservePage from './pages/reservepage/ReservePage';
 import Snacks from './pages/snacks/snacksPage';
+import { registerAction } from './api/register';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
         handle: {
           title: 'Bli medlem',
         },
+        action: registerAction,
       },
       {
         path: '/medlem/medlems-sida',
@@ -69,7 +71,7 @@ const router = createBrowserRouter([
         loader: filterLoader(getQueryClient()),
       },
       {
-        path: '/film/:id',
+        path: '/film/:paramUrl',
         element: <MovieDetailsPage />,
         loader: detailsLoader(getQueryClient()),
       },

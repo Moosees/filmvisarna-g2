@@ -1,26 +1,33 @@
-import CardsWrapper from '../../components/movieCard/CardsWrapper';
-import MovieCard from '../../components/movieCard/MovieCard';
-import {
-  Form as RouterForm,
-  useLoaderData,
-  useSearchParams,
-} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { filterLoader, getFilterQuery } from '../../api/filter';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import DatePicker from 'react-datepicker';
-import { addDays, format, subDays } from 'date-fns';
-import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker';
-import { sv } from 'date-fns/locale/sv';
+import { format } from 'date-fns';
+import DatePickerSweden from '../../components/datePicker/DatePickerSwededn';
+import CardsWrapper from '../../components/movieCard/CardsWrapper';
+import MovieCard from '../../components/movieCard/MovieCard';
 
 export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get('titel') || ''
+  );
   const { filters } = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof filterLoader>>
   >;
   const { data, isLoading } = useSuspenseQuery(getFilterQuery(filters));
-  registerLocale('sv', sv);
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setSearchParams((params) => {
+        params.set('titel', searchInput);
+        return params;
+      });
+    }, 500);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [searchInput, setSearchParams]);
 
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
@@ -31,57 +38,29 @@ export default function FilterPage() {
     });
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setSearchParams((params) => {
-      params.set(name, value);
-      return params;
-    });
-  };
-
   if (isLoading) {
     return <Spinner animation="border" />;
   }
 
   return (
     <div className="container my-4 ">
-      <RouterForm>
+      <Form>
         <Row className=" mx-md-auto py-1 bg-rosa col-md-8 rounded">
           <Col lg={4}>
             <input
               type="text"
               name="titel"
               placeholder="Sök"
-              value={searchParams.get('titel') || ''}
-              onChange={handleInputChange}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               className="form-control bg-light text-dark placeholder-gray my-1 my-lg-2 "
             />
           </Col>
 
           <Col lg={4} className="col-6 px-1 px-md-2">
-            <DatePicker
-              locale="sv"
-              selectsRange={true}
-              startDate={
-                searchParams.get('startDatum')
-                  ? new Date(searchParams.get('startDatum') as string)
-                  : undefined
-              }
-              endDate={
-                searchParams.get('slutDatum')
-                  ? new Date(searchParams.get('slutDatum') as string)
-                  : undefined
-              }
-              onChange={handleDateChange}
-              includeDateIntervals={[
-                { start: subDays(new Date(), 1), end: addDays(new Date(), 14) },
-              ]}
-              dateFormat="dd MMM"
-              placeholderText="Välj Datum"
-              isClearable={true}
-              className="form-control bg-light text-dark placeholder-gray fs-md-custom p-2 my-1 my-lg-2 "
+            <DatePickerSweden
+              handleDateChange={handleDateChange}
+              searchParams={searchParams}
             />
           </Col>
 
@@ -89,7 +68,12 @@ export default function FilterPage() {
             <Form.Select
               className="bg-light text-dark my-1 my-lg-2 placeholder-gray"
               name="alder"
-              onChange={handleInputChange}
+              onChange={(e) =>
+                setSearchParams((params) => {
+                  params.set(e.target.name, e.target.value);
+                  return params;
+                })
+              }
               value={searchParams.get('alder') || ''}
             >
               <option value="">Ålder</option>
@@ -99,7 +83,7 @@ export default function FilterPage() {
             </Form.Select>
           </Col>
         </Row>
-      </RouterForm>
+      </Form>
 
       <Row>
         <CardsWrapper>
@@ -108,6 +92,7 @@ export default function FilterPage() {
               <MovieCard
                 key={movie.screeningId}
                 movieId={movie.movieId}
+                paramUrl={movie.paramUrl}
                 screeningId={movie.screeningId}
                 age={movie.age}
                 posterUrl={movie.posterUrl}

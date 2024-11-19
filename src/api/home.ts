@@ -10,6 +10,7 @@ interface TodaysMoviesData {
   movieId: number;
   title: string;
   posterUrl: string;
+  paramUrl: string;
   age: number;
   startTime: string;
   screeningId: number;

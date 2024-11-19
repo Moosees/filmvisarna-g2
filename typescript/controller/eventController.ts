@@ -1,19 +1,21 @@
-import { FieldPacket, RowDataPacket } from 'mysql2';
+// import { FieldPacket, RowDataPacket } from 'mysql2';
 import { Request, Response } from 'express';
 import db from '../config/connectDB.js';
 
 const getAllScaryMovies = async (req: Request, res: Response) => {
   const query = `
-    SELECT 
+    SELECT
       e.id AS eventId,
       e.title,
       e.description,
       m.id AS movieId,
+      m.title,
+      m.url_param AS paramUrl,
       m.poster_url AS posterUrl
     FROM movie m
     INNER JOIN event_movie em ON em.movie_id = m.id
     INNER JOIN event e ON e.id = em.event_id
-    WHERE e.id = 2;  
+    WHERE e.id = 2;
   `;
 
   try {
@@ -32,6 +34,8 @@ const getAllAstridLindgrenMovies = async (req: Request, res: Response) => {
       e.title,
       e.description,
       m.id AS movieId,
+      m.title,
+      m.url_param AS paramUrl,
       m.poster_url AS posterUrl
     FROM movie m
     INNER JOIN event_movie em ON em.movie_id = m.id

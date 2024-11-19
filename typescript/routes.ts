@@ -4,15 +4,12 @@ import reservationsController from './controller/reservationsController.js';
 import seatsController from './controller/seatsController.js';
 import ticketsController from './controller/ticketsController.js';
 import { isAdmin, isAuthenticated } from './middleware/authMiddleware.js';
-// import { isAdmin } from './middleware/authMiddleware.js';
 import usersController from './controller/usersController.js';
-// import Mailer from './helpers/nodemailer.js';
 import Mailer from './helpers/nodemailer.js';
 import eventController from './controller/eventController.js';
 
 const router = express.Router();
 
-// NOTE: use socket.io or server sent events for handling this
 // get what seats are reserved by other people
 router.get('/reservedSeats/:screening_id', seatsController.getReservedSeats);
 // get seats not reserved by other people
@@ -22,6 +19,9 @@ router.get(
 );
 // get what seats are free or reserved by other people
 router.get('/seats/:screening_id', seatsController.getAllSeats);
+
+// Server-Sent Events (SSE) route for real-time seat updates
+router.get('/seatsupdates', seatsController.streamSeatsUpdates);
 
 // get info for a specific reservation
 router.get(
@@ -41,19 +41,13 @@ router.put('/reservation', reservationsController.changeReservation);
 // cancel a reservation
 router.delete('/reservation', reservationsController.cancelReservation);
 
-/**-----------------------------------------------
- * @desc    movies routes
- ------------------------------------------------*/
-//--------------- Start movies routes ----------------------
-
-// find movie(s) by filtering (age, date) (use req.query for filtering or split into separate routes?)
-// this is an example explaining how the filter works:
-//http://localhost:3002/movie?age=15&date=2024-11-04
+// Movie routes
+// find movie(s) by filtering (age, date)
 router.get('/movie', moviesController.filterMovies);
 // Get movies to be shown today
 router.get('/todaysMovies', moviesController.getTodaysMovie);
 // Show movie details and screening times
-router.get('/movie/:id', moviesController.getMovie);
+router.get('/movie/:paramUrl', moviesController.getMovie);
 
 //---------------- Admin routes
 router.post('/movie', isAdmin, moviesController.addMovie);
