@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useActionData, useNavigate, useSubmit } from 'react-router-dom';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
+import InputWrapper from '../../components/form/InputWrapper';
 
 interface RegisterFormValues {
   user_email: string;
@@ -44,8 +45,12 @@ const RegisterPage: React.FC = () => {
       <Row className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm p-4">
         <Col>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Group controlId="user_email" className="field-container mb-3">
-              <Form.Label className="form-label">E-post</Form.Label>
+            <InputWrapper
+              controlId="user_email"
+              label="E-post"
+              className="mb-3"
+              errorMsg={errors.user_email?.message}
+            >
               <Form.Control
                 className="form-control-field"
                 placeholder="Ange din e-post"
@@ -59,16 +64,14 @@ const RegisterPage: React.FC = () => {
                 })}
                 isInvalid={!!errors.user_email}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.user_email?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
+            </InputWrapper>
 
-            <Form.Group
+            <InputWrapper
               controlId="user_password"
-              className="field-container mb-3"
+              label="Lösenord"
+              className="mb-3"
+              errorMsg={errors.user_password?.message}
             >
-              <Form.Label className="form-label">Lösenord</Form.Label>
               <Form.Control
                 type="password"
                 className="form-control-field"
@@ -82,16 +85,14 @@ const RegisterPage: React.FC = () => {
                 })}
                 isInvalid={!!errors.user_password}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.user_password?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
+            </InputWrapper>
 
-            <Form.Group
+            <InputWrapper
               controlId="confirm_password"
-              className="field-container mb-3"
+              label="Repetera lösenord"
+              className="mb-3"
+              errorMsg={errors.confirm_password?.message}
             >
-              <Form.Label className="form-label">Repetera lösenord</Form.Label>
               <Form.Control
                 type="password"
                 className="form-control-field"
@@ -103,13 +104,14 @@ const RegisterPage: React.FC = () => {
                 })}
                 isInvalid={!!errors.confirm_password}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.confirm_password?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
+            </InputWrapper>
 
-            <Form.Group controlId="first_name" className="field-container mb-3">
-              <Form.Label className="form-label">Förnamn</Form.Label>
+            <InputWrapper
+              controlId="first_name"
+              label="Förnamn"
+              className="mb-3"
+              errorMsg={errors.first_name?.message}
+            >
               <Form.Control
                 type="text"
                 className="form-control-field"
@@ -119,13 +121,14 @@ const RegisterPage: React.FC = () => {
                 })}
                 isInvalid={!!errors.first_name}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.first_name?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
+            </InputWrapper>
 
-            <Form.Group controlId="last_name" className="field-container mb-3">
-              <Form.Label className="form-label">Efternamn</Form.Label>
+            <InputWrapper
+              controlId="last_name"
+              label="Efternamn"
+              className="mb-3"
+              errorMsg={errors.last_name?.message}
+            >
               <Form.Control
                 type="text"
                 className="form-control-field"
@@ -135,10 +138,7 @@ const RegisterPage: React.FC = () => {
                 })}
                 isInvalid={!!errors.last_name}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.last_name?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
+            </InputWrapper>
 
             <div className="button-group">
               <PrimaryBtn className="py-2 fs-md-custom" onClick={handleGoBack}>
