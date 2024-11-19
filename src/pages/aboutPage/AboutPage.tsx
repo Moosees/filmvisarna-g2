@@ -5,7 +5,7 @@ function AboutPage() {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
       <ScrollRestoration />
-      <Row className="w-75 mb-5">
+      <Row className="w-100 mb-5">
         <Col
           xs={12}
           className="rounded bg-rosa mt-3 p-3 d-flex flex-column align-items-center justify-content-center"
@@ -32,7 +32,7 @@ function AboutPage() {
           Kontakta oss
         </h1>
       </div>
-      <Row className="w-75 mt-4 d-flex justify-content-center align-items-center">
+      <Row className="w-100 mt-4 d-flex justify-content-center align-items-center">
         <Col
           xs={12}
           className="rounded bg-rosa mt-3 p-3 d-flex flex-column align-items-center justify-content-center"
