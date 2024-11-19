@@ -11,7 +11,7 @@ function CinemaTechnology() {
     {
       Namn: 'IMAX',
       Beskrivning:
-        ' är en exklusiv filmvisningsteknik som levererar en filmupplevelse utöver det vanliga. Med hjälp av specialdesignade storbildsprojektorer och högupplösta bilder kan IMAX visa filmer i en imponerande detaljrikedom och med en fantastisk färgprecision. IMAX-bioer är också kända för sina enorma biodukar, som täcker hela synfältet och gör att du nästan känner att du är en del av filmen. Förutom den visuella upplevelsen har IMAX även optimerat ljudsystemet för att ge ett klart och kraftfullt ljud som matchar den storslagna bilden. Det gör att alla sinnen stimuleras på ett sätt som få andra format kan konkurrera med. IMAX är därför det självklara valet för de som söker en filmupplevelse som känns som en verklig, levande värld framför dem.',
+        ' är en exklusiv filmvisningsteknik som levererar en filmupplevelse utöver det vanliga. Med hjälp av specialdesignade storbildsprojektorer och högupplösta bilder kan IMAX visa filmer i en imponerande detaljrikedom och med en fantastisk färgprecision. IMAX- bioer är också kända för sina enorma biodukar, som täcker hela synfältet och gör att du nästan känner att du är en del av filmen.Förutom den visuella upplevelsen har IMAX även optimerat ljudsystemet för att ge ett klart och kraftfullt ljud som matchar den storslagna bilden.Det gör att alla sinnen stimuleras på ett sätt som få andra format kan konkurrera med.IMAX är därför det självklara valet för de som söker en filmupplevelse som känns som en verklig, levande värld framför dem.',
       Märke: 'IMAX Corporation',
     },
   ];
