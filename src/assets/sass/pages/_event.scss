@@ -1,14 +1,14 @@
 .background-image-col {
-  background-image: url('../../assets/images/image.svg');
+  background-image: url('../../assets/images/popcorn.png');
   background-size: cover;
   background-position: center;
-  border-radius: 8px;
-  padding: 20px;
-  min-height: 300px;
+  overflow: hidden;
+  min-height: 350px;
+  width: 100%;
 }
 
 .scary-movie-container {
-  background-image: url('../../assets/images/halloween.jpg');
+  background-image: url('../../assets/images/scarymovie.jpg');
   background-size: cover;
   background-position: bottom;
   border-radius: 8px;
