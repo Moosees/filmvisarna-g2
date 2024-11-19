@@ -313,79 +313,8 @@ Tack för att du valde oss, och vi hoppas att få välkomna dig tillbaka snart.<
   }
 };
 
-interface ChangeReservationRequest extends Request {
-  body: {
-    reservationNum: string;
-    email: string;
-    tickets: number[];
-    seats: number[];
-  };
-}
-
-interface ReservationIdPacket extends RowDataPacket {
-  reservationId: number;
-}
-
-const changeReservation = async (
-  req: ChangeReservationRequest,
-  res: Response
-) => {
-  const { reservationNum, email, tickets, seats } = req.body;
-
-  if (
-    !reservationNum ||
-    !email ||
-    tickets?.length === 0 ||
-    seats?.length === 0
-  ) {
-    res.status(400).json({ message: 'Ombokningen är inte korrekt ifylld' });
-  }
-
-  let con;
-  try {
-    con = await db.getConnection();
-    await con.beginTransaction();
-
-    const [result] = await con.execute<ReservationIdPacket[]>(
-      `
-        SELECT r.id AS reservationId, r.screening_id AS screeningId FROM reservation r
-        INNER JOIN user u ON u.id = r.user_id
-        WHERE r.reservation_num = :reservationNum AND u.user_email = :email
-      `,
-      { reservationNum, email }
-    );
-
-    if (result?.length === 0) {
-      res.status(400).json('Kunde inte hitta bokningen');
-      return;
-    }
-
-    const { reservationId, screeningId } = result[0];
-
-    await deleteSeatsAndTicketsFromReservation(con, reservationNum, email);
-    await insertTicketsAndSeatsIntoReservation(
-      con,
-      reservationId,
-      screeningId,
-      tickets,
-      seats
-    );
-
-    await con.commit();
-
-    res.status(200).json({ message: 'Ombokningen lyckades', reservationNum });
-  } catch (error) {
-    await con?.rollback();
-    console.log(error);
-    res.send(500).json({ message: 'Kunde inte slutföra ombokningen' });
-  } finally {
-    con?.release();
-  }
-};
-
 export default {
   createNewReservation,
   getSpecificReservation,
   cancelReservation,
-  changeReservation,
 };

@@ -17,7 +17,6 @@ export const cancelAction =
     const data = Object.fromEntries(formData) as unknown as CancelFormData;
 
     try {
-      console.log(data);
       await cancel(data);
       await client.invalidateQueries({ queryKey: ['reservation'] });
       toast.success(
