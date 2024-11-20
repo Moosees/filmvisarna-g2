@@ -61,11 +61,6 @@ const CancelReservationPage: React.FC = () => {
                   placeholder="Fyll i ditt bokningsnummer"
                   {...register('reservationNum', {
                     required: 'Bokningsnummer krävs',
-                    pattern: {
-                      value: /^[A-Za-z]{3}[0-9]{3}$/,
-                      message:
-                        'Bokningsnummer måste vara i formatet XXX123 (tre bokstäver följt av tre siffror)',
-                    },
                   })}
                   isInvalid={!!errors.reservationNum}
                 />
