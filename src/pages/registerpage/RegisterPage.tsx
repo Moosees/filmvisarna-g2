@@ -25,20 +25,18 @@ const RegisterPage: React.FC = () => {
   } = useForm<RegisterFormValues>();
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    const jsonObject = Object.entries(data).reduce<{ [key: string]: string }>(
+    const trimmedData = Object.entries(data).reduce<{ [key: string]: string }>(
       (acc, [key, value]) => {
-        acc[key] = String(value);
+        acc[key] = typeof value === 'string' ? value.trim() : value;
         return acc;
       },
       {}
     );
 
-    submit(jsonObject, { method: 'post', action: '/medlem/bli-medlem' });
+    submit(trimmedData, { method: 'post', action: '/medlem/bli-medlem' });
   };
 
-  const handleGoBack = () => {
-    navigate('/');
-  };
+  const handleGoBack = () => navigate('/');
 
   return (
     <Container className="d-flex justify-content-center">
@@ -54,7 +52,6 @@ const RegisterPage: React.FC = () => {
               <Form.Control
                 className="form-control-field"
                 placeholder="Ange din e-post"
-                defaultValue=""
                 {...register('user_email', {
                   required: 'E-post krävs',
                   pattern: {
@@ -78,9 +75,19 @@ const RegisterPage: React.FC = () => {
                 placeholder="Ange ditt lösenord"
                 {...register('user_password', {
                   required: 'Lösenord är obligatoriskt',
+                  pattern: {
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                    message:
+                      'Lösenordet måste innehålla minst en versal, en siffra och ett specialtecken',
+                  },
                   minLength: {
                     value: 6,
                     message: 'Lösenordet måste vara minst 6 tecken långt',
+                  },
+                  maxLength: {
+                    value: 128,
+                    message: 'Lösenordet får inte vara längre än 128 tecken',
                   },
                 })}
                 isInvalid={!!errors.user_password}
@@ -118,6 +125,11 @@ const RegisterPage: React.FC = () => {
                 placeholder="Ange ditt förnamn"
                 {...register('first_name', {
                   required: 'Förnamn är obligatoriskt',
+                  pattern: {
+                    value: /^[a-zA-Zà-öÀ-Ö\s-]+$/,
+                    message:
+                      'Förnamnet får bara innehålla bokstäver, mellanslag och bindestreck',
+                  },
                 })}
                 isInvalid={!!errors.first_name}
               />
@@ -135,12 +147,17 @@ const RegisterPage: React.FC = () => {
                 placeholder="Ange ditt efternamn"
                 {...register('last_name', {
                   required: 'Efternamn är obligatoriskt',
+                  pattern: {
+                    value: /^[a-zA-Zà-öÀ-Ö\s-]+$/,
+                    message:
+                      'Efternamnet får bara innehålla bokstäver, mellanslag och bindestreck',
+                  },
                 })}
                 isInvalid={!!errors.last_name}
               />
             </InputWrapper>
 
-            <div className="button-group">
+            <div className="button-group d-flex justify-content-between">
               <PrimaryBtn className="py-2 fs-md-custom" onClick={handleGoBack}>
                 Avbryt
               </PrimaryBtn>
