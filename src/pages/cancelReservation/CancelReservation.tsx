@@ -30,31 +30,44 @@ const CancelReservationPage: React.FC = () => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group controlId="email" className="field-container mb-3">
               <Form.Label className="form-label">Epost</Form.Label>
-              <Form.Control
-                type="email"
-                className="form-control-field"
-                placeholder="Fyll i din epost"
-                {...register('email', { required: 'Epost krävs' })}
-                isInvalid={!!errors.email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.email?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group
-              controlId="reservationNum"
-              className="field-container mb-3"
-            >
-              <Form.Label className="form-label">Bokningsnummer</Form.Label>
-              <Form.Control
-                type="text"
-                className="form-control-field"
-                placeholder="Fyll i ditt bokningsnummer"
-                {...register('reservationNum', {
-                  required: 'Bokningsnummer krävs',
-                })}
-                isInvalid={!!errors.reservationNum}
-              />
+              <Form.Group controlId="email" className="field-container mb-3">
+                <Form.Label className="form-label">Epost</Form.Label>
+                <Form.Control
+                  type="email"
+                  className="form-control-field"
+                  placeholder="Fyll i din epost"
+                  {...register('email', {
+                    required: 'Epost krävs',
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                      message: 'Var god skriv in en giltig e-postadress',
+                    },
+                  })}
+                  isInvalid={!!errors.email}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group
+                controlId="reservationNum"
+                className="field-container mb-3"
+              >
+                <Form.Label className="form-label">Bokningsnummer</Form.Label>
+                <Form.Control
+                  type="text"
+                  className="form-control-field"
+                  placeholder="Fyll i ditt bokningsnummer"
+                  {...register('reservationNum', {
+                    required: 'Bokningsnummer krävs',
+                  })}
+                  isInvalid={!!errors.reservationNum}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.reservationNum?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
               <Form.Control.Feedback type="invalid">
                 {errors.reservationNum?.message}
               </Form.Control.Feedback>
