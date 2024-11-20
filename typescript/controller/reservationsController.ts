@@ -149,39 +149,39 @@ const createNewReservation = async (
     const bookingDetails = reservationDetails[0];
 
     const html = `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #3e1e3d; padding: 20px;">
-             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; padding: 20px;">
+             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color:  #3e1e3d; border-radius: 8px;">
                <h1 style="background-color: #ff94e0; color: #3e1e3d; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; margin: 0;">
                 Filmvisarna
              </h1>
-               <h2 style="color: #3e1e3d; margin-top: 20px;">Tack för din bokning hos Filmvisarna!</h2>
-               <p style="color: #3e1e3d;">Hej!</p>
-               <p style="color: #3e1e3d;">Vi är glada att bekräfta din bokning. Här är en sammanfattning:</p>
+               <h2 style="color: #ffffff; margin-top: 20px;">Tack för din bokning hos Filmvisarna!</h2>
+               <p style="color: #ffffff;">Hej!</p>
+               <p style="color: #ffffff;">Vi är glada att bekräfta din bokning. Här är en sammanfattning:</p>
                <ul style="background-color: #ff94e0; padding: 15px; border-radius: 8px; color: #3e1e3d;">
-                 <li><strong>Boknings-nr:</strong> ${
+                 <li><strong>Boknings-nr: </strong> ${
                    bookingDetails.reservationNumber
                  }</li>
-                 <li><strong>Salong:</strong> ${
+                 <li><strong>Salong: </strong> ${
                    bookingDetails.auditoriumName
                  }</li>
-                 <li><strong>Plats:</strong> ${formatSeats(
+                 <li><strong>Plats: </strong> ${formatSeats(
                    bookingDetails.seats
                  )}</li>
-                 <li><strong>Film:</strong> ${bookingDetails.title}</li>
-                 <li><strong>Datum:</strong> ${bookingDetails.startDate}</li>
-                 <li><strong>Tid:</strong> ${bookingDetails.timeRange}</li>
-                <li><strong>Antal personer:</strong> ${
+                 <li><strong>Film: </strong> ${bookingDetails.title}</li>
+                 <li><strong>Datum: </strong> ${bookingDetails.startDate}</li>
+                 <li><strong>Tid: </strong> ${bookingDetails.timeRange}</li>
+                <li><strong>Antal personer: </strong> ${
                   bookingDetails.ticketDetails
                 }</li>
-                <li><strong>Totalt pris:</strong> ${
+                <li><strong>Totalt pris: </strong> ${
                   bookingDetails.totalPrice
                 }</li>
 
                </ul>
-               <p style="margin-top: 20px; color: #3e1e3d;">Vi ser fram emot att välkomna dig! Om du har några frågor, tveka inte att kontakta oss.</p>
-               <p style="color: #3e1e3d;">Med vänliga hälsningar,<br />Filmvisarna</p>
+               <p style="margin-top: 20px; color: #ffffff;">Vi ser fram emot att välkomna dig! Om du har några frågor, tveka inte att kontakta oss.</p>
+               <p style="color: #ffffff;">Med vänliga hälsningar,<br />Filmvisarna</p>
                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-               <p style="font-size: 12px; color: #888;">Filmvisarna AB | Adressvägen 123, 111 22 Stockholm</p>
+               <p style="font-size: 12px; color: #ffffff;">Filmvisarna AB | Adressvägen 123, 111 22 Stockholm</p>
             </div>
            </div>
          `;
@@ -261,23 +261,23 @@ const cancelReservation = async (
   const bookingDetails = reservationDetails[0];
 
   const html = `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #3e1e3d; padding: 20px;">
-             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px;">
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; padding: 20px;">
+             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color:#3e1e3d; border-radius: 8px;">
                <h1 style="background-color: #ff94e0; color: #3e1e3d; padding: 15px; text-align: center; border-radius: 8px 8px 0 0; margin: 0;">
                 Filmvisarna
              </h1>
-               <h2 style="color: #3e1e3d; margin-top: 20px;">Vi vill härmed bekräfta att din bokning har avbokats</h2>
+               <h2 style="color: #ffffff; margin-top: 20px;">Vi vill härmed bekräfta att din bokning har avbokats</h2>
                <ul style="background-color: #ff94e0; padding: 15px; border-radius: 8px; color: #3e1e3d;">
-                 <li><strong>Boknings-nr:</strong> ${bookingDetails.reservationNumber}</li>
+                 <li><strong>Boknings-nr: </strong> ${bookingDetails.reservationNumber}</li>
                  <li><strong>Film:</strong> ${bookingDetails.title}</li>
                  <li><strong>Datum:</strong> ${bookingDetails.startDate}</li>
-                <li><strong>Antal personer:</strong> ${bookingDetails.ticketDetails}</li>
-                <li><strong>Totalt pris:</strong> ${bookingDetails.totalPrice}</li>
+                <li><strong>Antal personer: </strong> ${bookingDetails.ticketDetails}</li>
+                <li><strong>Totalt pris: </strong> ${bookingDetails.totalPrice}</li>
                </ul>
-               <p style="margin-top: 20px; color: #3e1e3d;">Det är tråkigt att du behövt avboka, men vi förstår att planer kan förändras. Har du några frågor eller behöver ytterligare hjälp tveka inte på att kontakta oss!
+               <p style="margin-top: 20px; color: #ffffff;">Det är tråkigt att du behövt avboka, men vi förstår att planer kan förändras. Har du några frågor eller behöver ytterligare hjälp tveka inte på att kontakta oss!
 
 Tack för att du valde oss, och vi hoppas att få välkomna dig tillbaka snart.</p>
-               <p style="color: #3e1e3d;">Med vänliga hälsningar,<br />Filmvisarna</p>
+               <p style="color: #ffffff;">Med vänliga hälsningar,<br />Filmvisarna</p>
                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
                <p style="font-size: 12px; color: #888;">Filmvisarna AB | Adressvägen 123, 111 22 Stockholm</p>
             </div>
