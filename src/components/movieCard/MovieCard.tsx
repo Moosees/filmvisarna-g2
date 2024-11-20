@@ -108,7 +108,9 @@ function MovieCard({
       <Card.Body className="p-1">
         <Card.Text
           style={{ height: '49px' }}
-          className=" text-capitalize m-0 text-decoration-underline d-flex align-items-center justify-content-center "
+          className={`text-capitalize m-0 text-decoration-underline d-flex align-items-center justify-content-center  ${
+            smallFont ? 'small-font' : ''
+          }`}
         >
           {title}
         </Card.Text>
