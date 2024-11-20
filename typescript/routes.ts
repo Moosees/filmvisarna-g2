@@ -5,6 +5,9 @@ import reservationsController from './controller/reservationsController.js';
 import seatsController from './controller/seatsController.js';
 import usersController from './controller/usersController.js';
 import { isAdmin, isAuthenticated } from './middleware/authMiddleware.js';
+import profileController from './controller/profileController.js';
+import bookingsController from './controller/bookingsController.js';
+import authController from './controller/authController.js';
 
 const router = express.Router();
 
@@ -43,38 +46,42 @@ router.delete('/movie/:id', isAdmin, moviesController.deleteMovie);
 
 // User routes
 // register a member - body: {email, password, firstName, lastName}
-router.post('/user/register', usersController.register);
+router.post('/user/register', authController.register);
 
 // log out
-router.delete('/user', isAuthenticated, usersController.logout);
+router.delete('/user', isAuthenticated, authController.logout);
 
 // log in - body: {email, password}
-router.post('/user', usersController.login);
+router.post('/user', authController.login);
 
 //retrieve booking history for a logged in user
 router.get(
   '/user/booking-history',
   isAuthenticated,
-  usersController.getBookingHistory
+  bookingsController.getBookingHistory
 );
 
 router.get(
   '/user/current-bookings',
   isAuthenticated,
-  usersController.getCurrentBookings
+  bookingsController.getCurrentBookings
 );
 
-router.get('/user/member-info', isAuthenticated, usersController.getMemberInfo);
+router.get(
+  '/user/member-info',
+  isAuthenticated,
+  profileController.getMemberInfo
+);
 
 //retrieve profile page, with member info and current bookings and booking history
 router.get(
   '/user/profile-page',
   isAuthenticated,
-  usersController.getProfilePage
+  profileController.getProfilePage
 );
 
 // update user info - body: {password?, firstName?, lastName?}
-router.patch('/user', usersController.updateUserDetails);
+router.patch('/user', profileController.updateUserDetails);
 
 router.get('/ping', usersController.ping);
 

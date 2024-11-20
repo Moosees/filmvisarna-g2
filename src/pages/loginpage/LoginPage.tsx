@@ -12,15 +12,6 @@ export interface LoginFormData extends FieldValues {
 const LoginPage: React.FC = () => {
   const submit = useSubmit();
   const actionData = useActionData() as { error?: string };
-  // const [loginAttempted, setLoginAttempted] = useState(false);
-
-  // const { data } = useSuspenseQuery({
-  //   ...getRootDataQuery(),
-  //   refetchOnWindowFocus: false,
-  //   staleTime: 0,
-  // });
-
-  // const isLoggedIn = data?.isLoggedIn;
 
   const {
     register,
@@ -30,20 +21,7 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<LoginFormData> = (values) => {
     submit(values, { method: 'post', action: '/medlem/logga-in' });
-    // setLoginAttempted(true);
   };
-
-  // useEffect(() => {
-  //   if (loginAttempted && !actionData?.error) {
-  //     // Show toast on successful login after submit attempt
-  //     toast.success('Du är nu inloggad', {
-  //       closeOnClick: true,
-  //       autoClose: 3000,
-  //       hideProgressBar: true,
-  //     });
-  //     setLoginAttempted(false); // Reset the attempt state
-  //   }
-  // }, [actionData, loginAttempted]);
 
   return (
     <Container className="d-flex justify-content-center">
