@@ -22,8 +22,13 @@ function AboutPage() {
                 Filmvisarna är en nyöppnad biograf med två moderna och bekväma
                 salonger. Vi strävar efter att skapa en nostalgisk
                 filmupplevelse med inspiration från ikoniska filmer från
-                80-talet. Atmosfären präglas av neonljus, färgstarka affischer
-                och autentiska detaljer från 80-talets stora filmverk.
+                80-talet.
+              </p>
+              <p className="text-black ">
+                Atmosfären präglas av neonljus, färgstarka affischer och
+                autentiska detaljer från 80-talets stora filmverk.
+              </p>
+              <p className="text-black ">
                 Filmvisarna är en perfekt plats för att återuppleva
                 actionfilmer, romantiska komedier och kultklassiker från science
                 fiction-genren. Välkomna tillbaka till 80-talet!
