@@ -17,7 +17,7 @@ function AboutPage() {
             </Col>
           </Row>
           <Row>
-            <Col className="text-center">
+            <Col className="text-center custom-letterSpacing-technology">
               <p className="text-black ">
                 Filmvisarna är en nyöppnad biograf med två moderna och bekväma
                 salonger. Vi strävar efter att skapa en nostalgisk
