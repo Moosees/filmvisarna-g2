@@ -1,0 +1,35 @@
+.form-control-field {
+  background-color: white;
+  color: black;
+
+  &:focus {
+    background-color: white;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: none;
+    color: black;
+  }
+
+  &::placeholder {
+    color: #666666;
+    opacity: 1;
+  }
+}
+
+.field-container {
+  border: 2px solid black;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: $bg-rosa-light;
+}
+.placeholder-gray::placeholder {
+  color: #636363;
+  opacity: 1;
+}
+
+.custom-switch {
+  & > * {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,41 @@
+.seat {
+  width: 7.5vw;
+  height: 7.5vw;
+  margin: 1px;
+  transition: all 0.3s ease;
+}
+
+// `sm` applies to x-small devices (portrait phones, less than 576px)
+@media (min-width: 575.98px) {
+  .seat {
+    width: 5vw;
+    height: 5vw;
+    margin: 1px;
+  }
+}
+
+// // `md` applies to small devices (landscape phones, less than 768px)
+// @media (max-width: 767.98px) { ... }
+
+// // `lg` applies to medium devices (tablets, less than 992px)
+@media (min-width: 991.98px) {
+  .seat {
+    width: 2.5vw;
+    height: 2.5vw;
+    margin: 1px;
+  }
+}
+
+// // `xl` applies to large devices (desktops, less than 1200px)
+// @media (max-width: 1199.98px) { ... }
+
+// // `xxl` applies to x-large devices (large desktops, less than 1400px)
+// @media (max-width: 1399.98px) { ... }
+
+.seat-hover {
+  outline: 2px solid $success;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

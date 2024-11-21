@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+@font-face {
+  font-family: 'Digital7';
+  src: url('/fonts/digital-7.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.digital {
+  font-family: 'Digital7', sans-serif;
+  font-size: 1.4em;
+  letter-spacing: 2px;
+  @include media-breakpoint-up(md) {
+    font-size: 1.7em;
+  }
+  @include media-breakpoint-up(xl) {
+    font-size: 1.9em;
+  }
+}
+
+.custom-letterSpacing {
+  letter-spacing: 1.1px;
+}
+
+.custom-letterSpacing-technology {
+  letter-spacing: 2px;
+}
+
+.fs-s-custom {
+  font-size: 0.6em;
+}
+.fs-md-custom {
+  font-size: 0.9em;
+}
+.orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+// .fs-custom {
+//   font-size: 0.7em;
+//   @include media-breakpoint-up(md) {
+//     font-size: 0.9em;
+//   }
+// }
+
+.cap-first:first-letter {
+  text-transform: uppercase;
+}
+
+.technology-text {
+  max-width: 45ch;
+  line-height: 1.5rem;
+  @include media-breakpoint-down(sm) {
+    max-width: none;
+    word-wrap: normal;
+    line-height: 1.5rem;
+  }
+}

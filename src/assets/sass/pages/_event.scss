@@ -1,0 +1,24 @@
+.background-image-col {
+  background-image: url('../../assets/images/popcorn.png');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  min-height: 350px;
+  width: 100%;
+}
+
+.scary-movie-container {
+  background-image: url('../../assets/images/scarymovie.jpg');
+  background-size: cover;
+  background-position: bottom;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 550px;
+  padding: 0;
+}
+
+.scary-heading {
+  background-color: black;
+}
