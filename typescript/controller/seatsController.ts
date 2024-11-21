@@ -84,7 +84,7 @@ const streamSeatsUpdates = (req: Request, res: Response) => {
   let keepAliveTimer = setInterval(keepAliveFn, keepAliveMs);
 
   const endSeatUpdates = () => {
-    reservationEmitter.off('added', sendSeatUpdate);
+    reservationEmitter.off('updateRes', sendSeatUpdate);
     clearInterval(keepAliveTimer);
     res.end();
   };
@@ -104,7 +104,7 @@ const streamSeatsUpdates = (req: Request, res: Response) => {
     endSeatUpdates();
   });
 
-  reservationEmitter.on('added', sendSeatUpdate);
+  reservationEmitter.on('updateRes', sendSeatUpdate);
 };
 
 export default {

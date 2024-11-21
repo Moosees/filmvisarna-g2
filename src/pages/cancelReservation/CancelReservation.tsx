@@ -3,15 +3,21 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useActionData, useSubmit } from 'react-router-dom';
 import PrimaryBtn from '../../components/buttons/PrimaryBtn';
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap';
+import { getRootDataQuery } from '../../api/root';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export interface CancelFormData extends FieldValues {
-  email: string;
+  email?: string;
   reservationNum: string;
 }
 
 const CancelReservationPage: React.FC = () => {
   const submit = useSubmit();
   const actionData = useActionData() as { error?: string };
+
+  const {
+    data: { isLoggedIn },
+  } = useSuspenseQuery(getRootDataQuery());
 
   const {
     register,
@@ -28,8 +34,7 @@ const CancelReservationPage: React.FC = () => {
       <Row className="col-md-6 col-lg-5 card rounded bg-rosa shadow-sm p-4">
         <Col>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Group controlId="email" className="field-container mb-3">
-              <Form.Label className="form-label">Epost</Form.Label>
+            {!isLoggedIn && (
               <Form.Group controlId="email" className="field-container mb-3">
                 <Form.Label className="form-label">Epost</Form.Label>
                 <Form.Control
@@ -49,29 +54,29 @@ const CancelReservationPage: React.FC = () => {
                   {errors.email?.message}
                 </Form.Control.Feedback>
               </Form.Group>
+            )}
 
-              <Form.Group
-                controlId="reservationNum"
-                className="field-container mb-3"
-              >
-                <Form.Label className="form-label">Bokningsnummer</Form.Label>
-                <Form.Control
-                  type="text"
-                  className="form-control-field"
-                  placeholder="Fyll i ditt bokningsnummer"
-                  {...register('reservationNum', {
-                    required: 'Bokningsnummer krävs',
-                  })}
-                  isInvalid={!!errors.reservationNum}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.reservationNum?.message}
-                </Form.Control.Feedback>
-              </Form.Group>
+            <Form.Group
+              controlId="reservationNum"
+              className="field-container mb-3"
+            >
+              <Form.Label className="form-label">Bokningsnummer</Form.Label>
+              <Form.Control
+                type="text"
+                className="form-control-field"
+                placeholder="Fyll i ditt bokningsnummer"
+                {...register('reservationNum', {
+                  required: 'Bokningsnummer krävs',
+                })}
+                isInvalid={!!errors.reservationNum}
+              />
               <Form.Control.Feedback type="invalid">
                 {errors.reservationNum?.message}
               </Form.Control.Feedback>
             </Form.Group>
+            <Form.Control.Feedback type="invalid">
+              {errors.reservationNum?.message}
+            </Form.Control.Feedback>
 
             <div className="d-flex justify-content-between">
               <PrimaryBtn type="button">
