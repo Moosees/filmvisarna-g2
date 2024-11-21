@@ -188,7 +188,7 @@ const createNewReservation = async (
 
     await sendEmail(userEmail, 'Boking lyckades', html);
 
-    reservationEmitter.emit('added', screeningId);
+    reservationEmitter.emit('updateRes', screeningId);
 
     res.status(200).json({
       message: 'Vi har skickat en bokning till din mail',
@@ -300,6 +300,7 @@ Tack för att du valde oss, och vi hoppas att få välkomna dig tillbaka snart.<
     await con.commit();
     // Ev. byta till 204 istället
     // res.status(200).json({ message: 'Avbokning lyckades' });
+    reservationEmitter.emit('updateRes', bookingDetails.screeningId);
     await sendEmail(email, 'Avbokningsbekräftelse', html);
     res.status(200).json({
       message:
