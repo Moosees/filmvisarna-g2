@@ -75,12 +75,6 @@ const RegisterPage: React.FC = () => {
                 placeholder="Ange ditt lösenord"
                 {...register('user_password', {
                   required: 'Lösenord är obligatoriskt',
-                  pattern: {
-                    value:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-                    message:
-                      'Lösenordet måste innehålla minst en versal, en siffra och ett specialtecken',
-                  },
                   minLength: {
                     value: 6,
                     message: 'Lösenordet måste vara minst 6 tecken långt',
