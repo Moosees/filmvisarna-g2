@@ -237,7 +237,9 @@ const cancelReservation = async (
   req: CancelReservationRequest,
   res: Response
 ) => {
-  const { email, reservationNum } = req.body;
+  const { reservationNum } = req.body;
+  const email = req.session.user?.email || req.body.email;
+
   if (!email || !reservationNum) {
     res
       .status(400)
