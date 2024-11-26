@@ -2,6 +2,7 @@ import schedule from 'node-schedule';
 import sendEmail from '../utils/sendEmail.js';
 
 process.on('SIGINT', async () => {
+  console.log('gracefully shutting down node-schedule');
   await schedule.gracefulShutdown();
   process.exit(0);
 });
