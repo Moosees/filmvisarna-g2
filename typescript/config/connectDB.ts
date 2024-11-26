@@ -1,5 +1,7 @@
 import mysql, { PoolOptions } from 'mysql2/promise';
+import { Job } from 'node-schedule';
 import { allData } from './dbData.js';
+import { scheduleMovieMover } from './dbSchedule.js';
 import { allTables } from './dbTables.js';
 import { allViews } from './dbViews.js';
 
@@ -21,6 +23,8 @@ const setup = {
   createData: false,
   createViews: false,
 };
+
+let movieMoverJob: Job | undefined;
 
 // Testa anslutningen
 db.getConnection()
@@ -48,9 +52,12 @@ db.getConnection()
 
     console.log(`Connected to MySQL ${process.env.DB_NAME} database!`);
     db.releaseConnection(con);
+
+    if (!movieMoverJob) movieMoverJob = scheduleMovieMover();
   })
   .catch((error) => {
     console.error('Error connecting to the database:', error.message || error);
+    if (movieMoverJob) movieMoverJob.cancel();
   });
 
 export default db;
