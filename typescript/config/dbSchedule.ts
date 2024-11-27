@@ -8,7 +8,7 @@ process.on('SIGINT', async () => {
 });
 
 export const scheduleMovieMover = () => {
-  const job = schedule.scheduleJob('1 * * *', () => {
+  const job = schedule.scheduleJob('0 30 1 * * *', () => {
     console.log('running job', new Date());
     sendEmail(
       'filmvisarnabio@gmail.com',
